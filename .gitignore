@@ -1,0 +1,23 @@
+# ignore project files #
+.classpath
+.project
+.settings/
+nbactions-local.xml
+nbactions.xml
+catalog*.xml
+*.~java
+nbactions-local.xml
+nbactions.xml
+
+# ignore target files #
+target/
+bin/
+build/
+apidoc/
+dist/
+
+# ignore log files #
+logs/
+*.log
+
+

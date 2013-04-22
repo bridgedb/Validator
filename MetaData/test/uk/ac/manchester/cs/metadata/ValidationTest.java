@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.RdfReader;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.validator.Validator;
@@ -44,7 +45,7 @@ public class ValidationTest {
         System.out.println("getLinkingPredicates");
         MetaDataSpecification specifications = new MetaDataSpecification();
         File file = new File ("test-data/testMin.ttl");
-        RdfReader reader = new RdfReader(file);
+        RdfInterface reader = new RdfReader(file);
         Validator validator = new Validator(reader, specifications);
         System.out.println(validator.validate());
     }

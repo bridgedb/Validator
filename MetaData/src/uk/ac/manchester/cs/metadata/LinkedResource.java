@@ -10,7 +10,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.constants.RdfConstants;
-import uk.ac.manchester.cs.rdftools.RdfReader;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -30,7 +30,7 @@ class LinkedResource extends CardinalityMetaData {
     }
 
     @Override
-     protected boolean appendIncorrectReport(StringBuilder builder, RdfReader rdf, List<Statement> statements, int tabLevel) throws VoidValidatorException {
+     protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, int tabLevel) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (statement.getObject() instanceof Resource){
@@ -71,7 +71,7 @@ class LinkedResource extends CardinalityMetaData {
     }
 
     @Override
-    boolean isValid(RdfReader rdf, Resource resource) throws VoidValidatorException {
+    boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null);
         for (Statement statement: statements){
             URI linkedType = (URI)statement.getSubject();
@@ -85,7 +85,7 @@ class LinkedResource extends CardinalityMetaData {
         return false;
     }
 
-    private boolean isValid(RdfReader rdf, Resource resource, Resource linkedType) throws VoidValidatorException {
+    private boolean isValid(RdfInterface rdf, Resource resource, Resource linkedType) throws VoidValidatorException {
         ResourceMetaData resourceMetaData = metaDataSpecification.getResourceMetaData(linkedType);     
         if (resourceMetaData == null){
             throw new VoidValidatorException ("Unable to ResourceMetaData for " + linkedType);

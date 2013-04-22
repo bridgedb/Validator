@@ -8,7 +8,7 @@ import java.util.List;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
-import uk.ac.manchester.cs.rdftools.RdfReader;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -28,7 +28,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     }
     
     @Override
-    boolean appendValidate(StringBuilder builder, RdfReader rdf, Resource resource, boolean includeWarnings, 
+    boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, boolean includeWarnings, 
             int tabLevel) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null);
         boolean result = appendIncorrectReport(builder, rdf, statements, tabLevel);
@@ -39,7 +39,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean appendError(StringBuilder builder, RdfReader rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null);
         boolean result = appendIncorrectReport(builder, rdf, statements, tabLevel);
         if (cardinality != NO_CARDINALITY && statements.size() >= cardinality) {
@@ -52,7 +52,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     }
     
     @Override
-    void appendRequirement(StringBuilder builder, RdfReader rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null);
         if (this.hasRequiredValues(statements)){
             tab(builder, tabLevel);
@@ -86,7 +86,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     
     protected abstract String getType();
     
-    protected abstract boolean appendIncorrectReport(StringBuilder builder, RdfReader rdf, List<Statement> statements, 
+    protected abstract boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
             int tabLevel) throws VoidValidatorException;
 
     protected boolean appendCardinalityReport(StringBuilder builder, List<Statement> statements, boolean includeWarnings, 
@@ -147,7 +147,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean hasRequiredValues(RdfReader rdf, Resource resource) throws VoidValidatorException {
+    boolean hasRequiredValues(RdfInterface rdf, Resource resource) throws VoidValidatorException {
         if (requirementLevel == RequirementLevel.MUST){
             List<Statement> statements = rdf.getStatementList(resource, predicate, null);
             return hasRequiredValues(statements);

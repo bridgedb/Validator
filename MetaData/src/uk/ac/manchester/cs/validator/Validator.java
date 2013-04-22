@@ -10,7 +10,7 @@ import org.openrdf.model.URI;
 import uk.ac.manchester.cs.constants.RdfConstants;
 import uk.ac.manchester.cs.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.metadata.ResourceMetaData;
-import uk.ac.manchester.cs.rdftools.RdfReader;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -19,10 +19,10 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
  */
 public class Validator {
     
-    final RdfReader reader;
+    final RdfInterface reader;
     final MetaDataSpecification specifications;
     
-    public Validator(RdfReader reader, MetaDataSpecification specifications){
+    public Validator(RdfInterface reader, MetaDataSpecification specifications){
         this.reader = reader;
         this.specifications = specifications;
     }

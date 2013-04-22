@@ -24,7 +24,7 @@ import org.openrdf.sail.memory.MemoryStore;
  *
  * @author Christian
  */
-public class RdfReader {
+public class RdfReader implements RdfInterface{
     
    public static String DEFAULT_BASE_URI = "http://no/BaseURI/Set/";
    private static final boolean EXCLUDE_INFERRED =false;

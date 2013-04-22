@@ -10,7 +10,7 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.metadata.type.MetaDataType;
 import uk.ac.manchester.cs.metadata.type.MetaDataTypeFactory;
-import uk.ac.manchester.cs.rdftools.RdfReader;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -27,7 +27,7 @@ class PropertyMetaData extends CardinalityMetaData {
        metaDataType = MetaDataTypeFactory.factory(objectClass);
     }
     
-    protected boolean appendIncorrectReport(StringBuilder builder, RdfReader rdf, List<Statement> statements, int tabLevel) throws VoidValidatorException {
+    protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, int tabLevel) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (!metaDataType.correctType(statement.getObject())){
@@ -51,7 +51,7 @@ class PropertyMetaData extends CardinalityMetaData {
     }
 
     @Override
-    boolean isValid(RdfReader rdf, Resource resource) throws VoidValidatorException {
+    boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null);
         for (Statement statement:statements){
             if (!metaDataType.correctType(statement.getObject())){

@@ -8,7 +8,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
-import uk.ac.manchester.cs.rdftools.RdfReader;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -19,23 +19,23 @@ abstract class MetaDataBase {
     public static int NO_CARDINALITY = -1;
     String name;
 
-    abstract boolean appendValidate(StringBuilder builder, RdfReader rdf, Resource resource, boolean includeWarnings, 
+    abstract boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, boolean includeWarnings, 
             int tabLevel)  throws VoidValidatorException;
     
-    abstract boolean appendError(StringBuilder builder, RdfReader rdf, Resource resource, int tabLevel)
+    abstract boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel)
             throws VoidValidatorException;
 
-    abstract void appendRequirement(StringBuilder builder, RdfReader rdf, Resource resource, int tabLevel) 
+    abstract void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) 
             throws VoidValidatorException;
 
-    abstract boolean hasRequiredValues(RdfReader rdf, Resource resource) throws VoidValidatorException;
+    abstract boolean hasRequiredValues(RdfInterface rdf, Resource resource) throws VoidValidatorException;
 
-    abstract boolean isValid(RdfReader rdf, Resource resource) throws VoidValidatorException;
+    abstract boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException;
  
     final void addValue(StringBuilder builder, Value value){
         if (value instanceof URI){
            URI uri = (URI)value;
-           if (uri.getNamespace().startsWith(RdfReader.DEFAULT_BASE_URI)){
+           if (uri.getNamespace().startsWith(RdfInterface.DEFAULT_BASE_URI)){
                builder.append(uri.getLocalName());
            } else {
                builder.append("<");

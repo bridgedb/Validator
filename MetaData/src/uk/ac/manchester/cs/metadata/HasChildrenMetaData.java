@@ -6,7 +6,7 @@ package uk.ac.manchester.cs.metadata;
 
 import java.util.List;
 import org.openrdf.model.Resource;
-import uk.ac.manchester.cs.rdftools.RdfReader;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -22,7 +22,7 @@ abstract class HasChildrenMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean appendError(StringBuilder builder, RdfReader rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
         boolean result = false;
         for (MetaDataBase child:children){
             if (child.appendError(builder, rdf, resource, tabLevel)){
@@ -33,7 +33,7 @@ abstract class HasChildrenMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean hasRequiredValues(RdfReader rdf, Resource resource) throws VoidValidatorException {
+    boolean hasRequiredValues(RdfInterface rdf, Resource resource) throws VoidValidatorException {
         for (MetaDataBase child:children){
             if (!child.hasRequiredValues(rdf, resource)){
                 return false;
@@ -42,7 +42,7 @@ abstract class HasChildrenMetaData extends MetaDataBase {
         return true;
     }
 
-    boolean isValid(RdfReader rdf, Resource resource) throws VoidValidatorException {
+    boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException {
         for (MetaDataBase child:children){
             if (!child.isValid(rdf, resource)){
                 return false;

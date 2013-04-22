@@ -7,7 +7,7 @@ package uk.ac.manchester.cs.metadata;
 import java.util.List;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
-import uk.ac.manchester.cs.rdftools.RdfReader;
+import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -25,7 +25,7 @@ public class ResourceMetaData extends HasChildrenMetaData {
     }
 
     @Override
-    public boolean appendValidate(StringBuilder builder, RdfReader rdf, Resource resource, boolean includeWarning, 
+    public boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, boolean includeWarning, 
         int tabLevel) throws VoidValidatorException {
         tab(builder, tabLevel);
         builder.append("Validation report for: (");
@@ -46,7 +46,7 @@ public class ResourceMetaData extends HasChildrenMetaData {
     }
 
     @Override
-    void appendRequirement(StringBuilder builder, RdfReader rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

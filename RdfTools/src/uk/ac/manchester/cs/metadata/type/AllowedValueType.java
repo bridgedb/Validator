@@ -21,11 +21,11 @@ package uk.ac.manchester.cs.metadata.type;
 
 import java.util.ArrayList;
 import java.util.List;
-import uk.ac.manchester.cs.constants.SchemaConstants;
 import org.openrdf.model.Value;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import uk.ac.manchester.cs.constants.SchemaConstants;
 
 /**
  *

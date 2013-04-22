@@ -25,7 +25,6 @@ import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParserRegistry;
 import org.openrdf.sail.memory.MemoryStore;
-import uk.ac.manchester.cs.constants.RdfConstants;
 
 /**
  *

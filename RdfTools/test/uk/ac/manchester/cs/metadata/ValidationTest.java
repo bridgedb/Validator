@@ -5,15 +5,11 @@
 package uk.ac.manchester.cs.metadata;
 
 import java.io.File;
-import java.util.List;
-import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
 import uk.ac.manchester.cs.rdftools.RdfReader;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.validator.Validator;

@@ -19,9 +19,9 @@
 //
 package uk.ac.manchester.cs.metadata.type;
 
-import uk.ac.manchester.cs.constants.RdfsConstants;
 import org.openrdf.model.Literal;
 import org.openrdf.model.Value;
+import uk.ac.manchester.cs.constants.RdfsConstants;
 
 /**
  *

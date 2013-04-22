@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -48,7 +49,7 @@ public class MetaDataSpecification {
             IRI.create("http://openphacts.cs.man.ac.uk:9090/Void/ontology.owl#RequirementLevel"));
     private OWLOntology ontology;
     
-    private Map<URI, ResourceMetaData> resourcesByType = new HashMap<URI, ResourceMetaData>();
+    private Map<Resource, ResourceMetaData> resourcesByType = new HashMap<Resource, ResourceMetaData>();
    // Map<Resource, ResourceMetaData> resourcesById = new HashMap<Resource, ResourceMetaData>();
     static String documentationRoot = "";
     private static String THING_ID = "http://www.w3.org/2002/07/owl#Thing";
@@ -67,7 +68,7 @@ public class MetaDataSpecification {
         loadSpecification(requirements);
     }
     
-    public ResourceMetaData getResourceMetaData(URI type){
+    public ResourceMetaData getResourceMetaData(Resource type){
         return resourcesByType.get(type);
     }
             

@@ -42,5 +42,14 @@ abstract class HasChildrenMetaData extends MetaDataBase {
         return true;
     }
 
+    boolean isValid(RdfReader rdf, Resource resource) throws VoidValidatorException {
+        for (MetaDataBase child:children){
+            if (!child.isValid(rdf, resource)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }

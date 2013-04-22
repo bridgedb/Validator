@@ -31,6 +31,8 @@ abstract class MetaDataBase {
 
     abstract boolean hasRequiredValues(RdfReader rdf, Resource resource) throws VoidValidatorException;
 
+    abstract boolean isValid(RdfReader rdf, Resource resource) throws VoidValidatorException;
+ 
     final void addValue(StringBuilder builder, Value value){
         if (value instanceof URI){
            URI uri = (URI)value;
@@ -59,5 +61,6 @@ abstract class MetaDataBase {
             builder.append("\t");
         }
     }
+
 
 }

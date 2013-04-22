@@ -66,4 +66,16 @@ class MetaDataAlternatives extends MetaDataBase {
         }
         return false;
     }
+    
+    @Override
+    boolean isValid(RdfReader rdf, Resource resource) throws VoidValidatorException {
+        for (MetaDataBase child:children){
+            if (child.isValid(rdf, resource)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

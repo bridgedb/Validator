@@ -4,11 +4,9 @@
  */
 package uk.ac.manchester.cs.metadata;
 
-import uk.ac.manchester.cs.metadata.MetaDataBase;
 import java.util.ArrayList;
 import org.openrdf.model.Resource;
 import uk.ac.manchester.cs.rdftools.RdfReader;
-import uk.ac.manchester.cs.rdftools.RequirementLevel;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**

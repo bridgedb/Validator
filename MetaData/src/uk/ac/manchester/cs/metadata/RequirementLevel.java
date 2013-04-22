@@ -17,7 +17,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.rdftools;
+package uk.ac.manchester.cs.metadata;
+
+import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
  *

@@ -9,7 +9,6 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import uk.ac.manchester.cs.rdftools.RdfReader;
-import uk.ac.manchester.cs.rdftools.RequirementLevel;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**

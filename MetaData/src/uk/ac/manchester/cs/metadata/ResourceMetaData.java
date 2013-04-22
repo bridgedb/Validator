@@ -8,7 +8,6 @@ import java.util.List;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.rdftools.RdfReader;
-import uk.ac.manchester.cs.rdftools.RequirementLevel;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**

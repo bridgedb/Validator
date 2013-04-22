@@ -37,7 +37,6 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import uk.ac.manchester.cs.owl.owlapi.OWLAnnotationPropertyImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
-import uk.ac.manchester.cs.rdftools.RequirementLevel;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**

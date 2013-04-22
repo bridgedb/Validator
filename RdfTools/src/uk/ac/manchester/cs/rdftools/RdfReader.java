@@ -6,17 +6,11 @@ package uk.ac.manchester.cs.rdftools;
 
 import info.aduna.lang.FileFormat;
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
-import org.openrdf.query.BindingSet;
-import org.openrdf.query.QueryLanguage;
-import org.openrdf.query.TupleQuery;
-import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -72,56 +66,13 @@ public class RdfReader {
         }        
     }
 
-
-    /*public List<Statement> getTypeStatements() throws VoidValidatorException{
-        RepositoryConnection repositoryConnection = getConnection();
-        try {
-            RepositoryResult<Statement> repositoryResult = repositoryConnection.getStatements(null, RdfConstants.TYPE_URI, null, true);
-            return repositoryResult.asList();
-        } catch (Exception ex) {
-            throw new VoidValidatorException ("Error getting Type Statements ", ex);
-        } finally {
-           try {
-               repositoryConnection.close();
-           } catch (RepositoryException ex) {
-               throw new VoidValidatorException ("Error closing repository connection", ex);
-           }
-        }        
-    }*/
-   
-    public RepositoryConnection getConnection() throws VoidValidatorException{
+    private RepositoryConnection getConnection() throws VoidValidatorException{
         try {
             return repository.getConnection();
         } catch (Exception ex) {
             throw new VoidValidatorException ("Error getting connection ", ex);
         }        
     }
-
-    public Set<Resource> getResources() throws VoidValidatorException{
-        Set<Resource> results = new HashSet<Resource>();
-        RepositoryConnection repositoryConnection = null;
-        try {
-            repositoryConnection = repository.getConnection();
-            String queryString = "SELECT x FROM {x} p {y}";
-            TupleQuery tupleQuery = repositoryConnection.prepareTupleQuery(QueryLanguage.SERQL, queryString);
-            TupleQueryResult queryResult = tupleQuery.evaluate();
-            while (queryResult.hasNext()){
-                BindingSet bindingSet = queryResult.next();
-                Value value = bindingSet.getValue("x");
-                System.out.println(value);
-                results.add((Resource)value);
-            }
-        } catch (Exception ex) {
-            throw new VoidValidatorException ("Error getting resources ", ex);
-        } finally {
-           try {
-               repositoryConnection.close();
-           } catch (RepositoryException ex) {
-               throw new VoidValidatorException ("Error closing repository connection", ex);
-           }
-        }
-        return results;
-   }
 
    private static RDFFormat getFormat(String fileName) throws VoidValidatorException{
         if (fileName.endsWith(".n3")){

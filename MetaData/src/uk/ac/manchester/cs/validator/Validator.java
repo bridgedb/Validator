@@ -21,6 +21,8 @@ public class Validator {
     
     final RdfInterface reader;
     final MetaDataSpecification specifications;
+    public static String FAILED = "Validation Failed!";
+    public static String SUCCESS = "Validation Succfull!";
     
     public Validator(RdfInterface reader, MetaDataSpecification specifications){
         this.reader = reader;
@@ -30,18 +32,26 @@ public class Validator {
     public String validate() throws VoidValidatorException{
         StringBuilder builder = new StringBuilder();
         List<Statement> typeStatements = reader.getStatementList(null, RdfConstants.TYPE_URI, null);
+        boolean error = false;
         for (Statement typeStatement:typeStatements){
-            System.out.println(typeStatement);
             ResourceMetaData specs = specifications.getResourceMetaData((URI) typeStatement.getObject());
             if (specs != null){
-                specs.appendValidate(builder, reader, typeStatement.getSubject(), false, 0);
+                if (specs.appendValidate(builder, reader, typeStatement.getSubject(), false, 0)){
+                    error = true;
+                }
             } else {
                 builder.append("Unable to validate ");
                 builder.append(typeStatement.getSubject());
                 builder.append(" as no specifications found for ");
                 builder.append(typeStatement.getObject());
                 builder.append("\n");
+                error = true;
             }
+        }
+        if (error){
+            builder.append(FAILED);
+        } else {
+            builder.append(SUCCESS);            
         }
         return builder.toString();
     }

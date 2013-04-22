@@ -20,7 +20,7 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 class PropertyMetaData extends CardinalityMetaData {
 
     private final MetaDataType metaDataType;
-    
+            
     public PropertyMetaData(URI predicate, String type, int cardinality, RequirementLevel requirementLevel, String objectClass) 
             throws VoidValidatorException {
        super(predicate, cardinality, requirementLevel);

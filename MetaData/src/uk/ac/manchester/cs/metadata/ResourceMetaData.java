@@ -17,11 +17,11 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 public class ResourceMetaData extends HasChildrenMetaData {
 
     private final URI type;
+    public static final String NO_ERRORS = "No Errors found!";
     
     ResourceMetaData(URI theType, List<MetaDataBase> childMetaData) {
         super(childMetaData);
         type = theType;
-        System.out.println("creating ResourceMetaData for " + type);
     }
 
     @Override
@@ -40,7 +40,10 @@ public class ResourceMetaData extends HasChildrenMetaData {
             }
         }
         if (ok){
-            builder.append("\tNo Errors found! \n");        
+            builder.append("\t " );  
+            builder.append(NO_ERRORS);  
+            builder.append("\n");  
+            return false;
         }
         return true;
     }

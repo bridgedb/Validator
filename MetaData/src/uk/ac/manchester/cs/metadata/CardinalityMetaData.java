@@ -20,6 +20,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     protected final URI predicate;
     private final int cardinality;
     private final RequirementLevel requirementLevel;
+    public static final String NOT_FOUND = " No statements found with predicate: ";
     
     public CardinalityMetaData(URI predicate, int cardinality, RequirementLevel requirementLevel) {
        this.predicate = predicate;
@@ -115,7 +116,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     private boolean appendNoStatements(StringBuilder builder, String level, int tabLevel) {
         tab(builder, tabLevel);
         builder.append(level);
-        builder.append(" No statements found with predicate: " );
+        builder.append(NOT_FOUND);
         this.addValue(builder, predicate);
         builder.append("\n");
         appendRequirement(builder, tabLevel + 1);

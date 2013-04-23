@@ -54,9 +54,9 @@ public class MetaDataSpecification {
     private static String THING_ID = "http://www.w3.org/2002/07/owl#Thing";
     private final Set<URI> linkingPredicates;    
     
-    public MetaDataSpecification() throws VoidValidatorException{
+    public MetaDataSpecification(String fileName) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        File file = new File("resources/VoidInfo.owl");
+        File file = new File(fileName);
         try {
             ontology = m.loadOntologyFromOntologyDocument(file);
         } catch (OWLOntologyCreationException ex) {
@@ -132,7 +132,7 @@ public class MetaDataSpecification {
                 }
             }
         } else {
-            throw new VoidValidatorException ("No annotaions found in " + axiom);
+            throw new VoidValidatorException ("No " + REQUIREMENT_LEVEL_PROPERTY + " annotaions found in " + axiom);
         } 
         return requirementLevel;
     }

@@ -7,7 +7,6 @@ package uk.ac.manchester.cs.metadata.type;
 import uk.ac.manchester.cs.constants.OwlConstants;
 import uk.ac.manchester.cs.constants.RdfsConstants;
 import uk.ac.manchester.cs.constants.SchemaConstants;
-import uk.ac.manchester.cs.constants.XMLSchemaConstants;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
 /**
@@ -24,12 +23,12 @@ public class MetaDataTypeFactory {
             return new LiteralType();
         }
         if (objectClass.startsWith("xsd:")){
-            objectClass = XMLSchemaConstants.PREFIX + objectClass.substring(4);
+            objectClass = XsdType.URI_PREFIX + objectClass.substring(4);
         }
-        if (objectClass.equalsIgnoreCase(XMLSchemaConstants.STRING.stringValue())){
+        if (objectClass.equalsIgnoreCase(XsdType.STRING.getCorrectType())){
             return new StringType();
         }
-        if (objectClass.startsWith(XMLSchemaConstants.PREFIX)){
+        if (objectClass.startsWith(XsdType.URI_PREFIX)){
             return XsdType.getByType(objectClass);
         }
         throw new VoidValidatorException ("Unexpected " + SchemaConstants.CLASS + " " + objectClass);

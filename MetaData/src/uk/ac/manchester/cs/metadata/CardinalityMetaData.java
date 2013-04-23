@@ -21,6 +21,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     private final int cardinality;
     private final RequirementLevel requirementLevel;
     public static final String NOT_FOUND = " No statements found with predicate: ";
+    public static final String REMOVE = ". Please remove ";
     
     public CardinalityMetaData(URI predicate, int cardinality, RequirementLevel requirementLevel) {
        this.predicate = predicate;
@@ -140,7 +141,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
         } else {
             builder.append("However found ");
             builder.append(statements.size());
-            builder.append(". Please remove ");
+            builder.append(REMOVE);
             builder.append(statements.size() - cardinality);
             builder.append(" statement(s).\n");            
         }

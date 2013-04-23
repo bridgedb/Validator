@@ -21,7 +21,6 @@
     dcterms:publisher <http://www.example.com/>;
     dcterms:title "Test title";
     foaf:homepage <http://www.example.com/>;
-    dcterms:modified "2013-01-17T16:02:27Z"^^xsd:dateTime;
     void:dataDump <http://www.example.com/>;
     void:uriSpace <http://www.foo.com/>.
 :TestDS2 a dctype:Dataset  ;

@@ -17,38 +17,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.metadata.type;
+package uk.ac.manchester.cs.constants;
 
-import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
-import org.openrdf.model.Value;
+import org.openrdf.model.impl.URIImpl;
 
-/**
- *
- * @author Christian
- */
-public class StringType implements MetaDataType{
+public class XsdConstants {
 
-    @Override
-    public boolean correctType(Value value) {
-        if (value instanceof Literal){
-            Literal literal = (Literal)value;
-            URI literalType = literal.getDatatype();
-            if (literalType != null){
-                return (XsdType.STRING.asURI().equals(literalType));
-            }
-        }
-        String stringValue = value.stringValue();
-        if (stringValue == null){
-            return false;
-        }
-        return !stringValue.isEmpty();
-    }
-
-    @Override
-    public String getCorrectType() {
-        return " A String";
-    }
-
-  
+	private static final String dulns = "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#";
+	
+	public static final URI EXPRESSES = new URIImpl(dulns + "expresses");
+    
 }

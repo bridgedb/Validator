@@ -24,6 +24,10 @@ public class RdfHolder implements RdfInterface, Cloneable{
         statements = new ArrayList<Statement>();
     }
     
+    public RdfHolder(List<Statement> incomingStatements){
+        this.statements = incomingStatements;
+    }
+
     public RdfHolder(RdfInterface other) throws VoidValidatorException{
         statements = new ArrayList<Statement>(other.getStatementList(null, null, null));
     }
@@ -37,6 +41,7 @@ public class RdfHolder implements RdfInterface, Cloneable{
     
     public void addStatement(Statement statement){
         statements.add(statement);
+        System.out.println(statements);
     }
     
     public void addStatements(Collection<Statement> newStatements) {

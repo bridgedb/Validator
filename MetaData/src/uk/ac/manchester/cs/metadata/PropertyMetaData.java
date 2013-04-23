@@ -20,7 +20,8 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 class PropertyMetaData extends CardinalityMetaData {
 
     private final MetaDataType metaDataType;
-            
+    public final static String EXPECTED_TYPE = "Expected type: ";
+    
     public PropertyMetaData(URI predicate, String type, int cardinality, RequirementLevel requirementLevel, String objectClass) 
             throws VoidValidatorException {
        super(predicate, cardinality, requirementLevel);
@@ -36,7 +37,7 @@ class PropertyMetaData extends CardinalityMetaData {
                 this.addStatement(builder, statement);
                 builder.append("\n");            
                 tab(builder, tabLevel+1);
-                builder.append("Expected type: ");            
+                builder.append(EXPECTED_TYPE);            
                 builder.append(getType());
                 builder.append("\n");
                 appended = true;

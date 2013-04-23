@@ -16,6 +16,7 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 class MetaDataAlternatives extends MetaDataBase {
 
     final ArrayList<MetaDataBase> children;
+    public final static String INCLUDE_ALTERNATIVE = "Please included one of the alternative specified. For Example:\n";
     
     public MetaDataAlternatives(String name, String type, RequirementLevel requirementLevel, ArrayList<MetaDataBase> children) {
         this.children = children;
@@ -34,7 +35,7 @@ class MetaDataAlternatives extends MetaDataBase {
         tab(builder, tabLevel);
         builder.append("ERROR: Missing values:\n ");
         appendRequirement(builder, rdf, resource, tabLevel + 1);
-        return false;
+        return true;
     }
 
     @Override
@@ -51,7 +52,7 @@ class MetaDataAlternatives extends MetaDataBase {
     @Override
     void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
         tab(builder, tabLevel);
-        builder.append ("Please included one of the alternative specified. For Example:\n");
+        builder.append (INCLUDE_ALTERNATIVE);
         children.get(0).appendRequirement(builder, rdf, resource, tabLevel + 1);
     }
 

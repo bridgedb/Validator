@@ -23,7 +23,7 @@ import java.util.HashMap;
 import org.openrdf.model.Literal;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
-import uk.ac.manchester.cs.constants.XMLSchemaConstants;
+import org.openrdf.model.impl.URIImpl;
 
 /**
  *
@@ -87,9 +87,11 @@ public enum XsdType implements MetaDataType{
     private String type;
     private XsdType superType;
     private static HashMap<String,XsdType> register;
+    public static final String URI_PREFIX = "http://www.w3.org/2001/XMLSchema#";
+    
     
     private XsdType(XsdType theSuper, String theType){
-        type = XMLSchemaConstants.PREFIX + theType;
+        type = URI_PREFIX + theType;
         superType = theSuper;
         getRegister().put(type, this);
     }
@@ -104,6 +106,10 @@ public enum XsdType implements MetaDataType{
             return result;
         }
         return null;
+    }
+    
+    public URI asURI(){
+        return new URIImpl(type);
     }
     
     private static HashMap<String,XsdType> getRegister(){
@@ -125,7 +131,8 @@ public enum XsdType implements MetaDataType{
                 return true;
             }
             XsdType other = getByType(literalType);
-            return sameOrSubType(other);
+            boolean result = sameOrSubType(other);
+            return result;
         }
         return false;
     }
@@ -148,7 +155,4 @@ public enum XsdType implements MetaDataType{
         return type;
     }
 
-
-    
-    
 }

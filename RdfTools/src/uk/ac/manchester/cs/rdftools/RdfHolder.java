@@ -41,7 +41,6 @@ public class RdfHolder implements RdfInterface, Cloneable{
     
     public void addStatement(Statement statement){
         statements.add(statement);
-        System.out.println(statements);
     }
     
     public void addStatements(Collection<Statement> newStatements) {

@@ -15,6 +15,8 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
  */
 class MetaDataGroup extends HasChildrenMetaData {
 
+    public static final String INCLUDE_ALL = "Please included all in the list below:\n";
+    
     public MetaDataGroup(String name, String type, RequirementLevel requirementLevel, 
             ArrayList<MetaDataBase> childrenMetaData) {
         super(childrenMetaData);
@@ -23,7 +25,7 @@ class MetaDataGroup extends HasChildrenMetaData {
     @Override
     void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
         tab(builder,tabLevel);
-        builder.append("Please included all in the list below:\n");
+        builder.append(INCLUDE_ALL);
         for (MetaDataBase child:children){
             child.appendRequirement(builder, rdf, resource, tabLevel + 1);
         }

@@ -29,6 +29,9 @@ public class OpsTestConstants {
 	public static final URI HAS_WEBSITE = new URIImpl(PREFIX + "hasWebsite");
 	public static final URI HAS_PHONE_NUMBER = new URIImpl(PREFIX + "hasPhoneNumber");
 	public static final URI HAS_BIRTHDATE = new URIImpl(PREFIX + "hasBirthdate");
+	public static final URI HAS_HOUSE_NUMBER = new URIImpl(PREFIX + "hasHouseNumber");
+	public static final URI HAS_POSTBOX = new URIImpl(PREFIX + "hasPostbox");
+	public static final URI PARENT = new URIImpl(PREFIX + "Parent");
     
     
 }

@@ -28,6 +28,7 @@ import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
 import uk.ac.manchester.cs.constants.OpsTestConstants;
 import uk.ac.manchester.cs.constants.PavConstants;
+import uk.ac.manchester.cs.constants.RdfConstants;
 import uk.ac.manchester.cs.constants.VoidConstants;
 import uk.ac.manchester.cs.metadata.type.XsdType;
 
@@ -163,5 +164,44 @@ public class SimpleTest {
         assertThat(result,  endsWith(Validator.FAILED));
    }
         
+    @Test
+    public void missingOneOfGroupValidate() throws VoidValidatorException   {
+        Reporter.println("missingOneOfGroupValidate");
+        RdfHolder holder = new RdfHolder(minReader);
+        List<Statement> remove = minReader.getStatementList(null, OpsTestConstants.HAS_HOUSE_NUMBER, null);
+        assertThat(remove.size(), greaterThan(0));
+        holder.removeStatements(remove);
+        Validator validator = new Validator(holder, specifications);
+        String result = validator.validate();
+        assertThat(result, containsString(MetaDataGroup.INCLUDE_ALL));       
+        assertThat(result,  endsWith(Validator.FAILED));
+    }
 
+    @Test
+    public void missingOneOfGroupButHaveAlternativeValidate() throws VoidValidatorException   {
+        Reporter.println("missingOneOfGroupButHaveAlternativeValidate");
+        RdfHolder holder = new RdfHolder(minReader);
+        List<Statement> oldStatements = minReader.getStatementList(null, OpsTestConstants.HAS_HOUSE_NUMBER, null);
+        holder.removeStatements(oldStatements);
+        Statement oldStatement = oldStatements.get(0);
+        Statement newStatement = new StatementImpl(oldStatement.getSubject(), OpsTestConstants.HAS_HOUSE_NUMBER, oldStatement.getObject());
+        holder.addStatement(newStatement);
+        
+        Validator validator = new Validator(holder, specifications);
+        String result = validator.validate();
+        assertThat(result,  endsWith(Validator.SUCCESS));
+    }
+
+    @Test
+    public void missingLinkedType() throws VoidValidatorException   {
+        Reporter.println("missingOneOfGroupButHaveAlternativeValidate");
+        RdfHolder holder = new RdfHolder(minReader);
+        List<Statement> remove = minReader.getStatementList(null, RdfConstants.TYPE_URI , OpsTestConstants.PARENT);
+        assertThat(remove.size(), greaterThan(0));
+        holder.removeStatements(remove);
+          
+        Validator validator = new Validator(holder, specifications);
+        String result = validator.validate();
+        assertThat(result,  endsWith(Validator.SUCCESS));
+    }
 }

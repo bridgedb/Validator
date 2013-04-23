@@ -11,4 +11,6 @@
     ops:hasName "Peter";
     ops:hasPhoneNumber "1234567";
     ops:hasBirthdate "2003-01-17T16:02:27Z"^^xsd:dateTime;
+    ops:hasStreet "mainStreet";
+    ops:hasHouseNumber "23";
     ops:hasWebsite <http://bbc.co.uk>.

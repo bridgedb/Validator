@@ -22,10 +22,10 @@ abstract class HasChildrenMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         boolean result = false;
         for (MetaDataBase child:children){
-            if (child.appendError(builder, rdf, resource, tabLevel)){
+            if (child.appendError(builder, rdf, resource, context, tabLevel)){
                 result = result = true;
             }
         }
@@ -33,18 +33,19 @@ abstract class HasChildrenMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean hasRequiredValues(RdfInterface rdf, Resource resource) throws VoidValidatorException {
+    boolean hasRequiredValues(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
         for (MetaDataBase child:children){
-            if (!child.hasRequiredValues(rdf, resource)){
+            if (!child.hasRequiredValues(rdf, resource, context)){
                 return false;
             }
         }
         return true;
     }
 
-    boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException {
+    @Override
+    boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
         for (MetaDataBase child:children){
-            if (!child.isValid(rdf, resource)){
+            if (!child.isValid(rdf, resource, context)){
                 return false;
             }
         }

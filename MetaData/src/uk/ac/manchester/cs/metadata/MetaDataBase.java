@@ -19,18 +19,18 @@ abstract class MetaDataBase {
     public static int NO_CARDINALITY = -1;
     String name;
 
-    abstract boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, boolean includeWarnings, 
+    abstract boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, 
             int tabLevel)  throws VoidValidatorException;
     
-    abstract boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel)
+    abstract boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel)
             throws VoidValidatorException;
 
-    abstract void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) 
+    abstract void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) 
             throws VoidValidatorException;
 
-    abstract boolean hasRequiredValues(RdfInterface rdf, Resource resource) throws VoidValidatorException;
+    abstract boolean hasRequiredValues(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException;
 
-    abstract boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException;
+    abstract boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException;
  
     final void addValue(StringBuilder builder, Value value){
         if (value instanceof URI){

@@ -23,16 +23,16 @@ class MetaDataGroup extends HasChildrenMetaData {
     }
     
     @Override
-    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         tab(builder,tabLevel);
         builder.append(INCLUDE_ALL);
         for (MetaDataBase child:children){
-            child.appendRequirement(builder, rdf, resource, tabLevel + 1);
+            child.appendRequirement(builder, rdf, resource, context, tabLevel + 1);
         }
     }
 
     @Override
-    boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, boolean includeWarnings, int tabLevel) throws VoidValidatorException {
+    boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, int tabLevel) throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

@@ -14,8 +14,8 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
+import org.openrdf.model.impl.ContextStatementImpl;
 import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
 import uk.ac.manchester.cs.constants.OpsTestConstants;
 import uk.ac.manchester.cs.constants.RdfConstants;
@@ -68,7 +68,7 @@ public class SimpleTest {
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
         Validator validator = new Validator(minReader, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         System.out.println(result);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
@@ -82,7 +82,7 @@ public class SimpleTest {
         assertThat( remove.size(), greaterThan(0));
         holder.removeStatements(remove);
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         System.out.println(result);
         assertThat(result, containsString(CardinalityMetaData.NOT_FOUND));
         assertThat(result,  endsWith(Validator.FAILED));
@@ -97,7 +97,7 @@ public class SimpleTest {
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result, containsString(MetaDataAlternatives.INCLUDE_ALTERNATIVE));
         assertThat(result,  endsWith(Validator.FAILED));
     }
@@ -107,17 +107,18 @@ public class SimpleTest {
         Reporter.println("extraValueTestValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result, containsString(ResourceMetaData.NO_ERRORS));
         assertThat(result,  endsWith(Validator.SUCCESS));
         List<Statement> oldStatements = 
                 minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
         Statement oldStatement = oldStatements.get(0);
         Value newObject = new LiteralImpl("new");
-        Statement newStatement = new StatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject);
+        Statement newStatement = 
+                new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
         validator = new Validator(holder, minContext, specifications);
-        String result2 = validator.validate();
+        String result2 = validator.validate(minContext);
         assertEquals(result, result2);
    }
     
@@ -129,10 +130,11 @@ public class SimpleTest {
                 minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
         Statement oldStatement = oldStatements.get(0);
         URI newObject = new URIImpl(oldStatement.getObject().stringValue() + "new");
-        Statement newStatement = new StatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject);
+        Statement newStatement = 
+                new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result, containsString(CardinalityMetaData.REMOVE));
         assertThat(result,  endsWith(Validator.FAILED));
    }
@@ -146,10 +148,11 @@ public class SimpleTest {
         holder.removeStatements(oldStatements);
         Statement oldStatement = oldStatements.get(0);
         Value newObject = new LiteralImpl("this is a String");
-        Statement newStatement = new StatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject);
+        Statement newStatement = 
+                new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
         assertThat(result,  endsWith(Validator.FAILED));
    }
@@ -162,10 +165,11 @@ public class SimpleTest {
                 minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_BIRTHDATE, ALL_OBJECTS, minContext);
         Statement oldStatement = oldStatements.get(0);
         Value newObject = new LiteralImpl("2013-01-17", XsdType.DATE.asURI());
-        Statement newStatement = new StatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject);
+        Statement newStatement = 
+                new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
         assertThat(result,  endsWith(Validator.FAILED));
    }
@@ -179,7 +183,7 @@ public class SimpleTest {
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result, containsString(MetaDataGroup.INCLUDE_ALL));       
         assertThat(result,  endsWith(Validator.FAILED));
     }
@@ -192,11 +196,11 @@ public class SimpleTest {
                 minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
         holder.removeStatements(oldStatements);
         Statement oldStatement = oldStatements.get(0);
-        Statement newStatement = 
-                new StatementImpl(oldStatement.getSubject(), OpsTestConstants.HAS_HOUSE_NUMBER, oldStatement.getObject());
+        Statement newStatement = new ContextStatementImpl(
+                oldStatement.getSubject(), OpsTestConstants.HAS_HOUSE_NUMBER, oldStatement.getObject(), minContext);
         holder.addStatement(newStatement);       
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
 
@@ -209,7 +213,7 @@ public class SimpleTest {
         holder.removeStatements(remove);
           
         Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate();
+        String result = validator.validate(minContext);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
 }

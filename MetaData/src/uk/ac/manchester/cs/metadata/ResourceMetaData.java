@@ -25,7 +25,7 @@ public class ResourceMetaData extends HasChildrenMetaData {
     }
 
     @Override
-    public boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, boolean includeWarning, 
+    public boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarning, 
         int tabLevel) throws VoidValidatorException {
         tab(builder, tabLevel);
         builder.append("Validation report for: (");
@@ -35,7 +35,7 @@ public class ResourceMetaData extends HasChildrenMetaData {
         builder.append("\n");
         boolean ok = true;
         for (MetaDataBase child:children){
-            if (child.appendValidate(builder, rdf, resource, includeWarning, tabLevel + 1)){
+            if (child.appendValidate(builder, rdf, resource, context, includeWarning, tabLevel + 1)){
                 ok = false;
             }
         }
@@ -49,7 +49,7 @@ public class ResourceMetaData extends HasChildrenMetaData {
     }
 
     @Override
-    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

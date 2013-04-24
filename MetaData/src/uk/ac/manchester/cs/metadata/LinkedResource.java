@@ -29,13 +29,13 @@ class LinkedResource extends CardinalityMetaData {
        this.metaDataSpecification = metaDataSpecification;
     }
 
-    @Override
+     @Override
      protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, int tabLevel) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (statement.getObject() instanceof Resource){
                 Resource resource = (Resource)statement.getObject();
-                List<Statement> typeStatements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null);
+                List<Statement> typeStatements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null, statement.getContext());
                 for (Statement typeStatement: typeStatements){
                     URI linkedType = (URI)typeStatement.getSubject();
                     boolean unknownType = true;
@@ -71,26 +71,26 @@ class LinkedResource extends CardinalityMetaData {
     }
 
     @Override
-    boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException {
-        List<Statement> statements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null);
+    boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
+        List<Statement> statements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null, context);
         for (Statement statement: statements){
             URI linkedType = (URI)statement.getSubject();
             if (linkedTypes.contains(statement.getSubject())){
-                return isValid(rdf, resource, linkedType);
+                return isValid(rdf, resource, context, linkedType);
             }
         }
         for (URI linkedType: linkedTypes){
-            return isValid(rdf, resource, linkedType);
+            return isValid(rdf, resource, context, linkedType);
         }
         return false;
     }
 
-    private boolean isValid(RdfInterface rdf, Resource resource, Resource linkedType) throws VoidValidatorException {
+    private boolean isValid(RdfInterface rdf, Resource resource, Resource context, Resource linkedType) throws VoidValidatorException {
         ResourceMetaData resourceMetaData = metaDataSpecification.getResourceMetaData(linkedType);     
         if (resourceMetaData == null){
             throw new VoidValidatorException ("Unable to ResourceMetaData for " + linkedType);
         }
-        return resourceMetaData.isValid(rdf, resource);
+        return resourceMetaData.isValid(rdf, resource, context);
     }
 
    private void appendErrorStart(StringBuilder builder, Statement statement, int tabLevel) {

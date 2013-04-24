@@ -32,14 +32,14 @@ public class Validator {
         this.specifications = specifications;
     }
     
-    public String validate() throws VoidValidatorException{
+    public String validate(Resource context) throws VoidValidatorException{
         StringBuilder builder = new StringBuilder();
-        List<Statement> typeStatements = reader.getStatementList(null, RdfConstants.TYPE_URI, null);
+        List<Statement> typeStatements = reader.getStatementList(null, RdfConstants.TYPE_URI, null, context);
         boolean error = false;
         for (Statement typeStatement:typeStatements){
             ResourceMetaData specs = specifications.getResourceMetaData((URI) typeStatement.getObject());
             if (specs != null){
-                if (specs.appendValidate(builder, reader, typeStatement.getSubject(), false, 0)){
+                if (specs.appendValidate(builder, reader, typeStatement.getSubject(), context, false, 0)){
                     error = true;
                 }
             } else {

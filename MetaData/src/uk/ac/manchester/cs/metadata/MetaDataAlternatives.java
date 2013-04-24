@@ -23,26 +23,26 @@ class MetaDataAlternatives extends MetaDataBase {
     }
     
     @Override
-    boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, boolean includeWarnings, 
+    boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, 
             int tabLevel)  throws VoidValidatorException{
         boolean result = false;
-        if (appendError(builder, rdf, resource, tabLevel)){
+        if (appendError(builder, rdf, resource, context, tabLevel)){
             return true;
         }
-        if (hasRequiredValues(rdf, resource)){
+        if (hasRequiredValues(rdf, resource, context)){
             return false;
         }
         tab(builder, tabLevel);
         builder.append("ERROR: Missing values:\n ");
-        appendRequirement(builder, rdf, resource, tabLevel + 1);
+        appendRequirement(builder, rdf, resource, context, tabLevel + 1);
         return true;
     }
 
     @Override
-    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         boolean result = false;
         for (MetaDataBase child:children){
-            if (child.appendError(builder, rdf, resource, tabLevel)){
+            if (child.appendError(builder, rdf, resource, context, tabLevel)){
                 result = result = true;
             }
         }
@@ -50,16 +50,16 @@ class MetaDataAlternatives extends MetaDataBase {
     }
 
     @Override
-    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, int tabLevel) throws VoidValidatorException {
+    void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         tab(builder, tabLevel);
         builder.append (INCLUDE_ALTERNATIVE);
-        children.get(0).appendRequirement(builder, rdf, resource, tabLevel + 1);
+        children.get(0).appendRequirement(builder, rdf, resource, context, tabLevel + 1);
     }
 
     @Override
-    boolean hasRequiredValues(RdfInterface rdf, Resource resource) throws VoidValidatorException {
+    boolean hasRequiredValues(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
         for (MetaDataBase child:children){
-            if (child.hasRequiredValues(rdf, resource)){
+            if (child.hasRequiredValues(rdf, resource, context)){
                 return true;
             }
         }
@@ -67,9 +67,9 @@ class MetaDataAlternatives extends MetaDataBase {
     }
     
     @Override
-    boolean isValid(RdfInterface rdf, Resource resource) throws VoidValidatorException {
+    boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
         for (MetaDataBase child:children){
-            if (child.isValid(rdf, resource)){
+            if (child.isValid(rdf, resource, context)){
                 return true;
             }
         }

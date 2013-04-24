@@ -2,7 +2,12 @@ package uk.ac.manchester.cs.rdftools;
 
 import info.aduna.lang.FileFormat;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -13,6 +18,7 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParserRegistry;
+import uk.ac.manchester.cs.utils.UrlReader;
 
 /**
  *
@@ -40,10 +46,29 @@ public class RdfReader implements RdfInterface{
    
     public Resource loadFile(File inputFile) throws VoidValidatorException{
         try {
-            Resource context = new URIImpl(inputFile.toURI().toString());
+            InputStream stream = new FileInputStream(inputFile);
+            return loadInputStream(stream, inputFile.toURI().toString());
+        } catch (FileNotFoundException ex) {
+            throw new VoidValidatorException("Unable to find file. " + inputFile.getAbsolutePath(), ex);
+        }
+    }
+   
+    public Resource loadURI(String address) throws VoidValidatorException {
+        if (address.startsWith("file")){
+            File file = new File(address);
+            return loadFile(file);
+        }
+        UrlReader urlReader = new UrlReader(address);
+        InputStream stream = urlReader.getInputStream();
+        return loadInputStream(stream, address);
+    }
+   
+    private Resource loadInputStream(InputStream stream, String address) throws VoidValidatorException{
+        try {
+            Resource context = new URIImpl(address);
             RepositoryConnection repositoryConnection = getConnection();
             connection.setAutoCommit(false);
-            repositoryConnection.add(inputFile, context.toString(), getFormat(inputFile.getName()), context);
+            repositoryConnection.add(stream, address, getFormat(address), context);
             connection.commit();
             return context;
         } catch (Exception ex) {
@@ -51,7 +76,7 @@ public class RdfReader implements RdfInterface{
             throw new VoidValidatorException ("Error parsing RDf file ", ex);
         }
     }
-   
+
     @Override
     public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
             throws VoidValidatorException {
@@ -116,5 +141,6 @@ public class RdfReader implements RdfInterface{
             //do nothing as there is already an error
         }
     }
+
 
 }

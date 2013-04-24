@@ -16,6 +16,8 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.validator.Validator;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import org.openrdf.model.Resource;
+import uk.ac.manchester.cs.rdftools.RdfFactory;
 
 /**
  *
@@ -24,6 +26,7 @@ import static org.junit.Assert.*;
 public class ValidationTest {
     
     static RdfReader minReader;
+    static Resource minContext;
     static MetaDataSpecification specifications;
    
     public ValidationTest() {
@@ -33,7 +36,8 @@ public class ValidationTest {
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
         File file = new File ("test-data/testMin.ttl");
-        minReader = new RdfReader(file);
+        minReader = RdfFactory.getMemory();
+        minContext = minReader.loadFile(file);
         specifications = new MetaDataSpecification("resources/VoidInfo.owl");
      }
     
@@ -52,9 +56,9 @@ public class ValidationTest {
     @Test
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
-        Validator validator = new Validator(minReader, specifications);
+        Validator validator = new Validator(minReader, minContext, specifications);
         String result = validator.validate();
-        assertThat(result,  endsWith(Validator.SUCCESS));
+        assertThat(result, endsWith(Validator.SUCCESS));
     }
     
  

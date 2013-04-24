@@ -28,8 +28,8 @@ public class RdfHolder implements RdfInterface, Cloneable{
         this.statements = incomingStatements;
     }
 
-    public RdfHolder(RdfInterface other) throws VoidValidatorException{
-        statements = new ArrayList<Statement>(other.getStatementList(null, null, null));
+    public RdfHolder(RdfInterface other, Resource context) throws VoidValidatorException{
+        statements = new ArrayList<Statement>(other.getStatementList(null, null, null, context));
     }
 
     @Override

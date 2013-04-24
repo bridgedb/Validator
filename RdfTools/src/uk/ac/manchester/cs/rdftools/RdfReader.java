@@ -1,24 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.ac.manchester.cs.rdftools;
 
 import info.aduna.lang.FileFormat;
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
-import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParserRegistry;
-import org.openrdf.sail.memory.MemoryStore;
 
 /**
  *
@@ -26,49 +23,63 @@ import org.openrdf.sail.memory.MemoryStore;
  */
 public class RdfReader implements RdfInterface{
     
-   public static String DEFAULT_BASE_URI = "http://no/BaseURI/Set/";
-   private static final boolean EXCLUDE_INFERRED =false;
-   private final Repository repository;
-
-   public RdfReader(File inputFile) throws VoidValidatorException{
-        RepositoryConnection repositoryConnection = null;
+    public static String DEFAULT_BASE_URI = "http://no/BaseURI/Set/";
+    private static final boolean EXCLUDE_INFERRED =false;
+    private final Repository repository;
+    private RepositoryConnection connection = null;
+    
+    public static RdfReader factory(Repository repository) throws VoidValidatorException{
+        RdfReader instance = new RdfReader(repository);
         try {
-            repository = new SailRepository(new MemoryStore());
             repository.initialize();
-            repositoryConnection = repository.getConnection();
-            repositoryConnection.add(inputFile, DEFAULT_BASE_URI, getFormat(inputFile.getName()));
+            return instance;
         } catch (Exception ex) {
             throw new VoidValidatorException ("Error parsing RDf file ", ex);
-        } finally {
-           try {
-               repositoryConnection.close();
-           } catch (RepositoryException ex) {
-               throw new VoidValidatorException ("Error closing repository connection", ex);
-           }
+        }       
+    } 
+   
+    private RdfReader(Repository repository) throws VoidValidatorException{
+        this.repository = repository; 
+    }
+   
+    public Resource loadFile(File inputFile) throws VoidValidatorException{
+        try {
+            Resource context = new URIImpl(inputFile.toURI().toString());
+            RepositoryConnection repositoryConnection = getConnection();
+            connection.setAutoCommit(false);
+            repositoryConnection.add(inputFile, context.toString(), getFormat(inputFile.getName()), context);
+            connection.commit();
+            return context;
+        } catch (Exception ex) {
+            closeOnError();
+            throw new VoidValidatorException ("Error parsing RDf file ", ex);
         }
     }
    
+    @Override
     public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
             throws VoidValidatorException {
-        RepositoryConnection repositoryConnection = getConnection();
         try {
+            RepositoryConnection repositoryConnection = getConnection();
             RepositoryResult<Statement> repositoryResult = 
                     repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, contexts);
             return repositoryResult.asList();
         } catch (Exception ex) {
+            close();
             throw new VoidValidatorException ("Error getting Type Statements ", ex);
-        } finally {
-           try {
-               repositoryConnection.close();
-           } catch (RepositoryException ex) {
-               throw new VoidValidatorException ("Error closing repository connection", ex);
-           }
         }        
     }
 
     private RepositoryConnection getConnection() throws VoidValidatorException{
         try {
-            return repository.getConnection();
+            if (connection != null){
+                if (connection.isOpen()){
+                    return connection;
+                }
+            
+            }
+            connection = repository.getConnection();
+            return connection;
         } catch (Exception ex) {
             throw new VoidValidatorException ("Error getting connection ", ex);
         }        
@@ -85,6 +96,28 @@ public class RdfReader implements RdfInterface{
             throw new VoidValidatorException("failed");
         } else {
             return (RDFFormat)fileFormat;
+        }
+    }
+
+    public final void close() throws VoidValidatorException {
+        try {
+            if (connection != null){
+                if (connection.isOpen()){
+                    connection.close();
+                    connection = null;
+                }
+            
+            }
+        } catch (Exception ex) {
+            throw new VoidValidatorException ("Error shutting down connection", ex);
+        }        
+    }
+
+    private void closeOnError() {
+        try {
+            close();
+        } catch (VoidValidatorException ex) {
+            //do nothing as there is already an error
         }
     }
 

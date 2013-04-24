@@ -5,6 +5,7 @@
 package uk.ac.manchester.cs.validator;
 
 import java.util.List;
+import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.constants.RdfConstants;
@@ -20,12 +21,14 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 public class Validator {
     
     final RdfInterface reader;
+    final Resource context;
     final MetaDataSpecification specifications;
     public static String FAILED = "Validation Failed!";
     public static String SUCCESS = "Validation Succfull!";
     
-    public Validator(RdfInterface reader, MetaDataSpecification specifications){
+    public Validator(RdfInterface reader, Resource context, MetaDataSpecification specifications){
         this.reader = reader;
+        this.context = context;
         this.specifications = specifications;
     }
     

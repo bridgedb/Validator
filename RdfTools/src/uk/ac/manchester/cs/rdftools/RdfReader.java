@@ -3,8 +3,6 @@ package uk.ac.manchester.cs.rdftools;
 import info.aduna.lang.FileFormat;
 import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -12,7 +10,6 @@ import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParserRegistry;
@@ -23,7 +20,6 @@ import org.openrdf.rio.RDFParserRegistry;
  */
 public class RdfReader implements RdfInterface{
     
-    public static String DEFAULT_BASE_URI = "http://no/BaseURI/Set/";
     private static final boolean EXCLUDE_INFERRED =false;
     private final Repository repository;
     private RepositoryConnection connection = null;

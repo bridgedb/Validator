@@ -33,8 +33,8 @@ abstract class CardinalityMetaData extends MetaDataBase {
     boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, 
             int tabLevel) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
-        boolean result = appendIncorrectReport(builder, rdf, statements, tabLevel);
-        if (appendCardinalityReport(builder, statements, includeWarnings, tabLevel)){
+        boolean result = appendIncorrectReport(builder, rdf, statements, context, tabLevel);
+        if (appendCardinalityReport(builder, statements, context, includeWarnings, tabLevel)){
             result = true;
         }
         return result;
@@ -43,10 +43,10 @@ abstract class CardinalityMetaData extends MetaDataBase {
     @Override
     boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
-        boolean result = appendIncorrectReport(builder, rdf, statements, tabLevel);
+        boolean result = appendIncorrectReport(builder, rdf, statements,  context, tabLevel);
         if (cardinality != NO_CARDINALITY && statements.size() >= cardinality) {
             //Found too many statements so this is always an error.
-            if (incorrectNumberOfStatements(builder, statements, tabLevel)){
+            if (incorrectNumberOfStatements(builder, statements, context, tabLevel)){
                 result = true;
             }
         }
@@ -65,11 +65,11 @@ abstract class CardinalityMetaData extends MetaDataBase {
             builder.append(predicate);
             builder.append("\n");
         } else {
-            appendRequirement(builder, tabLevel);
+            appendRequirement(builder, context, tabLevel);
         }
     }
         
-    protected void appendRequirement(StringBuilder builder, int tabLevel) {
+    protected void appendRequirement(StringBuilder builder, Resource context, int tabLevel) {
         tab(builder, tabLevel);
         if (cardinality == NO_CARDINALITY){
             builder.append("Please add one or more statement with predicate ");
@@ -80,7 +80,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
             builder.append(cardinality);
             builder.append(" statements with predicate ");
         }
-        this.addValue(builder, predicate);
+        this.addValue(builder, predicate, context);
         builder.append(" and type ");
         builder.append(getType());
         builder.append("\n");
@@ -89,16 +89,17 @@ abstract class CardinalityMetaData extends MetaDataBase {
     protected abstract String getType();
     
     protected abstract boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
-            int tabLevel) throws VoidValidatorException;
+            Resource context, int tabLevel) throws VoidValidatorException;
 
-    protected boolean appendCardinalityReport(StringBuilder builder, List<Statement> statements, boolean includeWarnings, 
+    protected boolean appendCardinalityReport(StringBuilder builder, List<Statement> statements, Resource context,
+            boolean includeWarnings, 
             int tabLevel) throws VoidValidatorException{
         if (statements.isEmpty()){
             switch (requirementLevel){
-                case MUST: return appendNoStatements(builder, "ERROR:", tabLevel);
+                case MUST: return appendNoStatements(builder, context, "ERROR:", tabLevel);
                 case SHOULD: {
                     if (includeWarnings){
-                        return appendNoStatements(builder, "Warning:", tabLevel);
+                        return appendNoStatements(builder, context, "Warning:", tabLevel);
                     } else {
                         return false; //No request to report a warning
                     }
@@ -111,25 +112,25 @@ abstract class CardinalityMetaData extends MetaDataBase {
             return false; // Found correct number of state
         }
         //Found some statements but not the right number so always an ERROR:
-        return incorrectNumberOfStatements(builder, statements, tabLevel);
+        return incorrectNumberOfStatements(builder, statements, context, tabLevel);
     }
     
-    private boolean appendNoStatements(StringBuilder builder, String level, int tabLevel) {
+    private boolean appendNoStatements(StringBuilder builder, Resource context, String level, int tabLevel) {
         tab(builder, tabLevel);
         builder.append(level);
         builder.append(NOT_FOUND);
-        this.addValue(builder, predicate);
+        this.addValue(builder, predicate, context);
         builder.append("\n");
-        appendRequirement(builder, tabLevel + 1);
+        appendRequirement(builder, context, tabLevel + 1);
         return true;
     }
 
-    private boolean incorrectNumberOfStatements(StringBuilder builder, List<Statement> statements, int tabLevel) {
+    private boolean incorrectNumberOfStatements(StringBuilder builder, List<Statement> statements, Resource context, int tabLevel) {
         tab(builder, tabLevel);
         builder.append("ERROR:Looking for " );
         builder.append(cardinality);
         builder.append(" statements with type ");
-        this.addValue(builder, predicate);
+        this.addValue(builder, context, predicate);
         builder.append("\n");
         tab(builder, tabLevel + 1);
         if (cardinality > statements.size()){

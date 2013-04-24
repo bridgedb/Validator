@@ -32,10 +32,10 @@ abstract class MetaDataBase {
 
     abstract boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException;
  
-    final void addValue(StringBuilder builder, Value value){
+    final void addValue(StringBuilder builder, Value value, Resource context){
         if (value instanceof URI){
            URI uri = (URI)value;
-           if (uri.getNamespace().startsWith(RdfInterface.DEFAULT_BASE_URI)){
+           if (uri.getNamespace().startsWith(context.stringValue())){
                builder.append(uri.getLocalName());
            } else {
                builder.append("<");
@@ -47,12 +47,12 @@ abstract class MetaDataBase {
         }
     }
     
-    final void addStatement(StringBuilder builder, Statement statement){
-        addValue(builder, statement.getSubject());
+    final void addStatement(StringBuilder builder, Statement statement, Resource context){
+        addValue(builder, statement.getSubject(), context);
         builder.append(" ");
-        addValue(builder, statement.getPredicate());
+        addValue(builder, statement.getPredicate(), context);
         builder.append(" ");
-        addValue(builder, statement.getObject());
+        addValue(builder, statement.getObject(), context);
     }
     
     final void tab(StringBuilder builder, int tabLevel){

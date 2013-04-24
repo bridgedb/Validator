@@ -29,9 +29,9 @@ public class ResourceMetaData extends HasChildrenMetaData {
         int tabLevel) throws VoidValidatorException {
         tab(builder, tabLevel);
         builder.append("Validation report for: (");
-        this.addValue(builder, type);
+        this.addValue(builder, type, context);
         builder.append(") ");
-        this.addValue(builder, resource);
+        this.addValue(builder, resource, context);
         builder.append("\n");
         boolean ok = true;
         for (MetaDataBase child:children){

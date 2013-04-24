@@ -28,13 +28,14 @@ class PropertyMetaData extends CardinalityMetaData {
        metaDataType = MetaDataTypeFactory.factory(objectClass);
     }
     
-    protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, int tabLevel) throws VoidValidatorException {
+    protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
+            Resource context, int tabLevel) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (!metaDataType.correctType(statement.getObject())){
                 tab(builder, tabLevel);
                 builder.append("ERROR: Found: ");
-                this.addStatement(builder, statement);
+                this.addStatement(builder, statement, context);
                 builder.append("\n");            
                 tab(builder, tabLevel+1);
                 builder.append(EXPECTED_TYPE);            

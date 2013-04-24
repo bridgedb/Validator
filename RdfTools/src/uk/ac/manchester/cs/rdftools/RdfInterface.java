@@ -16,8 +16,6 @@ import org.openrdf.model.Value;
  */
 public interface RdfInterface {
     
-   public static String DEFAULT_BASE_URI = "http://no/BaseURI/Set/";
-
    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts)
             throws VoidValidatorException ;
 

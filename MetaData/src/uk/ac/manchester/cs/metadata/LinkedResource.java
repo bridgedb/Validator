@@ -30,7 +30,8 @@ class LinkedResource extends CardinalityMetaData {
     }
 
      @Override
-     protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, int tabLevel) throws VoidValidatorException {
+     protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
+            Resource context, int tabLevel) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (statement.getObject() instanceof Resource){
@@ -41,7 +42,7 @@ class LinkedResource extends CardinalityMetaData {
                     boolean unknownType = true;
                     if (linkedTypes.contains(linkedType)){
                         if (!this.isValid(rdf, resource, linkedType)){
-                            appendInvalidLinked(builder, statement, tabLevel);
+                            appendInvalidLinked(builder, statement, context, tabLevel);
                             appended = true;
                             unknownType = false;
                         }
@@ -53,12 +54,12 @@ class LinkedResource extends CardinalityMetaData {
                             }
                         }
                         if (unknownType){
-                            appendNoKnownType(builder, statement, tabLevel);
+                            appendNoKnownType(builder, statement, context, tabLevel);
                         }
                     }
                 }
             } else {
-                appendNotAResource(builder, statement, tabLevel);
+                appendNotAResource(builder, statement, context, tabLevel);
                 appended = true;
             }
         }
@@ -93,30 +94,30 @@ class LinkedResource extends CardinalityMetaData {
         return resourceMetaData.isValid(rdf, resource, context);
     }
 
-   private void appendErrorStart(StringBuilder builder, Statement statement, int tabLevel) {
+   private void appendErrorStart(StringBuilder builder, Statement statement, Resource context, int tabLevel) {
         tab(builder, tabLevel);
         builder.append("ERROR: Found: ");
-        this.addStatement(builder, statement);
+        this.addStatement(builder, statement, context);
         builder.append("\n");            
         tab(builder, tabLevel+1);
     }
    
-    private void appendNotAResource(StringBuilder builder, Statement statement, int tabLevel) {
-        appendErrorStart(builder, statement, tabLevel);
+    private void appendNotAResource(StringBuilder builder, Statement statement, Resource context, int tabLevel) {
+        appendErrorStart(builder, statement, context, tabLevel);
         builder.append("Object must be a URI of type: ");            
         builder.append(getType());
         builder.append("\n");
     }
 
-    private void appendInvalidLinked(StringBuilder builder, Statement statement, int tabLevel) {
-        appendErrorStart(builder, statement, tabLevel);
+    private void appendInvalidLinked(StringBuilder builder, Statement statement, Resource context, int tabLevel) {
+        appendErrorStart(builder, statement, context, tabLevel);
         builder.append(statement.getObject());
         builder.append(" has errors! See report for that Resource! ");            
         builder.append("\n");
     }
 
-    private void appendNoKnownType(StringBuilder builder, Statement statement, int tabLevel) {
-        appendErrorStart(builder, statement, tabLevel);
+    private void appendNoKnownType(StringBuilder builder, Statement statement, Resource context, int tabLevel) {
+        appendErrorStart(builder, statement, context, tabLevel);
         builder.append(statement.getObject());
         builder.append(" has not been typed, and does not meet the requirements of any known type. ");            
         builder.append("\n");    

@@ -21,6 +21,9 @@ package uk.ac.manchester.cs.rdftools;
 
 //import org.apache.log4j.Logger;
 
+import org.openrdf.repository.RepositoryException;
+
+
 /**
  * Util functions that allows messages to be output.
  * <p>
@@ -47,5 +50,9 @@ public class Reporter {
     public static void error(String message){
         //logger.error(message);
         System.err.println(message);
+    }
+
+    static void error(Exception ex) {
+        ex.printStackTrace();
     }
 }

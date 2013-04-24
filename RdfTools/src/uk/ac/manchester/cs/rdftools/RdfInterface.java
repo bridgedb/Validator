@@ -16,7 +16,10 @@ import org.openrdf.model.Value;
  */
 public interface RdfInterface {
     
-   public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts)
-            throws VoidValidatorException ;
+   public List<Statement> getDirectStatementList(Resource subjectResource, URI predicate, Value object, 
+           Resource... contexts) throws VoidValidatorException ;
+   
+    public List<Statement> getOrImportStatementList(Resource subjectResource, URI predicate, Value object, 
+            Resource... contexts) throws VoidValidatorException;
 
 }

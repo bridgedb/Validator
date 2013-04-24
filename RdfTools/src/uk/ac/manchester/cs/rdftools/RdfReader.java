@@ -15,6 +15,7 @@ import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
+import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParserRegistry;
@@ -78,7 +79,68 @@ public class RdfReader implements RdfInterface{
     }
 
     @Override
-    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
+    public List<Statement> getOrImportStatementList(Resource subjectResource, URI predicate, Value object, 
+            Resource... contexts) throws VoidValidatorException {
+        try {
+            RepositoryResult<Statement> repositoryResult = 
+                        getTheStatementList(subjectResource, predicate, object, contexts);
+            return repositoryResult.asList();
+        } catch (RepositoryException ex) {
+            throw new VoidValidatorException("Error converting to List of Statements ", ex);
+        }
+    }
+
+    private RepositoryResult<Statement> getTheStatementList(Resource subjectResource, URI predicate, Value object, 
+            Resource... contexts) throws VoidValidatorException {
+        try {
+            RepositoryConnection repositoryConnection = getConnection();
+            RepositoryResult<Statement> results = 
+                        repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, contexts);
+            if (results.hasNext()){
+                System.out.println("found direct");
+                //Found something so done
+                return results;
+            }
+            if (subjectResource == null){
+                //No subject so don't look elsehwere
+                System.out.println("No Subject");
+                return results;
+            }
+            results = repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED);
+            if (!results.hasNext()){
+                System.out.println("Found indirect");
+                //Found something in another context so done.
+                return results;
+            }
+            if (!(subjectResource instanceof URI)){
+                //not expected but not able to go on.
+                System.out.println("Not URI");
+                return results;
+            }
+            URI subjectUri = (URI)subjectResource;
+            String contextString = subjectUri.getNamespace();
+            Resource subjectContext = new URIImpl(contextString);
+            try {
+                if (!repositoryConnection.hasStatement(null, null, null, EXCLUDE_INFERRED, subjectContext)){
+                    //Already loaded but not found so give up.
+                    System.out.println("already loaded " + subjectContext);
+                    return results;
+                }
+            } catch (RepositoryException ex) {
+                throw new VoidValidatorException("Unable to check source " + subjectContext + " is loaded. ", ex);
+            }
+            Resource newSubjectContext = loadURI(subjectContext.toString());
+            if (!newSubjectContext.equals(subjectContext)){
+                throw new VoidValidatorException(newSubjectContext + " != " + subjectContext);
+            }
+            return repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, subjectContext);
+        } catch (RepositoryException ex) {
+            throw new VoidValidatorException("Error getting the Statements ", ex);
+        }
+    }
+
+    @Override
+    public List<Statement> getDirectStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
             throws VoidValidatorException {
         try {
             RepositoryConnection repositoryConnection = getConnection();
@@ -141,6 +203,5 @@ public class RdfReader implements RdfInterface{
             //do nothing as there is already an error
         }
     }
-
 
 }

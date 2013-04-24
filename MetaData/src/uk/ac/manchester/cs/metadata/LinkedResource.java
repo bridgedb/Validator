@@ -36,7 +36,7 @@ class LinkedResource extends CardinalityMetaData {
         for (Statement statement:statements){
             if (statement.getObject() instanceof Resource){
                 Resource resource = (Resource)statement.getObject();
-                List<Statement> typeStatements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null, statement.getContext());
+                List<Statement> typeStatements = rdf.getDirectStatementList(resource, RdfConstants.TYPE_URI, null, statement.getContext());
                 for (Statement typeStatement: typeStatements){
                     URI linkedType = (URI)typeStatement.getSubject();
                     boolean unknownType = true;
@@ -73,7 +73,7 @@ class LinkedResource extends CardinalityMetaData {
 
     @Override
     boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        List<Statement> statements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null, context);
+        List<Statement> statements = rdf.getDirectStatementList(resource, RdfConstants.TYPE_URI, null, context);
         for (Statement statement: statements){
             URI linkedType = (URI)statement.getSubject();
             if (linkedTypes.contains(statement.getSubject())){

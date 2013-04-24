@@ -23,7 +23,7 @@ public class ExternalLinkReadTest {
         if (!context.equals(expectedContext)){
             throw new VoidValidatorException("Context mismatch reading " + address + " is: " + context + " but expected " + expectedContext);
         }
-        List<Statement> statements = instance.getStatementList(null, null, null, context);
+        List<Statement> statements = instance.getDirectStatementList(null, null, null, context);
         if (statements.isEmpty()){
             throw new VoidValidatorException("No statements read from: " + address);
         }

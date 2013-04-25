@@ -56,8 +56,7 @@ public class ValidationTest {
     @Test
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
-        Validator validator = new Validator(minReader, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(minReader, minContext, specifications);
         assertThat(result, endsWith(Validator.SUCCESS));
     }
     

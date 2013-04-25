@@ -67,8 +67,7 @@ public class SimpleTest {
     @Test
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
-        Validator validator = new Validator(minReader, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(minReader, minContext, specifications);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
     
@@ -80,8 +79,7 @@ public class SimpleTest {
                 minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
         assertThat( remove.size(), greaterThan(0));
         holder.removeStatements(remove);
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result, containsString(CardinalityMetaData.NOT_FOUND));
         assertThat(result,  endsWith(Validator.FAILED));
     }
@@ -94,8 +92,7 @@ public class SimpleTest {
                 minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result, containsString(MetaDataAlternatives.INCLUDE_ALTERNATIVE));
         assertThat(result,  endsWith(Validator.FAILED));
     }
@@ -104,8 +101,7 @@ public class SimpleTest {
     public void extraValueTestValidate() throws VoidValidatorException   {
         Reporter.println("extraValueTestValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result, containsString(ResourceMetaData.NO_ERRORS));
         assertThat(result,  endsWith(Validator.SUCCESS));
         List<Statement> oldStatements = 
@@ -115,8 +111,7 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        validator = new Validator(holder, minContext, specifications);
-        String result2 = validator.validate(minContext);
+        String result2 = Validator.validate(holder, minContext, specifications);
         assertEquals(result, result2);
    }
     
@@ -131,8 +126,7 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result, containsString(CardinalityMetaData.REMOVE));
         assertThat(result,  endsWith(Validator.FAILED));
    }
@@ -149,8 +143,7 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
         assertThat(result,  endsWith(Validator.FAILED));
    }
@@ -166,8 +159,7 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
         assertThat(result,  endsWith(Validator.FAILED));
    }
@@ -180,8 +172,7 @@ public class SimpleTest {
                 minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result, containsString(MetaDataGroup.INCLUDE_ALL));       
         assertThat(result,  endsWith(Validator.FAILED));
     }
@@ -197,8 +188,7 @@ public class SimpleTest {
         Statement newStatement = new ContextStatementImpl(
                 oldStatement.getSubject(), OpsTestConstants.HAS_HOUSE_NUMBER, oldStatement.getObject(), minContext);
         holder.addStatement(newStatement);       
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
 
@@ -210,8 +200,7 @@ public class SimpleTest {
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
           
-        Validator validator = new Validator(holder, minContext, specifications);
-        String result = validator.validate(minContext);
+        String result = Validator.validate(holder, minContext, specifications);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
 }

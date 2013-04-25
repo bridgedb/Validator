@@ -25,6 +25,7 @@ public class Validator {
     private final StringBuilder builder;
     private final Set<Resource> resourcesToCheck;
     private final Set<Resource> resourcesChecked;
+    private final Set<Resource> extraResourcesToCheck;
  
     public static String FAILED = "Validation Failed!";
     public static String SUCCESS = "Validation Successfull!";
@@ -35,6 +36,16 @@ public class Validator {
         return validator.builder.toString();
     }
 
+    public void addResourceToValidate(Resource resource){
+        if (resourcesToCheck.contains(resource)){
+            return;
+        }
+        if (resourcesChecked.contains(resource)){
+            return;
+        }
+        extraResourcesToCheck.add(resource);
+    }
+    
     private Validator(RdfInterface reader, Resource context, MetaDataSpecification specifications) throws VoidValidatorException{
         this.reader = reader;
         this.context = context;
@@ -42,6 +53,7 @@ public class Validator {
         builder = new StringBuilder();
         resourcesToCheck = getResourcesToCheck();
         resourcesChecked = new HashSet<Resource>();
+        extraResourcesToCheck = new HashSet<Resource>();
     }
     
     private Set<Resource> getResourcesToCheck() throws VoidValidatorException {
@@ -61,6 +73,8 @@ public class Validator {
                     error = true;
                 }
             }
+            resourcesToCheck.addAll(extraResourcesToCheck);
+            extraResourcesToCheck.clear();
             resourcesToCheck.removeAll(resourcesChecked);
         }
         if (error){
@@ -78,7 +92,7 @@ public class Validator {
         for (Statement typeStatement:typeStatements){
             ResourceMetaData specs = specifications.getResourceMetaData((URI) typeStatement.getObject());
             if (specs != null){
-                if (specs.appendValidate(builder, reader, typeStatement.getSubject(), context, false, 0)){
+                if (specs.appendValidate(builder, reader, typeStatement.getSubject(), context, false, 0, this)){
                     error = true;
                 }
                 unknownType = false;

@@ -12,6 +12,7 @@ import uk.ac.manchester.cs.metadata.type.MetaDataType;
 import uk.ac.manchester.cs.metadata.type.MetaDataTypeFactory;
 import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.validator.Validator;
 
 /**
  *
@@ -28,8 +29,9 @@ class PropertyMetaData extends CardinalityMetaData {
        metaDataType = MetaDataTypeFactory.factory(objectClass);
     }
     
+    @Override
     protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
-            Resource context, int tabLevel) throws VoidValidatorException {
+            Resource context, int tabLevel, Validator validator) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (!metaDataType.correctType(statement.getObject())){

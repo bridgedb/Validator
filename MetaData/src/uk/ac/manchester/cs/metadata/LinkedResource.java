@@ -12,6 +12,7 @@ import org.openrdf.model.URI;
 import uk.ac.manchester.cs.constants.RdfConstants;
 import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.validator.Validator;
 
 /**
  *
@@ -33,19 +34,20 @@ class LinkedResource extends CardinalityMetaData {
 
      @Override
      protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
-            Resource context, int tabLevel) throws VoidValidatorException {
+            Resource context, int tabLevel, Validator validator) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (statement.getObject() instanceof Resource){
-                Resource resource = (Resource)statement.getObject();
+                Resource linkedResource = (Resource)statement.getObject();
                 boolean unknownType = true;
-                List<Statement> typeStatements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null, statement.getContext());
+                List<Statement> typeStatements = rdf.getStatementList(linkedResource, RdfConstants.TYPE_URI, null, statement.getContext());
                 for (Statement typeStatement: typeStatements){
                     if (typeStatement.getObject() instanceof URI){
                         URI linkedType = (URI)typeStatement.getObject();
                         if (linkedTypes.contains(linkedType)){
-                            if (!this.isValid(rdf, resource, context, linkedType)){
+                            if (!this.isValid(rdf, linkedResource, context, linkedType)){
                                 appendInvalidLinked(builder, statement, context, tabLevel);
+                                validator.addResourceToValidate(linkedResource);
                                 appended = true;
                             }
                             unknownType = false;
@@ -56,7 +58,7 @@ class LinkedResource extends CardinalityMetaData {
                 }
                 if (unknownType){
                     for (URI possibleType: linkedTypes){
-                        if (unknownType && isValid(rdf, resource, context, possibleType)){
+                        if (unknownType && isValid(rdf, linkedResource, context, possibleType)){
                             unknownType = false;
                         }
                     }
@@ -96,12 +98,12 @@ class LinkedResource extends CardinalityMetaData {
         return false;
     }
 
-    private boolean isValid(RdfInterface rdf, Resource resource, Resource context, Resource linkedType) throws VoidValidatorException {
+    private boolean isValid(RdfInterface rdf, Resource linkedResource, Resource context, Resource linkedType) throws VoidValidatorException {
         ResourceMetaData resourceMetaData = metaDataSpecification.getResourceMetaData(linkedType);     
         if (resourceMetaData == null){
             throw new VoidValidatorException ("Unable to ResourceMetaData for " + linkedType);
         }
-        return resourceMetaData.isValid(rdf, resource, context);
+        return resourceMetaData.isValid(rdf, linkedResource, context);
     }
 
    private void appendErrorStart(StringBuilder builder, Statement statement, Resource context, int tabLevel) {

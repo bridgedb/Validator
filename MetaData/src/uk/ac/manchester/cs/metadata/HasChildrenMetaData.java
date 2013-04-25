@@ -8,6 +8,7 @@ import java.util.List;
 import org.openrdf.model.Resource;
 import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.validator.Validator;
 
 /**
  *
@@ -22,10 +23,10 @@ abstract class HasChildrenMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
+    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel, Validator validator) throws VoidValidatorException {
         boolean result = false;
         for (MetaDataBase child:children){
-            if (child.appendError(builder, rdf, resource, context, tabLevel)){
+            if (child.appendError(builder, rdf, resource, context, tabLevel, validator)){
                 result = result = true;
             }
         }

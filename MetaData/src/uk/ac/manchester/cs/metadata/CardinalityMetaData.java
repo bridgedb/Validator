@@ -10,6 +10,7 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.validator.Validator;
 
 /**
  *
@@ -31,9 +32,9 @@ abstract class CardinalityMetaData extends MetaDataBase {
     
     @Override
     boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, 
-            int tabLevel) throws VoidValidatorException {
+            int tabLevel, Validator validator) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
-        boolean result = appendIncorrectReport(builder, rdf, statements, context, tabLevel);
+        boolean result = appendIncorrectReport(builder, rdf, statements, context, tabLevel, validator);
         if (appendCardinalityReport(builder, statements, context, includeWarnings, tabLevel)){
             result = true;
         }
@@ -41,9 +42,9 @@ abstract class CardinalityMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
+    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel, Validator validator) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
-        boolean result = appendIncorrectReport(builder, rdf, statements,  context, tabLevel);
+        boolean result = appendIncorrectReport(builder, rdf, statements,  context, tabLevel, validator);
         if (cardinality != NO_CARDINALITY && statements.size() >= cardinality) {
             //Found too many statements so this is always an error.
             if (incorrectNumberOfStatements(builder, statements, context, tabLevel)){
@@ -89,7 +90,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     protected abstract String getType();
     
     protected abstract boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
-            Resource context, int tabLevel) throws VoidValidatorException;
+            Resource context, int tabLevel, Validator validator) throws VoidValidatorException;
 
     protected boolean appendCardinalityReport(StringBuilder builder, List<Statement> statements, Resource context,
             boolean includeWarnings, 

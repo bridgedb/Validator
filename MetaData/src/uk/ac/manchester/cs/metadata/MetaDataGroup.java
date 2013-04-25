@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.openrdf.model.Resource;
 import uk.ac.manchester.cs.rdftools.RdfInterface;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.validator.Validator;
 
 /**
  *
@@ -32,7 +33,8 @@ class MetaDataGroup extends HasChildrenMetaData {
     }
 
     @Override
-    boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, int tabLevel) throws VoidValidatorException {
+    boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, 
+            boolean includeWarnings, int tabLevel, Validator validator) throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

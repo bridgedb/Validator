@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.ac.manchester.cs.validator;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.openrdf.model.Resource;
@@ -27,9 +24,10 @@ public class Validator {
     private final MetaDataSpecification specifications;
     private final StringBuilder builder;
     private final Set<Resource> resourcesToCheck;
+    private final Set<Resource> resourcesChecked;
  
     public static String FAILED = "Validation Failed!";
-    public static String SUCCESS = "Validation Succfull!";
+    public static String SUCCESS = "Validation Successfull!";
     
     public static String validate(RdfInterface reader, Resource context, MetaDataSpecification specifications) throws VoidValidatorException{
         Validator validator = new Validator(reader, context, specifications);
@@ -43,31 +41,27 @@ public class Validator {
         this.specifications = specifications;
         builder = new StringBuilder();
         resourcesToCheck = getResourcesToCheck();
+        resourcesChecked = new HashSet<Resource>();
     }
     
     private Set<Resource> getResourcesToCheck() throws VoidValidatorException {
         HashSet<Resource> resourcesToCheck = new HashSet<Resource>();
         List<Statement> typeStatements = reader.getStatementList(null, RdfConstants.TYPE_URI, null, context);
         for (Statement typeStatement:typeStatements){
-           if (typeStatement.getObject() instanceof Resource){
-               resourcesToCheck.add((Resource)typeStatement.getObject());
-           } else {
-                builder.append(typeStatement.getSubject());
-                builder.append(" has a rdf:type ");
-                builder.append(typeStatement.getObject());
-                builder.append(" which not a Resource. ");
-                builder.append("\n");               
-           }
+            resourcesToCheck.add(typeStatement.getSubject());
         }
         return resourcesToCheck;
    }
     
    private void validate() throws VoidValidatorException{
         boolean error = false;
-        for (Resource resource:resourcesToCheck){
-            if (!appendValidate(resource)){
-                error = true;
+        while (!resourcesToCheck.isEmpty()){
+            for (Resource resource:resourcesToCheck){
+                 if (appendValidate(resource)){
+                    error = true;
+                }
             }
+            resourcesToCheck.removeAll(resourcesChecked);
         }
         if (error){
             builder.append(FAILED);
@@ -77,6 +71,7 @@ public class Validator {
     }
 
     private boolean appendValidate(Resource resource) throws VoidValidatorException{
+        this.resourcesChecked.add(resource);
         List<Statement> typeStatements = reader.getStatementList(resource, RdfConstants.TYPE_URI, null, context);
         boolean error = false;
         boolean unknownType = true;

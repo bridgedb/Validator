@@ -34,7 +34,7 @@ public class Validator {
     
     public String validate(Resource context) throws VoidValidatorException{
         StringBuilder builder = new StringBuilder();
-        List<Statement> typeStatements = reader.getDirectStatementList(null, RdfConstants.TYPE_URI, null, context);
+        List<Statement> typeStatements = reader.getStatementList(null, RdfConstants.TYPE_URI, null, context);
         boolean error = false;
         for (Statement typeStatement:typeStatements){
             ResourceMetaData specs = specifications.getResourceMetaData((URI) typeStatement.getObject());

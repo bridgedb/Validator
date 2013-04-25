@@ -22,6 +22,8 @@ class LinkedResource extends CardinalityMetaData {
     private final Set<URI> linkedTypes;
     private final MetaDataSpecification metaDataSpecification;
   
+    public static final String ERROR_SEE_REPORT = " has errors! See report for that Resource! ";
+    
     public LinkedResource(URI predicate, String type, int cardinality, RequirementLevel requirementLevel, 
             Set<URI> linkedTypes, MetaDataSpecification metaDataSpecification) {
        super(predicate, cardinality, requirementLevel);
@@ -36,32 +38,37 @@ class LinkedResource extends CardinalityMetaData {
         for (Statement statement:statements){
             if (statement.getObject() instanceof Resource){
                 Resource resource = (Resource)statement.getObject();
-                List<Statement> typeStatements = rdf.getDirectStatementList(resource, RdfConstants.TYPE_URI, null, statement.getContext());
+                boolean unknownType = true;
+                List<Statement> typeStatements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null, statement.getContext());
                 for (Statement typeStatement: typeStatements){
-                    URI linkedType = (URI)typeStatement.getSubject();
-                    boolean unknownType = true;
-                    if (linkedTypes.contains(linkedType)){
-                        if (!this.isValid(rdf, resource, linkedType)){
-                            appendInvalidLinked(builder, statement, context, tabLevel);
-                            appended = true;
+                    if (typeStatement.getObject() instanceof URI){
+                        URI linkedType = (URI)typeStatement.getObject();
+                        if (linkedTypes.contains(linkedType)){
+                            if (!this.isValid(rdf, resource, context, linkedType)){
+                                appendInvalidLinked(builder, statement, context, tabLevel);
+                                appended = true;
+                            }
+                            unknownType = false;
+                        }
+                    } else {
+                        appendIncorretTypeStatement(builder, typeStatement, context, tabLevel);
+                    }
+                }
+                if (unknownType){
+                    for (URI possibleType: linkedTypes){
+                        if (unknownType && isValid(rdf, resource, context, possibleType)){
                             unknownType = false;
                         }
                     }
                     if (unknownType){
-                        for (URI possibleType: linkedTypes){
-                            if (unknownType && isValid(rdf, resource, possibleType)){
-                                unknownType = false;
-                            }
-                        }
-                        if (unknownType){
-                            appendNoKnownType(builder, statement, context, tabLevel);
-                        }
+                        appendNoKnownType(builder, statement, context, tabLevel);
+                        appended = true;
                     }
                 }
-            } else {
+             } else {
                 appendNotAResource(builder, statement, context, tabLevel);
                 appended = true;
-            }
+             }
         }
         return appended;
     }
@@ -73,7 +80,10 @@ class LinkedResource extends CardinalityMetaData {
 
     @Override
     boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        List<Statement> statements = rdf.getDirectStatementList(resource, RdfConstants.TYPE_URI, null, context);
+        List<Statement> statements = rdf.getStatementList(resource, RdfConstants.TYPE_URI, null, context);
+        if (!correctCardinality(statements)){
+            return false;
+        }
         for (Statement statement: statements){
             URI linkedType = (URI)statement.getSubject();
             if (linkedTypes.contains(statement.getSubject())){
@@ -112,7 +122,7 @@ class LinkedResource extends CardinalityMetaData {
     private void appendInvalidLinked(StringBuilder builder, Statement statement, Resource context, int tabLevel) {
         appendErrorStart(builder, statement, context, tabLevel);
         builder.append(statement.getObject());
-        builder.append(" has errors! See report for that Resource! ");            
+        builder.append(ERROR_SEE_REPORT);            
         builder.append("\n");
     }
 
@@ -120,6 +130,12 @@ class LinkedResource extends CardinalityMetaData {
         appendErrorStart(builder, statement, context, tabLevel);
         builder.append(statement.getObject());
         builder.append(" has not been typed, and does not meet the requirements of any known type. ");            
+        builder.append("\n");    
+    }
+
+    private void appendIncorretTypeStatement(StringBuilder builder, Statement typeStatement, Resource context, int tabLevel) {
+        appendErrorStart(builder, typeStatement, context, tabLevel);
+        builder.append("Object of this tye statement is not a URI!. ");            
         builder.append("\n");    
     }
 

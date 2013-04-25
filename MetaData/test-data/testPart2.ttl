@@ -1,9 +1,9 @@
 @prefix : <http://example.com/part2#> .
-prefix part1: <http://example.com/part1#> .
+@prefix part1: <http://example.com/part1#> .
 @prefix ops: <http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:person1 a part1:Parent;
+:person1 a ops:Parent;
     ops:hasName  "John";
     ops:hasChild part1:person2.

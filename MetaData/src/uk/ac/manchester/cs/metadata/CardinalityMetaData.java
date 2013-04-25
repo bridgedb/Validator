@@ -32,7 +32,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     @Override
     boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, 
             int tabLevel) throws VoidValidatorException {
-        List<Statement> statements = rdf.getDirectStatementList(resource, predicate, null, context);
+        List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
         boolean result = appendIncorrectReport(builder, rdf, statements, context, tabLevel);
         if (appendCardinalityReport(builder, statements, context, includeWarnings, tabLevel)){
             result = true;
@@ -42,7 +42,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
 
     @Override
     boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
-        List<Statement> statements = rdf.getDirectStatementList(resource, predicate, null, context);
+        List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
         boolean result = appendIncorrectReport(builder, rdf, statements,  context, tabLevel);
         if (cardinality != NO_CARDINALITY && statements.size() >= cardinality) {
             //Found too many statements so this is always an error.
@@ -55,7 +55,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     
     @Override
     void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
-        List<Statement> statements = rdf.getDirectStatementList(resource, predicate, null, context);
+        List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
         if (this.hasRequiredValues(statements)){
             tab(builder, tabLevel);
             builder.append("You already correctly have ");
@@ -115,6 +115,10 @@ abstract class CardinalityMetaData extends MetaDataBase {
         return incorrectNumberOfStatements(builder, statements, context, tabLevel);
     }
     
+     protected boolean correctCardinality(List<Statement> statements) {
+        return (!(statements.isEmpty() && requirementLevel == RequirementLevel.MUST));
+    }
+ 
     private boolean appendNoStatements(StringBuilder builder, Resource context, String level, int tabLevel) {
         tab(builder, tabLevel);
         builder.append(level);
@@ -152,7 +156,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     @Override
     boolean hasRequiredValues(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
         if (requirementLevel == RequirementLevel.MUST){
-            List<Statement> statements = rdf.getDirectStatementList(resource, predicate, null, context);
+            List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
             return hasRequiredValues(statements);
         } else {
             return true;

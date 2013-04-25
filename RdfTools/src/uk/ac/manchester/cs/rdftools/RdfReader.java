@@ -79,7 +79,7 @@ public class RdfReader implements RdfInterface{
     }
 
     @Override
-    public List<Statement> getOrImportStatementList(Resource subjectResource, URI predicate, Value object, 
+    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException {
         try {
             RepositoryResult<Statement> repositoryResult = 
@@ -97,24 +97,24 @@ public class RdfReader implements RdfInterface{
             RepositoryResult<Statement> results = 
                         repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, contexts);
             if (results.hasNext()){
-                System.out.println("found direct");
+                //ystem.out.println("found direct");
                 //Found something so done
                 return results;
             }
             if (subjectResource == null){
                 //No subject so don't look elsehwere
-                System.out.println("No Subject");
+                //stem.out.println("No Subject");
                 return results;
             }
             results = repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED);
             if (!results.hasNext()){
-                System.out.println("Found indirect");
+                //ystem.out.println("Found indirect");
                 //Found something in another context so done.
                 return results;
             }
             if (!(subjectResource instanceof URI)){
                 //not expected but not able to go on.
-                System.out.println("Not URI");
+                //ystem.out.println("Not URI");
                 return results;
             }
             URI subjectUri = (URI)subjectResource;
@@ -123,7 +123,7 @@ public class RdfReader implements RdfInterface{
             try {
                 if (!repositoryConnection.hasStatement(null, null, null, EXCLUDE_INFERRED, subjectContext)){
                     //Already loaded but not found so give up.
-                    System.out.println("already loaded " + subjectContext);
+                    //stem.out.println("already loaded " + subjectContext);
                     return results;
                 }
             } catch (RepositoryException ex) {
@@ -139,8 +139,7 @@ public class RdfReader implements RdfInterface{
         }
     }
 
-    @Override
-    public List<Statement> getDirectStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
+    public List<Statement> getDirectOnlyStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
             throws VoidValidatorException {
         try {
             RepositoryConnection repositoryConnection = getConnection();

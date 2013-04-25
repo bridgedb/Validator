@@ -29,7 +29,7 @@ public class RdfHolder implements RdfInterface, Cloneable{
     }
 
     public RdfHolder(RdfInterface other, Resource context) throws VoidValidatorException{
-        statements = new ArrayList<Statement>(other.getDirectStatementList(null, null, null, context));
+        statements = new ArrayList<Statement>(other.getStatementList(null, null, null, context));
     }
 
     @Override
@@ -57,12 +57,7 @@ public class RdfHolder implements RdfInterface, Cloneable{
 
     @Override
     // Test that use this should not depend on importing
-    public List<Statement> getOrImportStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) throws VoidValidatorException {
-        return getDirectStatementList(subjectResource, predicate, object, contexts);
-    }
-
-    @Override
-    public List<Statement> getDirectStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) throws VoidValidatorException {
+    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) throws VoidValidatorException {
         List<Statement> results = new ArrayList<Statement>();
         for (Statement statement:statements){
             if (requested(statement, subjectResource, predicate, object, contexts)){ 

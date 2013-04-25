@@ -54,7 +54,10 @@ class PropertyMetaData extends CardinalityMetaData {
 
     @Override
     boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        List<Statement> statements = rdf.getDirectStatementList(resource, predicate, null, context);
+        List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
+        if (!correctCardinality(statements)){
+            return false;
+        }
         for (Statement statement:statements){
             if (!metaDataType.correctType(statement.getObject())){
                 return false;

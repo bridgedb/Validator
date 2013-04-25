@@ -69,7 +69,6 @@ public class SimpleTest {
         Reporter.println("minFileValidate");
         Validator validator = new Validator(minReader, minContext, specifications);
         String result = validator.validate(minContext);
-        System.out.println(result);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
     
@@ -78,22 +77,21 @@ public class SimpleTest {
         Reporter.println("missingValueValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         List<Statement> remove = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
         assertThat( remove.size(), greaterThan(0));
         holder.removeStatements(remove);
         Validator validator = new Validator(holder, minContext, specifications);
         String result = validator.validate(minContext);
-        System.out.println(result);
         assertThat(result, containsString(CardinalityMetaData.NOT_FOUND));
         assertThat(result,  endsWith(Validator.FAILED));
     }
    
     @Test
     public void missingAllAlternativesValidate() throws VoidValidatorException   {
-        Reporter.println("noDataDumpValidate");
+        Reporter.println("missingAllAlternativesValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         List<Statement> remove = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
         Validator validator = new Validator(holder, minContext, specifications);
@@ -111,7 +109,7 @@ public class SimpleTest {
         assertThat(result, containsString(ResourceMetaData.NO_ERRORS));
         assertThat(result,  endsWith(Validator.SUCCESS));
         List<Statement> oldStatements = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
         Statement oldStatement = oldStatements.get(0);
         Value newObject = new LiteralImpl("new");
         Statement newStatement = 
@@ -127,7 +125,7 @@ public class SimpleTest {
         Reporter.println("extraValueWithCarinalityOneValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         List<Statement> oldStatements = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
         Statement oldStatement = oldStatements.get(0);
         URI newObject = new URIImpl(oldStatement.getObject().stringValue() + "new");
         Statement newStatement = 
@@ -144,7 +142,7 @@ public class SimpleTest {
         Reporter.println("uriAsStringValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         List<Statement> oldStatements = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
         holder.removeStatements(oldStatements);
         Statement oldStatement = oldStatements.get(0);
         Value newObject = new LiteralImpl("this is a String");
@@ -162,7 +160,7 @@ public class SimpleTest {
         Reporter.println("dataTimeAsDateValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         List<Statement> oldStatements = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_BIRTHDATE, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_BIRTHDATE, ALL_OBJECTS, minContext);
         Statement oldStatement = oldStatements.get(0);
         Value newObject = new LiteralImpl("2013-01-17", XsdType.DATE.asURI());
         Statement newStatement = 
@@ -179,7 +177,7 @@ public class SimpleTest {
         Reporter.println("missingOneOfGroupValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         List<Statement> remove = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
         Validator validator = new Validator(holder, minContext, specifications);
@@ -193,7 +191,7 @@ public class SimpleTest {
         Reporter.println("missingOneOfGroupButHaveAlternativeValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
         List<Statement> oldStatements = 
-                minReader.getDirectStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
         holder.removeStatements(oldStatements);
         Statement oldStatement = oldStatements.get(0);
         Statement newStatement = new ContextStatementImpl(
@@ -208,7 +206,7 @@ public class SimpleTest {
     public void missingLinkedType() throws VoidValidatorException   {
         Reporter.println("missingLinkedType");
         RdfHolder holder = new RdfHolder(minReader, minContext);
-        List<Statement> remove = minReader.getDirectStatementList(ALL_SUBJECTS, RdfConstants.TYPE_URI , OpsTestConstants.PARENT, minContext);
+        List<Statement> remove = minReader.getStatementList(ALL_SUBJECTS, RdfConstants.TYPE_URI , OpsTestConstants.PARENT, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
           

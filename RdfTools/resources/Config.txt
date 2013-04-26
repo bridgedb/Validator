@@ -76,3 +76,14 @@ accounts.opsgithub.password       ask Chrisian
 accounts.chemspiderftp.uri        ftp://ftp.rsc-us.org
 accounts.chemspiderftp.login      ask RSC
 accounts.chemspiderftp.password   ask RSC
+
+#MetaDataSpecification
+#This section list where to load the MetaDataSpecifications from
+
+#This is the OpenPhacts void specifications and is required by unit tests.
+specification.opsVoid.file           VoidInfo.owl
+specification.opsVoid.description    The OpenPhacts specifications for void description files.
+
+#This is the simple test specification and is required by unit tests.
+specification.simpleTest.file           simpleOntology.owl
+specification.simpleTest.description    Test ontology..

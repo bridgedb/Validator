@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.metadata;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
@@ -34,8 +35,10 @@ public class SpecificationsRegistry {
             if (key.startsWith(SPECIFICATIONS_PREFIX)){
                 String[] parts = key.split("\\.");
                 if (parts.length == 3){
-                     if (parts[2].equals(FILE)){
-                        MetaDataSpecification specification = new MetaDataSpecification(properties.getProperty(key));
+                    if (parts[2].equals(FILE)){
+                        String fileName = properties.getProperty(key);
+                        InputStream stream = ConfigReader.getInputStream(fileName);
+                        MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
                         if (descriptions.containsKey(parts[1])){
                             specification.setDescription(descriptions.get(parts[1]));
                             descriptions.remove(parts[1]);
@@ -62,12 +65,14 @@ public class SpecificationsRegistry {
         }
    }
     
-   public static MetaDataSpecification specificationByName(String name){
+   public static MetaDataSpecification specificationByName(String name) throws VoidValidatorException{
+       init();
        return register.get(name);
        
    }
     
-   public static Set<String> getSpecificationNames(){
+   public static Set<String> getSpecificationNames() throws VoidValidatorException{
+       init();
        return register.keySet();
    }
 }

@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.metadata;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,7 +53,7 @@ public class MetaDataSpecification {
    // Map<Resource, ResourceMetaData> resourcesById = new HashMap<Resource, ResourceMetaData>();
     //   static String documentationRoot = "";
     private static String THING_ID = "http://www.w3.org/2002/07/owl#Thing";
-    private final Set<URI> linkingPredicates;    
+//    private final Set<URI> linkingPredicates;    
     private String description;
     
     public MetaDataSpecification(String fileName) throws VoidValidatorException{
@@ -63,12 +64,27 @@ public class MetaDataSpecification {
         } catch (OWLOntologyCreationException ex) {
             throw new VoidValidatorException("Unable to read owl from inputStream", ex);
         }
-        Map<URI,Map<OWLClassExpression,RequirementLevel>> requirements = extractRequirements();
-        linkingPredicates = new HashSet<URI>();
-        loadSpecification(requirements);
+        init();
         description = "Read from " + fileName;
     }
     
+    public MetaDataSpecification(InputStream stream, String source) throws VoidValidatorException{
+        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        try {
+            ontology = m.loadOntologyFromOntologyDocument(stream);
+        } catch (OWLOntologyCreationException ex) {
+            throw new VoidValidatorException("Unable to read owl from inputStream", ex);
+        }
+        init();
+        description = "Read from " + source;
+    }
+     
+    private void init() throws VoidValidatorException{
+        Map<URI,Map<OWLClassExpression,RequirementLevel>> requirements = extractRequirements();
+ //       linkingPredicates = new HashSet<URI>();
+        loadSpecification(requirements);        
+    }
+    //private Set<URI>
     public ResourceMetaData getResourceMetaData(Resource type){
         return resourcesByType.get(type);
     }
@@ -255,7 +271,7 @@ public class MetaDataSpecification {
             }
             IRI iri = owlClass.getIRI();
  //           ontology.containsClassInSignature(iri);
-            linkingPredicates.add(predicate);
+            //linkingPredicates.add(predicate);
             Set<URI> linkedTypes = new HashSet<URI>();
             linkedTypes.add(new URIImpl(iri.toString()));
             return new LinkedResource(predicate, type, cardinality, requirementLevel, linkedTypes, this);
@@ -271,7 +287,7 @@ public class MetaDataSpecification {
                     linkedTypes.add(new URIImpl(expr.toString()));
                 }
             }
-            linkingPredicates.add(predicate);
+            //.add(predicate);
             return new LinkedResource(predicate, type, cardinality, requirementLevel, linkedTypes, this);
         } else {
             return new PropertyMetaData(predicate, type, cardinality, requirementLevel, range.toString());
@@ -286,9 +302,9 @@ public class MetaDataSpecification {
         return MetaDataBase.NO_CARDINALITY;
     }
        
-    Set<URI> getLinkingPredicates() {
-        return linkingPredicates;
-    }
+    //Set<URI> getLinkingPredicates() {
+    //    return linkingPredicates;
+    //}
 
     /**
      * @return the description

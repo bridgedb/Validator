@@ -35,9 +35,7 @@ public class ImportTest {
     
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
-        File file = new File ("test-data/testSimple.ttl");
-        
-        specifications = new MetaDataSpecification("test-data/simpleOntology.owl");
+        specifications = SpecificationsRegistry.specificationByName("simpleTest");
     }
 
     @Test

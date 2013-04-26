@@ -49,7 +49,7 @@ public class SimpleTest {
         File file = new File ("test-data/testSimple.ttl");
         minReader = RdfFactory.getMemory();
         minContext = minReader.loadFile(file);
-        specifications = new MetaDataSpecification("test-data/simpleOntology.owl");
+        specifications = SpecificationsRegistry.specificationByName("simpleTest");
     }
     
     @AfterClass

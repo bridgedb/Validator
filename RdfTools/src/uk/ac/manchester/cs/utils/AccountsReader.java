@@ -21,6 +21,7 @@ public class AccountsReader {
     private static final String URI = "uri";
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+    private static final String ACCOUNT_PREFIX = "account.";
     
     private static void init() throws VoidValidatorException{
         if (infos != null){
@@ -28,36 +29,36 @@ public class AccountsReader {
         }
         Properties properties = ConfigReader.getProperties();
         infos = new HashSet<AccountInfo>();
-        Set<String> names = properties.stringPropertyNames();
-        for (String name:names){
-            if (!ConfigReader.CONFIG_PROPERTIES.contains(name)){
-                String[] parts = name.split("\\.");
-                if (parts.length == 2){
+        Set<String> keys = properties.stringPropertyNames();
+        for (String key:keys){
+            if (key.startsWith(ACCOUNT_PREFIX)){
+                String[] parts = key.split("\\.");
+                if (parts.length == 3){
                     AccountInfo info = null;
                     for (AccountInfo i:infos){
-                        if (i.getPropertyPart1().equals(parts[0])){
+                        if (i.getName().equals(parts[1])){
                             info = i;
                         }
                     }
                     if (info == null){
-                        info = new AccountInfo(parts[0]);
+                        info = new AccountInfo(parts[1]);
                     }
-                    if (parts[1].equals(URI)){
-                        info.setUri(properties.getProperty(name));
-                    } else if (parts[1].equals(LOGIN)){
-                        info.setLogin(properties.getProperty(name));
-                    } else if (parts[1].equals(PASSWORD)){
-                        info.setPassword(properties.getProperty(name));
+                    if (parts[2].equals(URI)){
+                        info.setUri(properties.getProperty(key));
+                    } else if (parts[2].equals(LOGIN)){
+                        info.setLogin(properties.getProperty(key));
+                    } else if (parts[2].equals(PASSWORD)){
+                        info.setPassword(properties.getProperty(key));
                     } else {
-                        throw new VoidValidatorException ("Unexpected property with a . in it." + name );                    
+                        throw new VoidValidatorException ("Unexpected property with a . in it." + key );                    
                     }
                     infos.add(info);
                 } else {
-                    //do nothing not an account property
+                    throw new VoidValidatorException ("Unexpected " + ACCOUNT_PREFIX +  " property. It should be three dot seperated parts." + key );
                 }
             }
         }
-    }
+   }
     
     public static AccountInfo findByUrl(URL url) throws VoidValidatorException {
         return findByUri(url.toString());

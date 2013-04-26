@@ -71,8 +71,8 @@ public class ConfigReader {
     
     public static Properties getProperties() throws VoidValidatorException{
         if (propertyReader == null){
-            propertyReader = new ConfigReader(CONFIG_FILE_NAME);            
             configureLogger();
+            propertyReader = new ConfigReader(CONFIG_FILE_NAME);            
         }
         return propertyReader.readProperties();
     }

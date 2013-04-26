@@ -13,10 +13,10 @@ public class AccountInfo {
     private String uri;
     private String login;
     private String password;
-    private String propertyPart1;
+    private String name;
     
-    public AccountInfo(String propertyPart1){
-        this.propertyPart1 = propertyPart1; 
+    public AccountInfo(String name){
+        this.name = name; 
     }
 
     /**
@@ -62,14 +62,14 @@ public class AccountInfo {
     }
 
     /**
-     * @return the propertyPart1
+     * @return the Name
      */
-    public String getPropertyPart1() {
-        return propertyPart1;
+    public String getName() {
+        return name;
     }
     
     public String toString(){
-        String result = "property:" + propertyPart1;
+        String result = "Name:" + name;
         if (uri != null){
             result+= "\n\tUri: " + uri;
         }
@@ -79,6 +79,7 @@ public class AccountInfo {
         if (password != null){
             result+= "\n\tlpassword: " + password;
         }
+        result+= "\n";
         return result;
     }
 }

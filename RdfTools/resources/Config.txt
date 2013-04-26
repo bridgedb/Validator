@@ -66,13 +66,13 @@ TestDirectory           ../TestDirectory
 
 #The ops github repository includes a Read Only account.
 #Please ask Christian for the password of that account
-opsgithub.uri            https://raw.github.com/openphacts/
-opsgithub.login          OpsReadOnly
-opsgithub.password       askChrisian
+accounts.opsgithub.uri            https://raw.github.com/openphacts/
+accounts.opsgithub.login          OpsReadOnly
+accounts.opsgithub.password       ask Chrisian
 
 #The rsc has a FTP account.
 #Please contact them directly if you require the user name and password.
 #OpenPhacts members can also ask Christian
-chemspiderftp.uri        ftp://ftp.rsc-us.org
-chemspiderftp.login      askRSC
-chemspiderftp.password   askRSC
+accounts.chemspiderftp.uri        ftp://ftp.rsc-us.org
+accounts.chemspiderftp.login      ask RSC
+accounts.chemspiderftp.password   ask RSC

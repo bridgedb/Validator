@@ -50,7 +50,7 @@ public class AccountsReader {
                     } else if (parts[2].equals(PASSWORD)){
                         info.setPassword(properties.getProperty(key));
                     } else {
-                        throw new VoidValidatorException ("Unexpected property with a . in it." + key );                    
+                        throw new VoidValidatorException ("Unexpected " + ACCOUNT_PREFIX +  " property." + key );                    
                     }
                     infos.add(info);
                 } else {

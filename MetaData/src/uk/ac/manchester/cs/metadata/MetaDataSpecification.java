@@ -50,9 +50,10 @@ public class MetaDataSpecification {
     
     private Map<Resource, ResourceMetaData> resourcesByType = new HashMap<Resource, ResourceMetaData>();
    // Map<Resource, ResourceMetaData> resourcesById = new HashMap<Resource, ResourceMetaData>();
-    static String documentationRoot = "";
+    //   static String documentationRoot = "";
     private static String THING_ID = "http://www.w3.org/2002/07/owl#Thing";
     private final Set<URI> linkingPredicates;    
+    private String description;
     
     public MetaDataSpecification(String fileName) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
@@ -65,6 +66,7 @@ public class MetaDataSpecification {
         Map<URI,Map<OWLClassExpression,RequirementLevel>> requirements = extractRequirements();
         linkingPredicates = new HashSet<URI>();
         loadSpecification(requirements);
+        description = "Read from " + fileName;
     }
     
     public ResourceMetaData getResourceMetaData(Resource type){
@@ -187,9 +189,9 @@ public class MetaDataSpecification {
         }
     }
   */ 
-    public static String getDocumentationRoot(){
-        return documentationRoot;
-    }
+    //public static String getDocumentationRoot(){
+    //    return documentationRoot;
+    //}
     
     /*private List<MetaDataBase> getChildren(OWLClass theClass, String type) throws BridgeDBException {
         ArrayList<MetaDataBase> children = new ArrayList<MetaDataBase>();
@@ -286,6 +288,20 @@ public class MetaDataSpecification {
        
     Set<URI> getLinkingPredicates() {
         return linkingPredicates;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 

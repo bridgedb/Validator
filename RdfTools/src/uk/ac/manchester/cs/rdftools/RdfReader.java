@@ -136,6 +136,7 @@ public class RdfReader implements RdfInterface{
     private RepositoryResult<Statement> loadExternalAndGetTheStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException {
         try {
+            //ystem.out.println("looking for " + subjectResource);
             RepositoryConnection repositoryConnection = getConnection();
             if (!(subjectResource instanceof URI)){
                 //ystem.out.println("Not URI");
@@ -143,6 +144,7 @@ public class RdfReader implements RdfInterface{
             }
             URI subjectUri = (URI)subjectResource;
             String contextString = subjectUri.getNamespace();
+            contextString = contextString.substring(0, contextString.length()-1);
             Resource subjectContext = new URIImpl(contextString);
             if (loadedContexts.contains(subjectContext)){
                 //ystem.out.println("Already loaded " + subjectContext);
@@ -160,6 +162,7 @@ public class RdfReader implements RdfInterface{
             Resource newSubjectContext;
             try{
                 newSubjectContext = loadURI(subjectContext.toString());
+                //ystem.out.println("Loaded " + subjectContext);                
             } catch (Exception ex){
                 //ystem.out.println("External load of " + subjectContext + " failed. quess it wasn't a URL (locator) after all");
                 return null;

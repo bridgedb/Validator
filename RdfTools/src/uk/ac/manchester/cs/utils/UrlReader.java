@@ -124,7 +124,7 @@ public class UrlReader {
         try {
             return connection.getInputStream();
         } catch (IOException ex) {
-            throw new VoidValidatorException ("Error getting inputstream " + uri);
+            throw new VoidValidatorException ("Error getting inputstream " + uri, ex);
         }
     }
         

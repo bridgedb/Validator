@@ -1,0 +1,12 @@
+@prefix : <#> .
+@prefix ops: <http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:person2 a ops:Person;
+    ops:hasName "Peter";
+    ops:hasPhoneNumber "1234567";
+    ops:hasBirthdate "2003-01-17T16:02:27Z"^^xsd:dateTime;
+    ops:hasStreet "mainStreet";
+    ops:hasHouseNumber "23";
+    ops:hasWebsite <http://bbc.co.uk>.

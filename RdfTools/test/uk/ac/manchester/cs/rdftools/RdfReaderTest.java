@@ -55,7 +55,7 @@ public class RdfReaderTest {
      */
     @Test
     public void testRemote() throws Exception {
-        Reporter.println("loadFile");
+        Reporter.println("testRemote");
         File inputFile = new File("test-data/testPart1.ttl");
         RdfReader instance = RdfFactory.getMemory();
         Resource expectedContext = new URIImpl(inputFile.toURI().toString());
@@ -67,10 +67,37 @@ public class RdfReaderTest {
         URI predicate = new URIImpl("http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasStreet");
         statements = instance.getDirectOnlyStatementList(subject, predicate, null, subject);
         assertEquals(0, statements.size());
+        statements = instance.getDirectOnlyStatementList(null, null, null);
         statements = instance.getStatementList(subject, predicate, null, subject);
-        assertEquals(1, statements.size());
-        
+        assertEquals(1, statements.size());        
     }
      
+    /**
+     * Test of loadFile method, of class RdfReader.
+     */
+    @Test
+    public void testSubset() throws Exception {
+        Reporter.println("testSubset");
+        File inputFile = new File("test-data/testSubset.ttl");
+        RdfReader instance = RdfFactory.getMemory();
+        Resource expectedContext = new URIImpl(inputFile.toURI().toString());
+        Resource context = instance.loadFile(inputFile);
+        assertEquals(expectedContext, context);
+        List<Statement> statements = instance.getStatementList(null, null, null, context);
+        assertEquals(6, statements.size());
+        Resource subject = new URIImpl("http://example.com#person1");
+        URI predicate = new URIImpl("http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName");
+        statements = instance.getStatementList(subject, predicate, null, context);
+        assertEquals(1, statements.size());
+        subject = new URIImpl("http://example.com#person2");
+        statements = instance.getDirectOnlyStatementList(subject, predicate, null, context);
+        assertEquals(0, statements.size());
+        statements = instance.getDirectOnlyStatementList(null, null, null);
+        for (Statement statement:statements){
+            System.out.println(statement);
+        }
+        statements = instance.getStatementList(subject, predicate, null, context);
+        assertEquals(1, statements.size());
+    }
 
 }

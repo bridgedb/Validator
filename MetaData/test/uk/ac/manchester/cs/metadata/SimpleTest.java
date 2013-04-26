@@ -196,11 +196,29 @@ public class SimpleTest {
     public void missingLinkedType() throws VoidValidatorException   {
         Reporter.println("missingLinkedType");
         RdfHolder holder = new RdfHolder(minReader, minContext);
-        List<Statement> remove = minReader.getStatementList(ALL_SUBJECTS, RdfConstants.TYPE_URI , OpsTestConstants.PARENT, minContext);
+        List<Statement> remove = minReader.getStatementList(ALL_SUBJECTS, RdfConstants.TYPE_URI , OpsTestConstants.PERSON, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
           
         String result = Validator.validate(holder, minContext, specifications);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
+    
+    @Test
+    public void missingLinkedTypeBad() throws VoidValidatorException   {
+        Reporter.println("missingLinkedTypeBad");
+        RdfHolder holder = new RdfHolder(minReader, minContext);
+        List<Statement> remove = minReader.getStatementList(ALL_SUBJECTS, RdfConstants.TYPE_URI , OpsTestConstants.PERSON, minContext);
+        assertThat(remove.size(), greaterThan(0));
+        holder.removeStatements(remove);
+        remove = 
+                minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
+        assertThat(remove.size(), greaterThan(0));
+        holder.removeStatements(remove);
+         
+        String result = Validator.validate(holder, minContext, specifications);
+        assertThat(result, containsString(LinkedResource.NO_KNOWN_TYPE));       
+        assertThat(result,  endsWith(Validator.FAILED));
+    }
+ 
 }

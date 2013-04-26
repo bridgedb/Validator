@@ -24,7 +24,8 @@ class LinkedResource extends CardinalityMetaData {
     private final MetaDataSpecification metaDataSpecification;
   
     public static final String ERROR_SEE_REPORT = " has errors! See report for that Resource! ";
-    
+    public static final String NO_KNOWN_TYPE = " has not been typed, and does not meet the requirements of any known type. ";
+   
     public LinkedResource(URI predicate, String type, int cardinality, RequirementLevel requirementLevel, 
             Set<URI> linkedTypes, MetaDataSpecification metaDataSpecification) {
        super(predicate, cardinality, requirementLevel);
@@ -131,7 +132,7 @@ class LinkedResource extends CardinalityMetaData {
     private void appendNoKnownType(StringBuilder builder, Statement statement, Resource context, int tabLevel) {
         appendErrorStart(builder, statement, context, tabLevel);
         builder.append(statement.getObject());
-        builder.append(" has not been typed, and does not meet the requirements of any known type. ");            
+        builder.append(NO_KNOWN_TYPE);            
         builder.append("\n");    
     }
 

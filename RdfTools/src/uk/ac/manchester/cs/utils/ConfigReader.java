@@ -110,9 +110,9 @@ public class ConfigReader {
             if (loadByCatalinaHomeConfigs(fileName)) {
                 return;
             }
-            //if (loadFromDirectory(fileName, "../org.bridgedb.utils/resources")) {
-            //    return;
-            //}
+            if (loadFromDirectory(fileName, "../rdfTools/resources")) {
+                return;
+            }
             if (loadFromDirectory(fileName, "../conf/OPS-IMS")) {
                 return;
             }

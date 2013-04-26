@@ -41,8 +41,7 @@ public class ImportTest {
     }
 
     @Test
-    @Ignore
-    public void TwoPartValidate() throws VoidValidatorException {
+    public void testTwoPartValidate() throws VoidValidatorException {
         Reporter.println("TwoPartValidate");
         RdfReader reader = RdfFactory.getMemory();
         File part1 = new File ("test-data/testPart1.ttl");
@@ -57,7 +56,7 @@ public class ImportTest {
     }
 
     @Test
-    public void TwoPartMissingValidate() throws VoidValidatorException {
+    public void testTwoPartMissingValidate() throws VoidValidatorException {
         Reporter.println("TwoPartMissingValidate");
         RdfReader reader = RdfFactory.getMemory();
         File part1 = new File ("test-data/testPart1Missing.ttl");
@@ -68,8 +67,18 @@ public class ImportTest {
         List<Statement> list2 = reader.getStatementList(ALL_SUBJECTS, ALL_PREDICATES, ALL_OBJECTS);
         assertThat(list2.size(), greaterThan(list1.size()));
         String result = Validator.validate(reader, context, specifications);
-        System.out.println(result);
         assertThat(result, containsString(LinkedResource.ERROR_SEE_REPORT));
         assertThat(result,  endsWith(Validator.FAILED));
     }
+    
+    @Test
+    public void testSubset() throws VoidValidatorException {
+        Reporter.println("Subset");
+        RdfReader reader = RdfFactory.getMemory();
+        File file = new File ("test-data/testSubset.ttl");
+        Resource context = reader.loadFile(file);
+        String result = Validator.validate(reader, context, specifications);
+        assertThat(result,  endsWith(Validator.SUCCESS));
+    }
+
 }

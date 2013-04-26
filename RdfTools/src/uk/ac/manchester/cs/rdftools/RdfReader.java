@@ -5,9 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Set;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -30,6 +31,8 @@ public class RdfReader implements RdfInterface{
     private static final boolean EXCLUDE_INFERRED =false;
     private final Repository repository;
     private RepositoryConnection connection = null;
+    private final Set<URI> parentPredicates; //currently 1 hard coded value.
+    private final Set<Resource> loadedContexts;
     
     public static RdfReader factory(Repository repository) throws VoidValidatorException{
         RdfReader instance = new RdfReader(repository);
@@ -43,6 +46,9 @@ public class RdfReader implements RdfInterface{
    
     private RdfReader(Repository repository) throws VoidValidatorException{
         this.repository = repository; 
+        parentPredicates = new HashSet<URI>();
+        parentPredicates.add(new URIImpl ("http://rdfs.org/ns/void#subset"));
+        loadedContexts = new HashSet<Resource>();
     }
    
     public Resource loadFile(File inputFile) throws VoidValidatorException{
@@ -67,6 +73,7 @@ public class RdfReader implements RdfInterface{
     private Resource loadInputStream(InputStream stream, String address) throws VoidValidatorException{
         try {
             Resource context = new URIImpl(address);
+            loadedContexts.add(context);
             RepositoryConnection repositoryConnection = getConnection();
             connection.setAutoCommit(false);
             repositoryConnection.add(stream, address, getFormat(address), context);
@@ -84,7 +91,18 @@ public class RdfReader implements RdfInterface{
         try {
             RepositoryResult<Statement> repositoryResult = 
                         getTheStatementList(subjectResource, predicate, object, contexts);
-            return repositoryResult.asList();
+            if (repositoryResult!= null){
+                return repositoryResult.asList();
+            }
+            if (repositoryResult!= null){
+                return repositoryResult.asList();
+            }
+            repositoryResult = loadExternalAndGetTheStatementList(subjectResource, predicate, object, contexts);
+            if (repositoryResult != null && repositoryResult.hasNext()){
+                //ystem.out.println("Found something after loading more data.");
+                return repositoryResult.asList();
+            }
+            return findbyParentResouce(subjectResource, predicate, object, contexts);
         } catch (RepositoryException ex) {
             throw new VoidValidatorException("Error converting to List of Statements ", ex);
         }
@@ -97,45 +115,61 @@ public class RdfReader implements RdfInterface{
             RepositoryResult<Statement> results = 
                         repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, contexts);
             if (results.hasNext()){
-                //ystem.out.println("found direct");
-                //Found something so done
+                //ystem.out.println("Found something so done");
                 return results;
             }
             if (subjectResource == null){
-                //No subject so don't look elsehwere
-                //stem.out.println("No Subject");
+                //stem.out.println("No subject so don't look elsehwere");
                 return results;
             }
             results = repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED);
-            if (!results.hasNext()){
-                //ystem.out.println("Found indirect");
-                //Found something in another context so done.
+            if (results.hasNext()){
+                //ystem.out.println("Found something in another context so done.");
                 return results;
             }
+            return null;
+         } catch (RepositoryException ex) {
+            throw new VoidValidatorException("Error getting the Statements ", ex);
+        }
+    }
+
+    private RepositoryResult<Statement> loadExternalAndGetTheStatementList(Resource subjectResource, URI predicate, Value object, 
+            Resource... contexts) throws VoidValidatorException {
+        try {
+            RepositoryConnection repositoryConnection = getConnection();
             if (!(subjectResource instanceof URI)){
-                //not expected but not able to go on.
                 //ystem.out.println("Not URI");
-                return results;
+                return null;
             }
             URI subjectUri = (URI)subjectResource;
             String contextString = subjectUri.getNamespace();
             Resource subjectContext = new URIImpl(contextString);
+            if (loadedContexts.contains(subjectContext)){
+                //ystem.out.println("Already loaded " + subjectContext);
+                return null;
+            }
             try {
-                if (!repositoryConnection.hasStatement(null, null, null, EXCLUDE_INFERRED, subjectContext)){
-                    //Already loaded but not found so give up.
-                    //stem.out.println("already loaded " + subjectContext);
-                    return results;
+                if (repositoryConnection.hasStatement(null, null, null, EXCLUDE_INFERRED, subjectContext)){
+                    //ystem.out.println("Already loaded " + subjectContext + " so not trying again ");
+                    loadedContexts.add(subjectContext);
+                    return null;
                 }
             } catch (RepositoryException ex) {
                 throw new VoidValidatorException("Unable to check source " + subjectContext + " is loaded. ", ex);
             }
-            Resource newSubjectContext = loadURI(subjectContext.toString());
+            Resource newSubjectContext;
+            try{
+                newSubjectContext = loadURI(subjectContext.toString());
+            } catch (Exception ex){
+                //ystem.out.println("External load of " + subjectContext + " failed. quess it wasn't a URL (locator) after all");
+                return null;
+            }
             if (!newSubjectContext.equals(subjectContext)){
                 throw new VoidValidatorException(newSubjectContext + " != " + subjectContext);
             }
             return repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, subjectContext);
         } catch (RepositoryException ex) {
-            throw new VoidValidatorException("Error getting the Statements ", ex);
+            throw new VoidValidatorException("Error loading external the Statements ", ex);
         }
     }
 
@@ -157,8 +191,7 @@ public class RdfReader implements RdfInterface{
             if (connection != null){
                 if (connection.isOpen()){
                     return connection;
-                }
-            
+                }         
             }
             connection = repository.getConnection();
             return connection;
@@ -202,5 +235,26 @@ public class RdfReader implements RdfInterface{
             //do nothing as there is already an error
         }
     }
+
+    private List<Statement> findbyParentResouce(Resource subjectResource, URI predicate, Value object, 
+            Resource... contexts) throws VoidValidatorException {
+        //ystem.out.println ("check parent " + subjectResource);
+        ArrayList<Statement> results = new ArrayList<Statement>();
+        for (URI parentPredicate:parentPredicates){
+            //ystem.out.println("  " + parentPredicate);
+            List<Statement> parentStatements = this.getStatementList(null, parentPredicate, subjectResource, contexts);
+            for (Statement parentStatement:parentStatements){
+                //ystem.out.println(parentStatement);
+                List<Statement> found = 
+                        this.getStatementList(parentStatement.getSubject(), parentPredicate, subjectResource, contexts);
+                for (Statement find:found){
+                    if (!results.contains(find)){
+                        results.add(find);
+                    }
+                }
+            }
+        }
+        return results;
+     }
 
 }

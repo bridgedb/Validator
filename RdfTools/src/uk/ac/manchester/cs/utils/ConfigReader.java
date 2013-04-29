@@ -34,6 +34,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.SimpleLayout;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
@@ -100,6 +101,7 @@ public class ConfigReader {
     }
     
     private ConfigReader(String fileName) throws VoidValidatorException{
+        logger.info("Looking for file " + fileName);
         try {
             if (loadDirectly(fileName)) {
                 return;
@@ -302,6 +304,9 @@ public class ConfigReader {
             }
             return true;
         }
+        if (loggerSetup){
+            logger.info("Not found from resource");
+        }
         return false;
     }
 
@@ -317,11 +322,19 @@ public class ConfigReader {
                 findMethod = "Loaded by unzipping jar";
                 foundAt = "Inside jar file";
                 if (loggerSetup){
-                    logger.info("Loaded file " + name + " by unziiping the Jar ");    
+                    logger.info("Loaded file " + name + " by unziping the Jar ");    
                 }
                 return true;
             }
         }
+        zip.close();
+        if (loggerSetup){
+            zip = new ZipInputStream( jar.openStream());
+            while( ( ze = zip.getNextEntry() ) != null ) {
+                logger.info(ze.getName());
+            }
+        }
+        zip.close();
         return false;
     }
 }

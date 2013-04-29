@@ -18,7 +18,7 @@
   <dependencies>
         <dependency>
             <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-rio-api</artifactId>
+            <artifactId>sesame-runtime</artifactId>
             <version>${sesame.version}</version>
         </dependency>
         <dependency>
@@ -44,9 +44,9 @@
             <version>${sesame.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+         <dependency>
             <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-rio-rdfxml</artifactId>
+            <artifactId>sesame-repository-sail</artifactId>
             <version>${sesame.version}</version>
         </dependency>
         <dependency>
@@ -84,4 +84,24 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    <repositories>
+        <repository>
+            <id>aduna-repo</id>
+            <name>Aduna repository</name>
+            <url>http://repo.aduna-software.org/maven2/releases/</url>
+        </repository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+    </repositories>
+
 </project>

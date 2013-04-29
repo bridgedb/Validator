@@ -11,6 +11,8 @@ package uk.ac.manchester.cs.server;
 public class WsValidationConstants {
     
     public static final String VALIDATE = "validate";
+    public static final String RDF_FORMAT = "rdfFormat";
+    public static final String TEXT = "text";    
     public static final String URI = "uri";
     public static final String SPECIFICATION = "specification";
 }

@@ -18,8 +18,6 @@
 //
 package uk.ac.manchester.cs.server;
 
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -33,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.rio.RDFFormat;
 import uk.ac.manchester.cs.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.metadata.SpecificationsRegistry;
 import uk.ac.manchester.cs.rdftools.RdfFactory;
@@ -40,6 +39,7 @@ import uk.ac.manchester.cs.rdftools.RdfReader;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.validator.Validator;
 
+    
 /**
  *
  * @author Christian
@@ -59,7 +59,7 @@ public class WsValidatorServer {
     public Response welcomeMessage(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
         StringBuilder sb = getHeader();
 
-        appendValidationForm(sb, null, null, httpServletRequest);                     
+        appendValidationForm(sb, null, null, null, null, httpServletRequest);                     
         sb.append("</body></html>");
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();
     }
@@ -70,118 +70,185 @@ public class WsValidatorServer {
         sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
                 + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
         sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">");
-        sb.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=ISO-8859-1\"/>");
-        sb.append("<head><title>OPS Validator</title></head><body>");
-        sb.append("<h1>Open PHACTS Validator</h1>");        
+        sb.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=ISO-8859-1\"/>\n");
+        sb.append("<head><title>OPS Validator</title></head>\n<body>");
+        sb.append("<h1>Open PHACTS Validator</h1>\n");        
         return sb;
     }
     
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
-    public Response validate(@QueryParam(WsValidationConstants.URI)String uri, 
+    public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT)String rdfFormat, 
+            @QueryParam(WsValidationConstants.TEXT)String text, 
+            @QueryParam(WsValidationConstants.URI)String uri, 
             @QueryParam(WsValidationConstants.SPECIFICATION)String specification,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
         StringBuilder sb = getHeader();
-        appendValidationResult(sb, uri, specification);
-        appendValidationForm(sb, uri, specification, httpServletRequest);                             
+        appendValidationResult(sb, rdfFormat, text, uri, specification);
+        appendValidationForm(sb, rdfFormat, text, uri, specification, httpServletRequest);                             
         sb.append("</body></html>");
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
     }
 
-    private void appendValidationResult(StringBuilder sb, String uri, String specification) throws VoidValidatorException  {
-        if (uri == null && specification == null){
-            return;
-        }
-        if (uri == null){
-            sb.append("Please specify the URI to validate.<br>");
-        }
-        URI URI = null;
-        try {
-            URI = new URIImpl(uri);
-        } catch (Exception ex){
-            sb.append(ex.getMessage());
-            sb.append("<br>");
-        }
-        MetaDataSpecification specs = null;
-        if (specification == null){
-            sb.append("Please specify the specification you want to use.<br>");
-        } else {
-            try {
-                specs = SpecificationsRegistry.specificationByName(specification);
-            } catch (Exception ex){
-                sb.append(ex.getMessage());
-                sb.append("<br>");
-            }
-            if (specs == null){
-                sb.append("Sorry no specification with name ");
-                sb.append(specification);
-                sb.append(" known!<br>");            
-            }
-        }
-        appendValidationResult(sb, URI, specs);
-    }
-    
-    private void appendValidationResult(StringBuilder sb, URI URI, MetaDataSpecification specifications) throws VoidValidatorException {
-        if (URI == null){
-            return;
-        }
-        if (specifications == null){
-            return;
-        }
-        try {
-            RdfReader reader = RdfFactory.getMemory();
-            Resource context = reader.loadURI(URI.stringValue());
-            String results = Validator.validate(reader, context, specifications);
-            String[] lines = results.split("\\r?\\n");
-            int maxWidth = 0;
-            for (String line:lines){
-                if (line.length() > maxWidth){
-                    maxWidth = line.length();
+    private void appendValidationResult(StringBuilder sb, String format, String text, String uri, String specification) 
+            throws VoidValidatorException  {   
+        boolean error = false;
+        RDFFormat rdfFormat = null;
+        if (format != null && !format.isEmpty()){
+            for (RDFFormat check:RDFFormat.values()){
+                if (check.getName().equals(format)){
+                    rdfFormat = check;
                 }
             }
-            sb.append("<fieldset><legend>Validator Results</legend>");
-            sb.append("<textarea rows=\"");
-            sb.append(lines.length);
-            sb.append("\" cols=\"");
-            sb.append(maxWidth);
-            sb.append("\" readonly >");
-            sb.append(results);
-            sb.append("</textarea></fieldset>");
-        } catch (Exception ex){
-            sb.append(ex.getMessage());
-            sb.append("<br/>");
-            Throwable throwable = ex.getCause();
-            while (throwable != null){
-                sb.append("Caused by:");
-                sb.append(throwable.getMessage());
-                sb.append("<br/>");
-                throwable = throwable.getCause();
+            if (rdfFormat == null){
+                sb.append(WsValidationConstants.RDF_FORMAT);
+                sb.append(" ");
+                sb.append(format);
+                sb.append(" is not known. Please select one from the dropdown list.<br>");
+                error = true;
             }
+        }       
+        if (text == null){
+            text = "";
+        }
+        URI URI = null;
+        if (uri != null && !uri.isEmpty()){
+            try {
+                URI = new URIImpl(uri);
+            } catch (Exception ex){
+                sb.append("Error with ");
+                sb.append(WsValidationConstants.URI);
+                sb.append(" \"");
+                sb.append(uri);
+                sb.append("\"<br>");
+                sb.append(ex.getMessage());
+                sb.append("<br>");
+                error = true;
+            }
+        }
+        MetaDataSpecification specs = null;
+        if (specification != null && !specification.isEmpty()){
+            try {
+                specs = SpecificationsRegistry.specificationByName(specification);
+                if (specs == null){
+                    sb.append("Sorry no ");
+                    sb.append(WsValidationConstants.SPECIFICATION);
+                    sb.append(" with name ");
+                    sb.append(specification);
+                    sb.append(" known!<br>");  
+                    error = true;
+                }
+            } catch (Exception ex){
+                sb.append("Error getting  ");
+                sb.append(WsValidationConstants.SPECIFICATION);
+                sb.append(" with name ");
+                sb.append(specification);
+                sb.append("<br>");            
+                sb.append(ex.getMessage());
+                sb.append("<br>");
+                error = true;
+            }
+        }
+        if (error){
+            return;
+        }
+        if (text.isEmpty() && URI == null){
+            return;
+        }
+        if (specs == null){
+            sb.append("Please specify a ");
+            sb.append(WsValidationConstants.SPECIFICATION);
+            sb.append("<br>");
+            return;
+        }
+        if (URI == null){
+            appendValidationResult(sb, rdfFormat, text,specs);
+        } else {
+            if (text.isEmpty()){
+                appendValidationResult(sb, rdfFormat, URI, specs);
+            } else {
+                sb.append("Please clear either the ");
+                sb.append(WsValidationConstants.TEXT);
+                sb.append(" or the ");
+                sb.append(WsValidationConstants.URI);
+                sb.append("parameter! <br>");         
+            }
+        }      
+    }
+    
+    private void appendValidationResult(StringBuilder sb, RDFFormat rdfFormat, String text, MetaDataSpecification specifications) throws VoidValidatorException {
+        try {
+            if (rdfFormat == null){
+                sb.append("You must supply an ");
+                sb.append(WsValidationConstants.RDF_FORMAT);
+                sb.append(" parameter when using a ");
+                sb.append(WsValidationConstants.TEXT);
+                sb.append("parameter.<br>\n");
+                return;
+            }
+             
+            RdfReader reader = RdfFactory.getMemory();
+            Resource context = reader.loadString(text, rdfFormat);
+            String results = Validator.validate(reader, context, specifications);
+            appendValidationResult(sb, results);
+        } catch (Exception ex){
+            appendException(sb, ex);
+        }     
+     }
+    
+     private void appendValidationResult(StringBuilder sb, RDFFormat rdfFormat, URI URI, MetaDataSpecification specifications) throws VoidValidatorException {
+         try {
+            RdfReader reader = RdfFactory.getMemory();
+            Resource context = reader.loadURI(URI.stringValue(), rdfFormat);
+            String results = Validator.validate(reader, context, specifications);
+            appendValidationResult(sb, results);
+        } catch (Exception ex){
+            appendException(sb, ex);
+        }     
+     }
+     
+     private void appendValidationResult(StringBuilder sb, String results) {
+        String[] lines = results.split("\\r?\\n");
+        int maxWidth = 0;
+        for (String line:lines){
+            if (line.length() > maxWidth){
+                maxWidth = line.length();
+            }
+        }
+        sb.append("<fieldset><legend>Validator Results</legend>");
+        sb.append("<textarea rows=\"");
+        sb.append(lines.length);
+        sb.append("\" cols=\"");
+        sb.append(maxWidth);
+        sb.append("\" readonly >");
+        sb.append(results);
+        sb.append("</textarea></fieldset>");
+    }
+
+     private void appendException(StringBuilder sb, Exception ex) throws VoidValidatorException {
+        sb.append(ex.getMessage());
+        sb.append("<br/>");
+        Throwable throwable = ex.getCause();
+        while (throwable != null){
+            sb.append("Caused by:");
+            sb.append(throwable.getMessage());
+            sb.append("<br/>");
+            throwable = throwable.getCause();
          }     
     }
     
-    private void appendValidationForm(StringBuilder sb, String URI, String specification, HttpServletRequest httpServletRequest) throws VoidValidatorException {
+    private void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, HttpServletRequest httpServletRequest) throws VoidValidatorException {
      	sb.append("<form method=\"get\" action=\"");
         sb.append(httpServletRequest.getContextPath());
     	sb.append("/");
     	sb.append(WsValidationConstants.VALIDATE);
     	sb.append("\">");
     	sb.append("<fieldset>");
-    	sb.append("<legend>Validator Input</legend>");
-    	sb.append("<p><label for=\"");
-    	sb.append(WsValidationConstants.URI);
-    	sb.append("\">Input URI</label>");
-    	sb.append("<input type=\"text\" id=\"");
-    	sb.append(WsValidationConstants.URI);
-    	sb.append("\" name=\"");
-    	sb.append(WsValidationConstants.URI);
-    	sb.append("\" style=\"width:80%\"");
-        if (URI != null){
-        	sb.append("\" value=\"");
-            sb.append(URI);            
-        }
-    	sb.append("\"/></p>");
+    	sb.append("<legend>Validator Input</legend>\n");
+        appendRDFFormat(sb, format);
+        appendText(sb, text);
+        appendUri(sb, uri);
     	generateSpecificationsSelector(sb, specification);
     	sb.append("<p><input type=\"submit\" value=\"Submit\"/></p>");
     	sb.append("<p>Note: If the new page does not open click on the address bar and press enter</p>");
@@ -198,7 +265,7 @@ public class WsValidatorServer {
     	sb.append("\" onchange=\"populateData(this)\">");
         int maxDescription = 0;
         if (!names.contains(specification)){
-            sb.append("<option SELECTED value=\"blank\">Please Select</option>");
+            sb.append("<option SELECTED value=\"\">Please Select</option>");
         }
 		for (String name : names) {
 			sb.append("<option value=\"");
@@ -256,6 +323,62 @@ public class WsValidatorServer {
         sb.append("}");
         sb.append("}");
         sb.append("</script>");
+    }
+
+    private void appendUri(StringBuilder sb, String uri) {     
+    	sb.append("<p><label for=\"");
+    	sb.append(WsValidationConstants.URI);
+    	sb.append("\">Input URI</label>");
+    	sb.append("<input type=\"text\" id=\"");
+    	sb.append(WsValidationConstants.URI);
+    	sb.append("\" name=\"");
+    	sb.append(WsValidationConstants.URI);
+    	sb.append("\" style=\"width:80%\"");
+        if (uri != null){
+        	sb.append("\" value=\"");
+            sb.append(uri);            
+        }
+    	sb.append("\"/></p>\n");
+    }
+    
+    private void appendRDFFormat(StringBuilder sb, String format) {
+        sb.append("<p>");
+    	sb.append(WsValidationConstants.RDF_FORMAT);
+        sb.append("<select name=\"");
+    	sb.append(WsValidationConstants.RDF_FORMAT);
+    	sb.append("\">");
+        int maxDescription = 0;
+        RDFFormat rdfFormat = null;
+        if (format != null && !format.isEmpty()){
+            for (RDFFormat check:RDFFormat.values()){
+                if (check.getName().equals(format)){
+                    rdfFormat = check;
+                }
+            }
+        } else {
+            sb.append("<option SELECTED value=\"\">Please Select</option>");
+        }
+        for (RDFFormat aFormat:RDFFormat.values()){
+			sb.append("<option value=\"");
+			sb.append(aFormat.getName());
+            if (aFormat.equals(rdfFormat)){
+                sb.append("\" SELECTED >");                
+            } else {
+                sb.append("\">");
+            }
+			sb.append(aFormat);
+			sb.append("</option>");
+  		}
+    	sb.append("</select>\n");
+    	sb.append("<br/>\n");
+    }
+
+    private void appendText(StringBuilder sb, String text) {
+        sb.append("<p><textarea rows=\"15\" name=\"text\" style=\"width:100%; background-color: #EEEEFF;\">");
+        if (text != null){
+            sb.append(text);
+        }
+        sb.append("</textarea></p>\n");
     }
 
 }

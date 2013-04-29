@@ -1,10 +1,12 @@
 package uk.ac.manchester.cs.rdftools;
 
 import info.aduna.lang.FileFormat;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +21,10 @@ import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
 import org.openrdf.rio.RDFFormat;
+import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParserRegistry;
+import org.openrdf.rio.RDFWriter;
+import org.openrdf.rio.Rio;
 import uk.ac.manchester.cs.utils.UrlReader;
 
 /**
@@ -28,7 +33,9 @@ import uk.ac.manchester.cs.utils.UrlReader;
  */
 public class RdfReader implements RdfInterface{
     
+    public static String DEFAULT_BASE_URI = "http://no/BaseURI/Set/";
     private static final boolean EXCLUDE_INFERRED =false;
+    
     private final Repository repository;
     private RepositoryConnection connection = null;
     private final Set<URI> parentPredicates; //currently 1 hard coded value.
@@ -52,31 +59,42 @@ public class RdfReader implements RdfInterface{
     }
    
     public Resource loadFile(File inputFile) throws VoidValidatorException{
+        return loadFile(inputFile, null);
+    }
+    
+    public Resource loadFile(File inputFile, RDFFormat format) throws VoidValidatorException{
         try {
             InputStream stream = new FileInputStream(inputFile);
-            return loadInputStream(stream, inputFile.toURI().toString());
+            return loadInputStream(stream, inputFile.toURI().toString(), format);
         } catch (FileNotFoundException ex) {
             throw new VoidValidatorException("Unable to find file. " + inputFile.getAbsolutePath(), ex);
         }
     }
    
     public Resource loadURI(String address) throws VoidValidatorException {
+        return loadURI(address, null);
+    }
+    
+    public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException {
         if (address.startsWith("file")){
             File file = new File(address);
             return loadFile(file);
         }
         UrlReader urlReader = new UrlReader(address);
         InputStream stream = urlReader.getInputStream();
-        return loadInputStream(stream, address);
+        return loadInputStream(stream, address, format);
     }
    
-    private Resource loadInputStream(InputStream stream, String address) throws VoidValidatorException{
+    private Resource loadInputStream(InputStream stream, String address, RDFFormat format) throws VoidValidatorException{
         try {
             Resource context = new URIImpl(address);
             loadedContexts.add(context);
             RepositoryConnection repositoryConnection = getConnection();
             connection.setAutoCommit(false);
-            repositoryConnection.add(stream, address, getFormat(address), context);
+            if (format == null){
+                format = getFormat(address);
+            }
+            repositoryConnection.add(stream, address, format, context);
             connection.commit();
             return context;
         } catch (Exception ex) {
@@ -85,6 +103,14 @@ public class RdfReader implements RdfInterface{
         }
     }
 
+    public Resource loadString(String text, RDFFormat rdfFormat) throws VoidValidatorException {
+        InputStream is = new ByteArrayInputStream(text.getBytes());
+        if (rdfFormat == null){
+            throw new VoidValidatorException("You must supply an rdfFormat");
+        }
+        return loadInputStream(is, DEFAULT_BASE_URI, rdfFormat);
+    }
+    
     @Override
     public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException {
@@ -259,5 +285,31 @@ public class RdfReader implements RdfInterface{
         }
         return results;
      }
+
+    public void write(RDFFormat format, OutputStream out) throws RDFHandlerException, VoidValidatorException, RepositoryException{
+        RDFWriter rdfWriter = Rio.createWriter(format, out);
+        rdfWriter.startRDF();
+        RepositoryConnection repositoryConnection = getConnection();
+        RepositoryResult<Statement> statements = 
+                repositoryConnection.getStatements(null, null, null, true);
+        while (statements.hasNext()) {
+            Statement statement = statements.next();
+            rdfWriter.handleStatement(statement);
+        }
+        rdfWriter.endRDF();
+
+    }
+    
+    public static void main(String[] args) throws VoidValidatorException, RDFHandlerException, RepositoryException{
+        RdfReader reader =  RdfFactory.getMemory();
+        reader.loadURI("https://github.com/openphacts/Validator/blob/Christian/MetaData/test-data/testSimple.ttl");
+        for (RDFFormat format:RDFFormat.values() ){
+            System.out.println(format);
+            System.out.println("  " + format.getDefaultMIMEType());
+            //reader.write(format, System.out);
+            //System.out.println();
+            //System.out.println("**** " + format);            
+       }
+    }
 
 }

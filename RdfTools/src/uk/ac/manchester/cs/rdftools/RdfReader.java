@@ -211,7 +211,7 @@ public class RdfReader implements RdfInterface{
         FileFormat fileFormat = reg.getFileFormatForFileName(fileName);
         if (fileFormat == null || !(fileFormat instanceof RDFFormat)){
             //added bridgeDB/OPS specific extension here if required.  
-            throw new VoidValidatorException("failed");
+            throw new VoidValidatorException("Unable to dettermine RDF formst based on file name " + fileName);
         } else {
             return (RDFFormat)fileFormat;
         }

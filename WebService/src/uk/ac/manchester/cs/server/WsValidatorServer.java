@@ -27,6 +27,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
+import uk.ac.manchester.cs.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.metadata.SpecificationsRegistry;
 import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 
@@ -37,7 +38,9 @@ import uk.ac.manchester.cs.rdftools.VoidValidatorException;
 public class WsValidatorServer {
         
     static final Logger logger = Logger.getLogger(WsValidatorServer.class);
-
+    private static final int DESCRIPTION_WIDTH = 100;
+    private static final String DESCRIPTION_FIELD = "Description";
+    
     public WsValidatorServer() {
         logger.info("Validator Server setup");
     }
@@ -67,7 +70,7 @@ public class WsValidatorServer {
     	sb.append(WsValidationConstants.VALIDATE);
     	sb.append("\">");
     	sb.append("<fieldset>");
-    	sb.append("<legend>Mapper</legend>");
+    	sb.append("<legend>Validator</legend>");
     	sb.append("<p><label for=\"");
     	sb.append(WsValidationConstants.URI);
     	sb.append("\">Input URI</label>");
@@ -80,6 +83,7 @@ public class WsValidatorServer {
     	sb.append("<p><input type=\"submit\" value=\"Submit\"/></p>");
     	sb.append("<p>Note: If the new page does not open click on the address bar and press enter</p>");
     	sb.append("</fieldset></form>\n");
+        generateSpecificationsScript(sb);
    }
 
     private void generateSpecificationsSelector(StringBuilder sb) throws VoidValidatorException {
@@ -88,17 +92,57 @@ public class WsValidatorServer {
     	sb.append(WsValidationConstants.SPECIFICATION);
         sb.append("<select name=\"");
     	sb.append(WsValidationConstants.SPECIFICATION);
-    	sb.append("\">");
+    	sb.append("\" onchange=\"populateData(this)\">");
+        int maxDescription = 0;
 		for (String name : names) {
 			sb.append("<option value=\"");
 			sb.append(name);
 			sb.append("\">");
 			sb.append(name);
 			sb.append("</option>");
+            MetaDataSpecification specs = SpecificationsRegistry.specificationByName(name);
+            String description = specs.getDescription();
+            if (description.length() > maxDescription){
+                maxDescription = description.length();
+            }
 		}
     	sb.append("</select>\n");
+    	sb.append("<br/>\n");
+        int rows = maxDescription / DESCRIPTION_WIDTH + 1;
+        sb.append("<textarea name=\"");
+        sb.append(DESCRIPTION_FIELD);
+        sb.append("\" rows=\"");
+        sb.append(rows);
+        sb.append("\" cols=\"");
+        sb.append(DESCRIPTION_WIDTH);      
+        sb.append("\" readOnly/>");
+        sb.append("</textarea>\n");
    }
 
+    private void generateSpecificationsScript(StringBuilder sb) throws VoidValidatorException {
+		Set<String> names = SpecificationsRegistry.getSpecificationNames();
+        sb.append("<script>");
+        sb.append(   "function populateData(sel){");
+        sb.append(      "var form = sel.form,");
+        sb.append(         "value = sel.options[sel.selectedIndex].value;");
+        sb.append(      "switch(value){");
+		for (String name : names) {
+            MetaDataSpecification specs = SpecificationsRegistry.specificationByName(name);
+            sb.append("case '");
+            sb.append(name);
+            sb.append("':");
+            sb.append("form.");
+            sb.append(DESCRIPTION_FIELD);
+            sb.append(".value = '");
+            sb.append(specs.getDescription());
+            sb.append("';");
+            sb.append("break;");
+        }
+        sb.append("default:");
+        sb.append("}");
+        sb.append("}");
+        sb.append("</script>");
+    }
 }
 
 

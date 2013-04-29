@@ -140,13 +140,14 @@ public class WsValidatorServer {
                     maxWidth = line.length();
                 }
             }
+            sb.append("<fieldset><legend>Validator Results</legend>");
             sb.append("<textarea rows=\"");
             sb.append(lines.length);
             sb.append("\" cols=\"");
             sb.append(maxWidth);
             sb.append("\" readonly >");
             sb.append(results);
-            sb.append("</textarea>");
+            sb.append("</textarea></fieldset>");
         } catch (Exception ex){
             sb.append(ex.getMessage());
             sb.append("<br/>");
@@ -167,7 +168,7 @@ public class WsValidatorServer {
     	sb.append(WsValidationConstants.VALIDATE);
     	sb.append("\">");
     	sb.append("<fieldset>");
-    	sb.append("<legend>Validator</legend>");
+    	sb.append("<legend>Validator Input</legend>");
     	sb.append("<p><label for=\"");
     	sb.append(WsValidationConstants.URI);
     	sb.append("\">Input URI</label>");

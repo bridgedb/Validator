@@ -101,7 +101,7 @@ public class Validator {
         if (unknownType){
             builder.append("Unable to validate ");
             builder.append(resource);
-            builder.append(" as has no known type. ");
+            builder.append(" as has no known type. \n");
             error = true;
         }
         return error;

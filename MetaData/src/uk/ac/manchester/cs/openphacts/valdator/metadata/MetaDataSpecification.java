@@ -204,43 +204,7 @@ public class MetaDataSpecification {
         return new URIImpl(id);
     }
     
-/*    public ResourceMetaData getExistingResourceByType(Value type, Resource id, MetaDataCollection collection){
-        ResourceMetaData resourceMetaData =  resourcesByType.get(type);
-        if (resourceMetaData == null){
-            return null;
-        } else {
-            return resourceMetaData.getSchemaClone(id, collection);
-        }
-    }
-    
-    public ResourceMetaData getResourceByType(Value type, Resource id, MetaDataCollection collection) throws BridgeDBException{
-        ResourceMetaData resourceMetaData = resourcesByType.get(type);
-        if (resourceMetaData == null){
-            logger.warn("Unable to find specifications for type: " + type);
-            URI uri = (URI)type;
-            return new ResourceMetaData(id, uri);
-        } else {
-            return resourceMetaData.getSchemaClone(id, collection);
-        }
-    }
-  */ 
-    //public static String getDocumentationRoot(){
-    //    return documentationRoot;
-    //}
-    
-    /*private List<MetaDataBase> getChildren(OWLClass theClass, String type) throws BridgeDBException {
-        ArrayList<MetaDataBase> children = new ArrayList<MetaDataBase>();
-        Set<OWLClassExpression> exprs = theClass.getSuperClasses(ontology);
-        for (OWLClassExpression expr:exprs){
-            if (!(expr instanceof OWLClass)){
-                MetaDataBase child = parseExpression(expr, type);
-                children.add(child);
-            }
-        }
-        return children;
-    }*/
-  
-    private MetaDataBase parseExpression(OWLClassExpression expr, String type, RequirementLevel requirementLevel) 
+   private MetaDataBase parseExpression(OWLClassExpression expr, String type, RequirementLevel requirementLevel) 
             throws VoidValidatorException {
         if (expr instanceof OWLQuantifiedRestriction){
             return parseOWLQuantifiedRestriction ((OWLQuantifiedRestriction) expr, type, requirementLevel);

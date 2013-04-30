@@ -166,6 +166,12 @@
     
 
 
+    <!-- http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasWeddingDate -->
+
+    <owl:DatatypeProperty rdf:about="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasWeddingDate"/>
+    
+
+
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -185,36 +191,27 @@
     
 
 
-    <!-- http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Daughter -->
-
-    <owl:Class rdf:about="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Daughter">
-        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
-    </owl:Class>
-    
-
-
-    <!-- http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#GrandParent -->
-
-    <owl:Class rdf:about="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#GrandParent">
-        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
-    </owl:Class>
-    
-
-
     <!-- http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Parent -->
 
     <owl:Class rdf:about="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Parent">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
-                <owl:someValuesFrom rdf:resource="&xsd;string"/>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasWeddingDate"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;dateTime"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasChild"/>
                 <owl:someValuesFrom rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
+                <owl:someValuesFrom rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -224,8 +221,20 @@
         <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
         <owl:annotatedTarget>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
-                <owl:someValuesFrom rdf:resource="&xsd;string"/>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasChild"/>
+                <owl:someValuesFrom rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
+            </owl:Restriction>
+        </owl:annotatedTarget>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Parent"/>
+        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Should"/>
+        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
+        <owl:annotatedTarget>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasWeddingDate"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="&xsd;dateTime"/>
             </owl:Restriction>
         </owl:annotatedTarget>
     </owl:Axiom>
@@ -235,8 +244,8 @@
         <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
         <owl:annotatedTarget>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasChild"/>
-                <owl:someValuesFrom rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
+                <owl:someValuesFrom rdf:resource="&xsd;string"/>
             </owl:Restriction>
         </owl:annotatedTarget>
     </owl:Axiom>
@@ -262,18 +271,6 @@
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
-                <owl:someValuesFrom rdf:resource="&xsd;string"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasBirthdate"/>
-                <owl:someValuesFrom rdf:resource="&xsd;dateTime"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
                 <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasWebsite"/>
                 <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
             </owl:Restriction>
@@ -299,68 +296,20 @@
                     </owl:Restriction>
                 </owl:unionOf>
             </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
+                <owl:someValuesFrom rdf:resource="&xsd;string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasBirthdate"/>
+                <owl:someValuesFrom rdf:resource="&xsd;dateTime"/>
+            </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
-    <owl:Axiom>
-        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
-        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
-        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
-        <owl:annotatedTarget>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasWebsite"/>
-                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-            </owl:Restriction>
-        </owl:annotatedTarget>
-    </owl:Axiom>
-    <owl:Axiom>
-        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
-        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
-        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
-        <owl:annotatedTarget>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasBirthdate"/>
-                <owl:someValuesFrom rdf:resource="&xsd;dateTime"/>
-            </owl:Restriction>
-        </owl:annotatedTarget>
-    </owl:Axiom>
-    <owl:Axiom>
-        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
-        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
-        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
-        <owl:annotatedTarget>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <owl:Class>
-                        <owl:intersectionOf rdf:parseType="Collection">
-                            <owl:Restriction>
-                                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasHouseNumber"/>
-                                <owl:someValuesFrom rdf:resource="&xsd;string"/>
-                            </owl:Restriction>
-                            <owl:Restriction>
-                                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasStreet"/>
-                                <owl:someValuesFrom rdf:resource="&xsd;string"/>
-                            </owl:Restriction>
-                        </owl:intersectionOf>
-                    </owl:Class>
-                    <owl:Restriction>
-                        <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasPostbox"/>
-                        <owl:someValuesFrom rdf:resource="&xsd;string"/>
-                    </owl:Restriction>
-                </owl:unionOf>
-            </owl:Class>
-        </owl:annotatedTarget>
-    </owl:Axiom>
-    <owl:Axiom>
-        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
-        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
-        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
-        <owl:annotatedTarget>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
-                <owl:someValuesFrom rdf:resource="&xsd;string"/>
-            </owl:Restriction>
-        </owl:annotatedTarget>
-    </owl:Axiom>
     <owl:Axiom>
         <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
         <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
@@ -380,22 +329,66 @@
             </owl:Class>
         </owl:annotatedTarget>
     </owl:Axiom>
-    
-
-
-    <!-- http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Sibling -->
-
-    <owl:Class rdf:about="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Sibling">
-        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
-    </owl:Class>
-    
-
-
-    <!-- http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Son -->
-
-    <owl:Class rdf:about="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Son">
-        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
-    </owl:Class>
+    <owl:Axiom>
+        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
+        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
+        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
+        <owl:annotatedTarget>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName"/>
+                <owl:someValuesFrom rdf:resource="&xsd;string"/>
+            </owl:Restriction>
+        </owl:annotatedTarget>
+    </owl:Axiom>
+    <owl:Axiom>
+        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
+        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
+        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
+        <owl:annotatedTarget>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasHouseNumber"/>
+                                <owl:someValuesFrom rdf:resource="&xsd;string"/>
+                            </owl:Restriction>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasStreet"/>
+                                <owl:someValuesFrom rdf:resource="&xsd;string"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasPostbox"/>
+                        <owl:someValuesFrom rdf:resource="&xsd;string"/>
+                    </owl:Restriction>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:annotatedTarget>
+    </owl:Axiom>
+    <owl:Axiom>
+        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
+        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
+        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
+        <owl:annotatedTarget>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasWebsite"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </owl:annotatedTarget>
+    </owl:Axiom>
+    <owl:Axiom>
+        <ontology:RequirementLevel rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Must"/>
+        <owl:annotatedSource rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"/>
+        <owl:annotatedProperty rdf:resource="&rdfs;subClassOf"/>
+        <owl:annotatedTarget>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasBirthdate"/>
+                <owl:someValuesFrom rdf:resource="&xsd;dateTime"/>
+            </owl:Restriction>
+        </owl:annotatedTarget>
+    </owl:Axiom>
     
 
 

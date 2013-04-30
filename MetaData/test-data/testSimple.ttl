@@ -5,6 +5,7 @@
 
 :person1 a ops:Parent;
     ops:hasName  "John";
+    ops:hasWeddingDate "2001-11-17T15:00:00Z"^^xsd:dateTime;
     ops:hasChild :person2.
 
 :person2 a ops:Person;

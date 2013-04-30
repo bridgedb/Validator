@@ -23,6 +23,8 @@ abstract class CardinalityMetaData extends MetaDataBase {
     private final RequirementLevel requirementLevel;
     public static final String NOT_FOUND = " No statements found with predicate: ";
     public static final String REMOVE = ". Please remove ";
+    public static final String WARNING = "Warning:";
+    public static final String HOWEVER_FOUND = "However found ";
     
     public CardinalityMetaData(URI predicate, int cardinality, RequirementLevel requirementLevel) {
        this.predicate = predicate;
@@ -100,7 +102,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
                 case MUST: return appendNoStatements(builder, context, "ERROR:", tabLevel);
                 case SHOULD: {
                     if (includeWarnings){
-                        appendNoStatements(builder, context, "Warning:", tabLevel);
+                        appendNoStatements(builder, context, WARNING, tabLevel);
                         //Despite warning no error added so return false;
                         return false;
                     } else {
@@ -147,7 +149,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
             builder.append(cardinality - statements.size());
             builder.append(" statement(s).\n");
         } else {
-            builder.append("However found ");
+            builder.append(HOWEVER_FOUND);
             builder.append(statements.size());
             builder.append(REMOVE);
             builder.append(statements.size() - cardinality);

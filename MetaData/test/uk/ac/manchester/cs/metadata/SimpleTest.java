@@ -40,6 +40,7 @@ public class SimpleTest {
     private static final Resource ALL_SUBJECTS = null;
     private static final Resource ALL_OBJECTS = null;
     private static final boolean INCLUDE_WARNINGS = true;
+    private static final boolean NO_WARNINGS = false;
     
     public SimpleTest() {
         
@@ -69,7 +70,7 @@ public class SimpleTest {
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
         String result = Validator.validate(minReader, minContext, specifications, INCLUDE_WARNINGS);
-        assertThat(result,  endsWith(Validator.SUCCESS));
+        assertThat(result,  endsWith(Validator.SUCCESS));       
     }
     
     @Test
@@ -222,4 +223,55 @@ public class SimpleTest {
         assertThat(result,  endsWith(Validator.FAILED));
     }
  
+    @Test
+    public void testNoWarnings() throws VoidValidatorException {
+        Reporter.println("NoWarnings");
+        RdfHolder holder = new RdfHolder(minReader, minContext);
+        List<Statement> remove = minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEDDING_DATE , ALL_OBJECTS, minContext);
+        assertThat(remove.size(), greaterThan(0));
+        holder.removeStatements(remove);
+        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        assertThat(result, containsString(CardinalityMetaData.WARNING));          
+        assertThat(result,  endsWith(Validator.SUCCESS));     
+        result = Validator.validate(holder, minContext, specifications, NO_WARNINGS);
+        assertThat(result, not(containsString(CardinalityMetaData.WARNING)));          
+        assertThat(result,  endsWith(Validator.SUCCESS));     
+    }
+
+    @Test
+    public void testBadFormatShould() throws VoidValidatorException {
+        Reporter.println("BadFormatShould");
+        RdfHolder holder = new RdfHolder(minReader, minContext);
+        List<Statement> oldStatements = minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEDDING_DATE , ALL_OBJECTS, minContext);
+        Statement oldStatement = oldStatements.get(0);
+        holder.removeStatement(oldStatement);
+        Value newObject = new LiteralImpl("2013-01-17", XsdType.DATE.asURI());
+        Statement newStatement = 
+                new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
+        holder.addStatement(newStatement);
+        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        assertThat(result, not(containsString(CardinalityMetaData.WARNING)));          
+        assertThat(result,  endsWith(Validator.FAILED));     
+        assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
+        String result2 = Validator.validate(holder, minContext, specifications, NO_WARNINGS);
+        assertEquals(result, result2);
+     }
+ 
+    @Test
+    public void testDoubleShould() throws VoidValidatorException {
+        Reporter.println("DoubleShould");
+        RdfHolder holder = new RdfHolder(minReader, minContext);
+        List<Statement> oldStatements = minReader.getStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEDDING_DATE , ALL_OBJECTS, minContext);
+        Statement oldStatement = oldStatements.get(0);
+        Value newObject = new LiteralImpl("2002-11-17T15:00:00Z", XsdType.DATE_TIME.asURI());
+        Statement newStatement = 
+                new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
+        holder.addStatement(newStatement);
+        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        assertThat(result, not(containsString(CardinalityMetaData.WARNING)));          
+        assertThat(result,  endsWith(Validator.FAILED));     
+        assertThat(result, containsString(CardinalityMetaData.HOWEVER_FOUND));
+        String result2 = Validator.validate(holder, minContext, specifications, NO_WARNINGS);
+        assertEquals(result, result2);
+     }
 }

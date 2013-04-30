@@ -6,7 +6,6 @@ package uk.ac.manchester.cs.openphacts.valdator.metadata.type;
 
 import uk.ac.manchester.cs.openphacts.valdator.constants.OwlConstants;
 import uk.ac.manchester.cs.openphacts.valdator.constants.RdfsConstants;
-import uk.ac.manchester.cs.openphacts.valdator.constants.SchemaConstants;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 
 /**
@@ -31,7 +30,7 @@ public class MetaDataTypeFactory {
         if (objectClass.startsWith(XsdType.URI_PREFIX)){
             return XsdType.getByType(objectClass);
         }
-        throw new VoidValidatorException ("Unexpected " + SchemaConstants.CLASS + " " + objectClass);
+        throw new VoidValidatorException ("Unexpected type " + objectClass);
         
     }
 }

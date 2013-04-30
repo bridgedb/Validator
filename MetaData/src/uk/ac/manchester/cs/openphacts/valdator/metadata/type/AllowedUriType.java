@@ -23,11 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import uk.ac.manchester.cs.openphacts.valdator.constants.SchemaConstants;
 
 /**
  *
@@ -37,7 +32,7 @@ public class AllowedUriType implements MetaDataType{
 
     List<URI> allowedValues = new ArrayList<URI>();
     
-    public AllowedUriType(Element element){
+    /*public AllowedUriType(Element element){
         NodeList list = element.getElementsByTagName(SchemaConstants.ALLOWED_VALUE);
         for (int i = 0; i < list.getLength(); i++){
             Node node = list.item(i);
@@ -45,7 +40,7 @@ public class AllowedUriType implements MetaDataType{
             allowedValues.add(new URIImpl(stringValue));
         }
     }
-    
+    */
     @Override
     public boolean correctType(Value value) {
         return allowedValues.contains(value);

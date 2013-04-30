@@ -100,7 +100,9 @@ abstract class CardinalityMetaData extends MetaDataBase {
                 case MUST: return appendNoStatements(builder, context, "ERROR:", tabLevel);
                 case SHOULD: {
                     if (includeWarnings){
-                        return appendNoStatements(builder, context, "Warning:", tabLevel);
+                        appendNoStatements(builder, context, "Warning:", tabLevel);
+                        //Despite warning no error added so return false;
+                        return false;
                     } else {
                         return false; //No request to report a warning
                     }

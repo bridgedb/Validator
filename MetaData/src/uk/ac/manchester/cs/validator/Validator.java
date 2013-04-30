@@ -30,9 +30,10 @@ public class Validator {
     public static String FAILED = "Validation Failed!";
     public static String SUCCESS = "Validation Successfull!";
     
-    public static String validate(RdfInterface reader, Resource context, MetaDataSpecification specifications) throws VoidValidatorException{
+    public static String validate(RdfInterface reader, Resource context, MetaDataSpecification specifications, 
+            boolean includeWarning) throws VoidValidatorException{
         Validator validator = new Validator(reader, context, specifications);
-        validator.validate();
+        validator.validate(includeWarning);
         return validator.builder.toString();
     }
 
@@ -65,11 +66,11 @@ public class Validator {
         return resourcesToCheck;
    }
     
-   private void validate() throws VoidValidatorException{
+   private void validate(boolean includeWarning) throws VoidValidatorException{
         boolean error = false;
         while (!resourcesToCheck.isEmpty()){
             for (Resource resource:resourcesToCheck){
-                 if (appendValidate(resource)){
+                 if (appendValidate(resource, includeWarning)){
                     error = true;
                 }
             }
@@ -84,7 +85,7 @@ public class Validator {
         }
     }
 
-    private boolean appendValidate(Resource resource) throws VoidValidatorException{
+    private boolean appendValidate(Resource resource, boolean includeWarning) throws VoidValidatorException{
         this.resourcesChecked.add(resource);
         List<Statement> typeStatements = reader.getStatementList(resource, RdfConstants.TYPE_URI, null, context);
         boolean error = false;
@@ -92,7 +93,7 @@ public class Validator {
         for (Statement typeStatement:typeStatements){
             ResourceMetaData specs = specifications.getResourceMetaData((URI) typeStatement.getObject());
             if (specs != null){
-                if (specs.appendValidate(builder, reader, typeStatement.getSubject(), context, false, 0, this)){
+                if (specs.appendValidate(builder, reader, typeStatement.getSubject(), context, includeWarning, 0, this)){
                     error = true;
                 }
                 unknownType = false;

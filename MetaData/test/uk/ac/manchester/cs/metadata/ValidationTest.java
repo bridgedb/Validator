@@ -28,6 +28,7 @@ public class ValidationTest {
     static RdfReader minReader;
     static Resource minContext;
     static MetaDataSpecification specifications;
+    private static final boolean INCLUDE_WARNINGS = true;
    
     public ValidationTest() {
         
@@ -56,7 +57,7 @@ public class ValidationTest {
     @Test
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
-        String result = Validator.validate(minReader, minContext, specifications);
+        String result = Validator.validate(minReader, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, endsWith(Validator.SUCCESS));
     }
     

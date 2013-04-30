@@ -32,6 +32,7 @@ public class ImportTest {
     private static final Resource ALL_SUBJECTS = null;
     private static final URI ALL_PREDICATES = null;
     private static final Value ALL_OBJECTS = null;
+    private static final boolean INCLUDE_WARNINGS = true;
     
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
@@ -49,7 +50,7 @@ public class ImportTest {
         Resource context = reader.loadFile(part2);
         List<Statement> list2 = reader.getStatementList(ALL_SUBJECTS, ALL_PREDICATES, ALL_OBJECTS);
         assertThat(list2.size(), greaterThan(list1.size()));
-        String result = Validator.validate(reader, context, specifications);
+        String result = Validator.validate(reader, context, specifications, INCLUDE_WARNINGS);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
 
@@ -64,7 +65,7 @@ public class ImportTest {
         Resource context = reader.loadFile(part2);
         List<Statement> list2 = reader.getStatementList(ALL_SUBJECTS, ALL_PREDICATES, ALL_OBJECTS);
         assertThat(list2.size(), greaterThan(list1.size()));
-        String result = Validator.validate(reader, context, specifications);
+        String result = Validator.validate(reader, context, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(LinkedResource.ERROR_SEE_REPORT));
         assertThat(result,  endsWith(Validator.FAILED));
     }
@@ -75,7 +76,7 @@ public class ImportTest {
         RdfReader reader = RdfFactory.getMemory();
         File file = new File ("test-data/testSubset.ttl");
         Resource context = reader.loadFile(file);
-        String result = Validator.validate(reader, context, specifications);
+        String result = Validator.validate(reader, context, specifications, INCLUDE_WARNINGS);
         assertThat(result,  endsWith(Validator.SUCCESS));
     }
 

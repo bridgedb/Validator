@@ -202,7 +202,7 @@ public class WsValidatorServer {
              
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadString(text, rdfFormat);
-            String results = Validator.validate(reader, context, specifications);
+            String results = Validator.validate(reader, context, specifications, false);
             appendValidationResult(sb, results);
         } catch (Exception ex){
             appendException(sb, ex);
@@ -213,7 +213,7 @@ public class WsValidatorServer {
          try {
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadURI(URI.stringValue(), rdfFormat);
-            String results = Validator.validate(reader, context, specifications);
+            String results = Validator.validate(reader, context, specifications, false);
             appendValidationResult(sb, results);
         } catch (Exception ex){
             appendException(sb, ex);

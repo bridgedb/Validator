@@ -21,6 +21,7 @@ package uk.ac.manchester.cs.server;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -79,11 +80,22 @@ public class WsValidatorServer {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
-    public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT)String rdfFormat, 
+    public Response validateGet(@QueryParam(WsValidationConstants.RDF_FORMAT)String rdfFormat, 
             @QueryParam(WsValidationConstants.TEXT)String text, 
             @QueryParam(WsValidationConstants.URI)String uri, 
             @QueryParam(WsValidationConstants.SPECIFICATION)String specification,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
+        return validate(rdfFormat, text, uri, specification, httpServletRequest);
+    }
+    
+    @POST
+    @Produces(MediaType.TEXT_HTML)
+    @Path(WsValidationConstants.VALIDATE)
+    public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT)String rdfFormat, 
+            @QueryParam(WsValidationConstants.TEXT)String text, 
+            @QueryParam(WsValidationConstants.URI)String uri, 
+            @QueryParam(WsValidationConstants.SPECIFICATION)String specification,
+            @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
         StringBuilder sb = getHeader();
         appendValidationResult(sb, rdfFormat, text, uri, specification);
         appendValidationForm(sb, rdfFormat, text, uri, specification, httpServletRequest);                             
@@ -241,8 +253,9 @@ public class WsValidatorServer {
     private void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, HttpServletRequest httpServletRequest) throws VoidValidatorException {
      	sb.append("<form method=\"get\" action=\"");
         sb.append(httpServletRequest.getContextPath());
-    	sb.append("/method=\"post\" onsubmit=\"return checkform(this);\"");
+        sb.append("/");
     	sb.append(WsValidationConstants.VALIDATE);
+    	sb.append("\" onsubmit=\"return checkform(this);\"");
     	sb.append("\">");
     	sb.append("<fieldset>");
     	sb.append("<legend>Validator Input</legend>\n");
@@ -332,33 +345,60 @@ public class WsValidatorServer {
 
     private void generateCheckForm(StringBuilder sb) {
         sb.append("function checkform ( form )	{\n");
-            sb.append("// ** Check a specification selected **\n");
-            sb.append("if (form.specification.value == \"\") {\n");
-                sb.append("alert( \"Please select the specification to use.\" );\n");
-                sb.append("form.specification.focus();\n");
-                sb.append("return false ;\n");
+            // Check a specification selected 
+            sb.append("if (form.");
+                    sb.append(WsValidationConstants.SPECIFICATION);
+                    sb.append(".value == \"\") {\n");
+                sb.append("alert( \"Please select the ");
+                        sb.append(WsValidationConstants.SPECIFICATION);
+                        sb.append(" to use.\" );\n");
+                sb.append("form.");
+                        sb.append(WsValidationConstants.SPECIFICATION);
+                       sb.append(".focus();\n");
+            sb.append("return false ;\n");
             sb.append("}\n");
-            sb.append("// ** Check if URI or text selected. And if text RdfFormat is provided. **\n");
-            sb.append("if (form.text.value == \"\") {\n");
-                sb.append("if (form.uri.value == \"\"){\n");
-                    sb.append("alert(\"Please provided either the text to validate or a url to the text.\" );\n");
-                    sb.append("form.text.focus();\n");
+            //Check if URI or text selected. And if text RdfFormat is provided. **
+            sb.append("if (form.");
+                   sb.append(WsValidationConstants.TEXT);
+                   sb.append(".value == \"\") {\n");
+                sb.append("if (form.");
+                        sb.append(WsValidationConstants.TEXT);
+                        sb.append(".value == \"\"){\n");
+                    sb.append("alert(\"Please provided either the ");
+                            sb.append(WsValidationConstants.TEXT);
+                            sb.append(" to validate or a ");
+                            sb.append(WsValidationConstants.TEXT);
+                            sb.append(" to the text.\" );\n");
+                    sb.append("form.");
+                            sb.append(WsValidationConstants.TEXT);
+                            sb.append(".focus();\n");
                     sb.append("return false ;\n");
                 sb.append("} else {\n");
                     sb.append("return true;\n");
                 sb.append("}\n");
             sb.append("} else {\n");
-                sb.append("if (form.uri.value == \"\"){\n");
-                    sb.append("if (form.rdfFormat.value == \"\"){\n");
-                        sb.append("alert( \"Please select the rdfFormat to use.\" );\n");
-                        sb.append("form.rdfFormat.focus();\n");
+                sb.append("if (form.");
+                        sb.append(WsValidationConstants.URI);
+                        sb.append(".value == \"\"){\n");
+                    sb.append("if (form.");
+                            sb.append(WsValidationConstants.RDF_FORMAT);
+                            sb.append(".value == \"\"){\n");
+                        sb.append("alert( \"Please select the ");
+                                sb.append(WsValidationConstants.RDF_FORMAT);
+                                sb.append(" to use.\" );\n");
+                        sb.append("form.rdfFormat");
+                                sb.append(WsValidationConstants.RDF_FORMAT);
+                                sb.append(".focus();\n");
                         sb.append("return false ;\n");
                     sb.append("} else {\n");
                         sb.append("return true;\n");
                     sb.append("}\n");
                 sb.append("}  else {\n");
                     sb.append("alert(\"Validate works on either the text to validate or a url to the text. Please clear one of the values.\" );\n");
-                    sb.append("form.text.focus();\n");
+                       sb.append(WsValidationConstants.TEXT);
+                    sb.append("form.");
+                            sb.append(WsValidationConstants.TEXT);
+                            sb.append(".focus();\n");
                     sb.append("return false ;\n");
                 sb.append("}\n");
             sb.append("}\n");

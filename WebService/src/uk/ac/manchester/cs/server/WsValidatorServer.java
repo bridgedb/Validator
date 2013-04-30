@@ -1,8 +1,9 @@
-// BridgeDb,
-// An abstraction layer for identifier mapping services, both local and online.
+// OpenPHACTS RDF Validator,
+// A tool for validating and storing RDF.
 //
-// Copyright      2012  Christian Y. A. Brenninkmeijer
-// Copyright      2012  OpenPhacts
+// Copyright 2012-2013  Christian Y. A. Brenninkmeijer
+// Copyright 2012-2013  University of Manchester
+// Copyright 2012-2013  OpenPhacts
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

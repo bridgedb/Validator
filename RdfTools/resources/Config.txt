@@ -6,7 +6,7 @@
 #WARNING leaving the default relative links is not recommended.
 #Relative links will fail if loading and running is not done from the same directory.
 #Remember that the parent directories (in the defaults ../***) MUST exist.
-#Remember to grant READ and WRITE ACCESS to all users running any bridgedb programs including tomcat.
+#Remember to grant READ and WRITE ACCESS to all users running any Validators programs including tomcat.
 
 ############ RDF Repository ##############
 #Main RDF store
@@ -15,7 +15,7 @@ SailNativeStore         ../rdf/linksets
 #Test and temporary RDF store
 #This folder MUST exist as for non admins to save data in and is therefor used in validation.
 #WARNING do not set the test store to be the same as the production store as many of the tests erases the store!
-#the default relative directory will use the RDF directory directly below $BridgeDB
+#the default relative directory will use the RDF directory directly below $Validator
 TestSailNativeStore     ../rdf/testLinksets
 
 ##### Directories ############
@@ -47,7 +47,6 @@ TestDirectory           ../TestDirectory
 #This information is exposed through the AccountsReader.java which returns an AccountsInfo object
 
 #It is REQUIRED that you make a copy of this file and save it in a higher priority location
-#Please see the README.txt file in the BridgeDB root directory.
 #Do not put real passwords directly in this file.
 #Do add uris for which passwords could be obtained
 #This file is updated to a PUBLIC github repository

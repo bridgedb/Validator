@@ -36,6 +36,6 @@
     pav:createdBy <http://www.example.com/>;
     pav:createdOn "2013-01-17T16:02:27Z"^^xsd:dateTime;
     pav:createdWith <http://www.example.com/>;
-    void:linkPredicate <http://www.bridgedb.org/test#testPredicate> ;
+    void:linkPredicate <http://www.manchester.ac.uk/test#testPredicate> ;
     void:objectsTarget :TestDS2 ;
     void:subjectsTarget :TestDS1 .

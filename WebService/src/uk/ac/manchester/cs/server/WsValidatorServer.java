@@ -33,12 +33,12 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.rio.RDFFormat;
-import uk.ac.manchester.cs.metadata.MetaDataSpecification;
-import uk.ac.manchester.cs.metadata.SpecificationsRegistry;
-import uk.ac.manchester.cs.rdftools.RdfFactory;
-import uk.ac.manchester.cs.rdftools.RdfReader;
-import uk.ac.manchester.cs.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.validator.Validator;
+import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
+import uk.ac.manchester.cs.openphacts.valdator.metadata.SpecificationsRegistry;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.openphacts.validator.Validator;
 
     
 /**

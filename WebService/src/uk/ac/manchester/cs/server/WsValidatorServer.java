@@ -241,7 +241,7 @@ public class WsValidatorServer {
     private void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, HttpServletRequest httpServletRequest) throws VoidValidatorException {
      	sb.append("<form method=\"get\" action=\"");
         sb.append(httpServletRequest.getContextPath());
-    	sb.append("/");
+    	sb.append("/method=\"post\" onsubmit=\"return checkform(this);\"");
     	sb.append(WsValidationConstants.VALIDATE);
     	sb.append("\">");
     	sb.append("<fieldset>");
@@ -251,9 +251,9 @@ public class WsValidatorServer {
         appendUri(sb, uri);
     	generateSpecificationsSelector(sb, specification);
     	sb.append("<p><input type=\"submit\" value=\"Submit\"/></p>");
-    	sb.append("<p>Note: If the new page does not open click on the address bar and press enter</p>");
     	sb.append("</fieldset></form>\n");
-        generateSpecificationsScript(sb);
+    	sb.append("<p>Note: If the new page does not open click on the address bar and press enter</p>");
+        generateScripts(sb);
    }
 
     private void generateSpecificationsSelector(StringBuilder sb, String specification) throws VoidValidatorException {
@@ -300,31 +300,71 @@ public class WsValidatorServer {
         sb.append("</textarea>\n");
    }
 
+    private void generateScripts(StringBuilder sb) throws VoidValidatorException {
+        sb.append("<script>\n");
+        generateSpecificationsScript(sb);
+        generateCheckForm(sb);
+        sb.append("</script>\n");
+    }
+
     private void generateSpecificationsScript(StringBuilder sb) throws VoidValidatorException {
 		Set<String> names = SpecificationsRegistry.getSpecificationNames();
-        sb.append("<script>");
-        sb.append(   "function populateData(sel){");
-        sb.append(      "var form = sel.form,");
-        sb.append(         "value = sel.options[sel.selectedIndex].value;");
-        sb.append(      "switch(value){");
+        sb.append(   "function populateData(sel){\n");
+        sb.append(      "var form = sel.form,\n");
+        sb.append(         "value = sel.options[sel.selectedIndex].value;\n");
+        sb.append(      "switch(value){\n");
 		for (String name : names) {
             MetaDataSpecification specs = SpecificationsRegistry.specificationByName(name);
             sb.append("case '");
             sb.append(name);
-            sb.append("':");
+            sb.append("':\n");
             sb.append("form.");
             sb.append(DESCRIPTION_FIELD);
             sb.append(".value = '");
             sb.append(specs.getDescription());
-            sb.append("';");
-            sb.append("break;");
+            sb.append("';\n");
+            sb.append("break;\n");
         }
-        sb.append("default:");
-        sb.append("}");
-        sb.append("}");
-        sb.append("</script>");
+        sb.append("default:\n");
+        sb.append("}\n");
+        sb.append("}\n");
     }
 
+    private void generateCheckForm(StringBuilder sb) {
+        sb.append("function checkform ( form )	{\n");
+            sb.append("// ** Check a specification selected **\n");
+            sb.append("if (form.specification.value == \"\") {\n");
+                sb.append("alert( \"Please select the specification to use.\" );\n");
+                sb.append("form.specification.focus();\n");
+                sb.append("return false ;\n");
+            sb.append("}\n");
+            sb.append("// ** Check if URI or text selected. And if text RdfFormat is provided. **\n");
+            sb.append("if (form.text.value == \"\") {\n");
+                sb.append("if (form.uri.value == \"\"){\n");
+                    sb.append("alert(\"Please provided either the text to validate or a url to the text.\" );\n");
+                    sb.append("form.text.focus();\n");
+                    sb.append("return false ;\n");
+                sb.append("} else {\n");
+                    sb.append("return true;\n");
+                sb.append("}\n");
+            sb.append("} else {\n");
+                sb.append("if (form.uri.value == \"\"){\n");
+                    sb.append("if (form.rdfFormat.value == \"\"){\n");
+                        sb.append("alert( \"Please select the rdfFormat to use.\" );\n");
+                        sb.append("form.rdfFormat.focus();\n");
+                        sb.append("return false ;\n");
+                    sb.append("} else {\n");
+                        sb.append("return true;\n");
+                    sb.append("}\n");
+                sb.append("}  else {\n");
+                    sb.append("alert(\"Validate works on either the text to validate or a url to the text. Please clear one of the values.\" );\n");
+                    sb.append("form.text.focus();\n");
+                    sb.append("return false ;\n");
+                sb.append("}\n");
+            sb.append("}\n");
+        sb.append("}\n");         
+    }
+    
     private void appendUri(StringBuilder sb, String uri) {     
     	sb.append("<p><label for=\"");
     	sb.append(WsValidationConstants.URI);
@@ -333,7 +373,7 @@ public class WsValidatorServer {
     	sb.append(WsValidationConstants.URI);
     	sb.append("\" name=\"");
     	sb.append(WsValidationConstants.URI);
-    	sb.append("\" style=\"width:80%\"");
+    	sb.append("\" style=\"width:80%");
         if (uri != null){
         	sb.append("\" value=\"");
             sb.append(uri);            

@@ -60,7 +60,7 @@ public class WsValidatorServer {
     public Response welcomeMessage(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
         StringBuilder sb = getHeader();
 
-        appendValidationForm(sb, null, null, null, null, httpServletRequest);                     
+        appendValidationForm(sb, null, null, null, null, true, httpServletRequest);                     
         sb.append("</body></html>");
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();
     }
@@ -80,31 +80,33 @@ public class WsValidatorServer {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
-    public Response validateGet(@QueryParam(WsValidationConstants.RDF_FORMAT)String rdfFormat, 
-            @QueryParam(WsValidationConstants.TEXT)String text, 
-            @QueryParam(WsValidationConstants.URI)String uri, 
-            @QueryParam(WsValidationConstants.SPECIFICATION)String specification,
+    public Response validateGet(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
+            @QueryParam(WsValidationConstants.TEXT) String text, 
+            @QueryParam(WsValidationConstants.URI) String uri, 
+            @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
+            @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
-        return validate(rdfFormat, text, uri, specification, httpServletRequest);
+        return validate(rdfFormat, text, uri, specification, includeWarning, httpServletRequest);
     }
     
     @POST
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
-    public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT)String rdfFormat, 
-            @QueryParam(WsValidationConstants.TEXT)String text, 
-            @QueryParam(WsValidationConstants.URI)String uri, 
-            @QueryParam(WsValidationConstants.SPECIFICATION)String specification,
+    public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
+            @QueryParam(WsValidationConstants.TEXT) String text, 
+            @QueryParam(WsValidationConstants.URI) String uri, 
+            @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
+            @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
         StringBuilder sb = getHeader();
-        appendValidationResult(sb, rdfFormat, text, uri, specification);
-        appendValidationForm(sb, rdfFormat, text, uri, specification, httpServletRequest);                             
+        appendValidationResult(sb, rdfFormat, text, uri, specification, includeWarning);
+        appendValidationForm(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest);                             
         sb.append("</body></html>");
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
     }
 
-    private void appendValidationResult(StringBuilder sb, String format, String text, String uri, String specification) 
-            throws VoidValidatorException  {   
+    private void appendValidationResult(StringBuilder sb, String format, String text, String uri, String specification, 
+            Boolean includeWarnings) throws VoidValidatorException  {   
         boolean error = false;
         RDFFormat rdfFormat = null;
         if (format != null && !format.isEmpty()){
@@ -174,11 +176,11 @@ public class WsValidatorServer {
             sb.append("<br>");
             return;
         }
-        if (URI == null){
-            appendValidationResult(sb, rdfFormat, text,specs);
+       if (URI == null){
+            appendValidationResult(sb, rdfFormat, text, specs, includeWarnings);
         } else {
             if (text.isEmpty()){
-                appendValidationResult(sb, rdfFormat, URI, specs);
+                appendValidationResult(sb, rdfFormat, URI, specs, includeWarnings);
             } else {
                 sb.append("Please clear either the ");
                 sb.append(WsValidationConstants.TEXT);
@@ -189,7 +191,8 @@ public class WsValidatorServer {
         }      
     }
     
-    private void appendValidationResult(StringBuilder sb, RDFFormat rdfFormat, String text, MetaDataSpecification specifications) throws VoidValidatorException {
+    private void appendValidationResult(StringBuilder sb, RDFFormat rdfFormat, String text, 
+            MetaDataSpecification specifications, Boolean includeWarnings) throws VoidValidatorException {
         try {
             if (rdfFormat == null){
                 sb.append("You must supply an ");
@@ -202,18 +205,19 @@ public class WsValidatorServer {
              
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadString(text, rdfFormat);
-            String results = Validator.validate(reader, context, specifications, false);
+            String results = Validator.validate(reader, context, specifications, includeWarnings);
             appendValidationResult(sb, results);
         } catch (Exception ex){
             appendException(sb, ex);
         }     
      }
     
-     private void appendValidationResult(StringBuilder sb, RDFFormat rdfFormat, URI URI, MetaDataSpecification specifications) throws VoidValidatorException {
+     private void appendValidationResult(StringBuilder sb, RDFFormat rdfFormat, URI URI, 
+             MetaDataSpecification specifications, Boolean includeWarnings) throws VoidValidatorException {
          try {
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadURI(URI.stringValue(), rdfFormat);
-            String results = Validator.validate(reader, context, specifications, false);
+            String results = Validator.validate(reader, context, specifications, includeWarnings);
             appendValidationResult(sb, results);
         } catch (Exception ex){
             appendException(sb, ex);
@@ -250,7 +254,8 @@ public class WsValidatorServer {
          }     
     }
     
-    private void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, HttpServletRequest httpServletRequest) throws VoidValidatorException {
+    private void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, 
+            Boolean includeWarnings, HttpServletRequest httpServletRequest) throws VoidValidatorException {
      	sb.append("<form method=\"get\" action=\"");
         sb.append(httpServletRequest.getContextPath());
         sb.append("/");
@@ -260,6 +265,7 @@ public class WsValidatorServer {
     	sb.append("<fieldset>");
     	sb.append("<legend>Validator Input</legend>\n");
         appendRDFFormat(sb, format);
+        appendIncludeWarnings(sb, includeWarnings);
         appendText(sb, text);
         appendUri(sb, uri);
     	generateSpecificationsSelector(sb, specification);
@@ -451,6 +457,16 @@ public class WsValidatorServer {
   		}
     	sb.append("</select>\n");
     	sb.append("<br/>\n");
+    }
+
+    private void appendIncludeWarnings(StringBuilder sb, Boolean includeWarnings) {
+        sb.append("<input type=\"checkbox\" name=\"");
+    	sb.append(WsValidationConstants.INCLUDE_WARNINGS);
+        sb.append("\" value=\"true\"");
+        if (includeWarnings == null || includeWarnings){
+            sb.append(" checked");
+        } 
+        sb.append(" >Include warnings.<br>");
     }
 
     private void appendText(StringBuilder sb, String text) {

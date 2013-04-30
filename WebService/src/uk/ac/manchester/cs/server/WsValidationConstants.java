@@ -15,4 +15,5 @@ public class WsValidationConstants {
     public static final String TEXT = "text";    
     public static final String URI = "uri";
     public static final String SPECIFICATION = "specification";
+    public static final String INCLUDE_WARNINGS = "includeWarnings";
 }

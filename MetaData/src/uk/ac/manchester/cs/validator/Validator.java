@@ -31,7 +31,7 @@ public class Validator {
     public static String SUCCESS = "Validation Successfull!";
     
     public static String validate(RdfInterface reader, Resource context, MetaDataSpecification specifications, 
-            boolean includeWarning) throws VoidValidatorException{
+            Boolean includeWarning) throws VoidValidatorException{
         Validator validator = new Validator(reader, context, specifications);
         validator.validate(includeWarning);
         return validator.builder.toString();
@@ -66,7 +66,10 @@ public class Validator {
         return resourcesToCheck;
    }
     
-   private void validate(boolean includeWarning) throws VoidValidatorException{
+    private void validate(Boolean includeWarning) throws VoidValidatorException{
+        if (includeWarning == null){
+            includeWarning = true;
+        }
         boolean error = false;
         while (!resourcesToCheck.isEmpty()){
             for (Resource resource:resourcesToCheck){

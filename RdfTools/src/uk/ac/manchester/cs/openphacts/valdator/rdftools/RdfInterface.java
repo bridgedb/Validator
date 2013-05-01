@@ -24,6 +24,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
+import org.openrdf.query.TupleQueryResultHandler;
 
 /**
  *
@@ -33,5 +34,6 @@ public interface RdfInterface {
     
     public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException;
-
-}
+    
+    public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException;
+ }

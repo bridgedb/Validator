@@ -30,11 +30,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.query.MalformedQueryException;
+import org.openrdf.query.QueryEvaluationException;
+import org.openrdf.query.QueryLanguage;
+import org.openrdf.query.TupleQuery;
+import org.openrdf.query.TupleQueryResult;
+import org.openrdf.query.TupleQueryResultHandler;
+import org.openrdf.query.TupleQueryResultHandlerException;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -149,10 +158,48 @@ public class RdfReader implements RdfInterface{
             }
             return findbyParentResouce(subjectResource, predicate, object, contexts);
         } catch (RepositoryException ex) {
+            closeOnError();
             throw new VoidValidatorException("Error converting to List of Statements ", ex);
         }
     }
 
+   @Override
+    public void runSparqlQuery(String queryString, TupleQueryResultHandler handler) throws VoidValidatorException {
+        TupleQueryResult result = null;
+        try {
+            RepositoryConnection repositoryConnection = getConnection();
+            TupleQuery tupleQuery;
+            tupleQuery = repositoryConnection.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
+            result = tupleQuery.evaluate();
+            handler.startQueryResult(result.getBindingNames());
+            while (result.hasNext()){
+                handler.handleSolution(result.next());
+            }
+            handler.endQueryResult();
+        } catch (RepositoryException ex) {
+            closeOnError();
+            throw new VoidValidatorException("Unable to connect to repository ", ex);
+        } catch (MalformedQueryException ex) {
+            closeOnError();
+            throw new VoidValidatorException("Query " + queryString + " is malformed.", ex);
+        } catch (QueryEvaluationException ex) {
+            closeOnError();
+            throw new VoidValidatorException("Error evaluating query " + queryString, ex);
+        } catch (TupleQueryResultHandlerException ex) {
+            closeOnError();
+            throw new VoidValidatorException("Error handling result of  " + queryString, ex);
+        } finally {
+            if (result != null){
+                try {
+                    result.close();
+                } catch (QueryEvaluationException ex) {
+                    closeOnError();
+                    //ignore it as there is probab;y already an error.
+                }
+            }
+        }
+    }
+   
     private RepositoryResult<Statement> getTheStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException {
         try {
@@ -174,6 +221,7 @@ public class RdfReader implements RdfInterface{
             }
             return null;
          } catch (RepositoryException ex) {
+            closeOnError();
             throw new VoidValidatorException("Error getting the Statements ", ex);
         }
     }
@@ -217,6 +265,7 @@ public class RdfReader implements RdfInterface{
             }
             return repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, subjectContext);
         } catch (RepositoryException ex) {
+            closeOnError();
             throw new VoidValidatorException("Error loading external the Statements ", ex);
         }
     }
@@ -229,7 +278,7 @@ public class RdfReader implements RdfInterface{
                     repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, contexts);
             return repositoryResult.asList();
         } catch (Exception ex) {
-            close();
+            closeOnError();
             throw new VoidValidatorException ("Error getting Type Statements ", ex);
         }        
     }
@@ -331,4 +380,5 @@ public class RdfReader implements RdfInterface{
        }
     }
 
+ 
 }

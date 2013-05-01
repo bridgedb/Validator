@@ -27,6 +27,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
 
 /**
  *
@@ -111,4 +112,18 @@ public class RdfReaderTest {
         assertEquals(1, statements.size());
     }
 
+   /**
+     * Test of loadFile method, of class RdfReader.
+     */
+    @Test
+    public void testRunSparqlQuery() throws Exception {
+        Reporter.println("runSparqlQuery");
+        File inputFile = new File("test-data/test.ttl");
+        RdfReader instance = RdfFactory.getMemory();
+        Resource context = instance.loadFile(inputFile);
+        SPARQLResultsXMLWriter writer = new SPARQLResultsXMLWriter(System.out);
+        String queryString = "SELECT ?x ?y WHERE { ?x ?p ?y } ";
+        instance.runSparqlQuery(queryString, writer);
+    }
+    
 }

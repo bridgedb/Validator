@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.openphacts.valdator.rdftools;
+package uk.ac.manchester.cs.openphacts.valdator.rdftools.test;
 
 import info.aduna.lang.FileFormat;
 import java.io.File;
@@ -36,6 +36,8 @@ import org.openrdf.rio.RDFParserRegistry;
 import org.openrdf.rio.RDFWriter;
 import org.openrdf.rio.turtle.TurtleWriter;
 import org.openrdf.sail.memory.MemoryStore;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 
 /**
  *

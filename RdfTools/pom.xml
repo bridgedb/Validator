@@ -44,12 +44,7 @@
             <version>${sesame.version}</version>
             <scope>compile</scope>
         </dependency>
-         <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-repository-sail</artifactId>
-            <version>${sesame.version}</version>
-        </dependency>
-        <dependency>
+       <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.7</version>

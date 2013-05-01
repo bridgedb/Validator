@@ -29,19 +29,15 @@ public enum RequirementLevel {
     MUST, SHOULD, MAY;
     
     public static RequirementLevel parseString(String string) throws VoidValidatorException{
-       string = string.trim();
-       string = string.replaceAll("\"", "");
-       if (string.contains("#")){
-           string = string.substring(string.lastIndexOf("#")+1);
-       }
-       for(RequirementLevel type:RequirementLevel.values()){
-           if (type.toString().equalsIgnoreCase(string)){
-               return type;
-           }
-       }
-       throw new VoidValidatorException ("Unable to parse " + string + " to a RequirementLevel. "
-               + "Legal values are " + valuesString());
-    }
+        string = string.trim();
+        string = string.replaceAll("\"", "");
+        for(RequirementLevel type:RequirementLevel.values()){
+            if (type.toString().equalsIgnoreCase(string)){
+                return type;
+            }
+        }
+        return null;
+     }
     
     public static String valuesString(){
         String result = RequirementLevel.values()[0].toString();

@@ -107,9 +107,6 @@ public class RdfReaderTest {
         statements = instance.getDirectOnlyStatementList(subject, predicate, null, context);
         assertEquals(0, statements.size());
         statements = instance.getDirectOnlyStatementList(null, null, null);
-        for (Statement statement:statements){
-            System.out.println(statement);
-        }
         statements = instance.getStatementList(subject, predicate, null, context);
         assertEquals(1, statements.size());
     }

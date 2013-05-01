@@ -64,8 +64,6 @@ import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
  * @author Christian
  */
 public class MetaDataSpecification {
-    private static OWLAnnotationProperty REQUIREMENT_LEVEL_PROPERTY = new OWLAnnotationPropertyImpl(
-            IRI.create("http://openphacts.cs.man.ac.uk:9090/Void/ontology.owl#RequirementLevel"));
     private OWLOntology ontology;
     
     private Map<Resource, ResourceMetaData> resourcesByType = new HashMap<Resource, ResourceMetaData>();
@@ -156,20 +154,24 @@ public class MetaDataSpecification {
     
     private RequirementLevel extractRequirementLevel(OWLAxiom axiom, URI type) throws VoidValidatorException{
         RequirementLevel requirementLevel = null;
-        Set<OWLAnnotation> annotations = axiom.getAnnotations(REQUIREMENT_LEVEL_PROPERTY);
+        Set<OWLAnnotation> annotations = axiom.getAnnotations();
         if (annotations.size() > 0){
             for (OWLAnnotation annotation:annotations){
-                OWLAnnotationValue value = annotation.getValue();
-                if (value instanceof IRI){
-                    if (requirementLevel == null){
-                        requirementLevel = RequirementLevel.parseString(value.toString());
-                    } else {
+                 OWLAnnotationValue value = annotation.getValue();
+                if (requirementLevel == null){
+                    requirementLevel = RequirementLevel.parseString(value.toString());
+                } else {
+                    RequirementLevel newRequirementLevel = RequirementLevel.parseString(value.toString());
+                    if (newRequirementLevel != null){
                         throw new VoidValidatorException ("Two different values found in " + axiom);
                     }
                 }
             }
+            if (requirementLevel == null){
+                throw new VoidValidatorException ("No requirement level annotaion found in " + axiom);
+            }
         } else {
-            throw new VoidValidatorException ("No " + REQUIREMENT_LEVEL_PROPERTY + " annotaions found in " + axiom);
+            throw new VoidValidatorException ("No annotaions found in " + axiom);
         } 
         return requirementLevel;
     }

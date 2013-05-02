@@ -440,7 +440,9 @@ public class RdfReader implements RdfInterface{
 
     @Override
     public List<Statement> getStatementList(Resource resource) throws VoidValidatorException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Statement> results = this.getLocalStatementList(resource, null, null);
+        results.addAll(this.getLocalStatementList(null, null, resource));
+        return results;
     }
 
  

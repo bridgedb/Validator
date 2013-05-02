@@ -50,6 +50,10 @@ public class RdfReaderTest {
         assertEquals(expectedContext, context);
         List<Statement> statements = instance.getStatementList(null, null, null, context);
         assertEquals(10, statements.size());
+        URI person = new URIImpl("http://example.com/part1#person2");
+        statements = instance.getStatementList(person);
+        //7 statements as subject + one as object
+        assertEquals(8, statements.size());
     }
 
     /**

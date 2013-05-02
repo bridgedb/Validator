@@ -66,7 +66,7 @@ public class RdfReader implements RdfInterface{
     private RepositoryConnection connection = null;
     private final Set<URI> parentPredicates; //currently 1 hard coded value.
     private final Set<Resource> loadedContexts;
-    private final Set<RdfReader> others; 
+    private final Set<RdfInterface> others; 
     
     public static RdfReader factory(Repository repository) throws VoidValidatorException{
         RdfReader instance = new RdfReader(repository);
@@ -83,7 +83,7 @@ public class RdfReader implements RdfInterface{
         parentPredicates = new HashSet<URI>();
         parentPredicates.add(new URIImpl ("http://rdfs.org/ns/void#subset"));
         loadedContexts = new HashSet<Resource>();
-        others = new HashSet<RdfReader>();
+        others = new HashSet<RdfInterface>();
     }
    
     public Resource loadFile(File inputFile) throws VoidValidatorException{
@@ -113,7 +113,7 @@ public class RdfReader implements RdfInterface{
         return loadInputStream(stream, address, format);
     }
    
-    public void addOtherSource(RdfReader other){
+    public void addOtherSource(RdfInterface other){
         others.add(other);
     }
     
@@ -146,43 +146,47 @@ public class RdfReader implements RdfInterface{
     @Override
     public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException {
-        try {
-            RepositoryResult<Statement> repositoryResult = 
-                        getTheStatementList(subjectResource, predicate, object, contexts);
-            if (repositoryResult!= null){
-                return repositoryResult.asList();
-            }
-            if (subjectResource != null){
-                new ArrayList<Statement>();
-            }
-            if (!others.isEmpty()){
-                List<Statement> fromOthers = new ArrayList<Statement>();
-                for (RdfReader other:others){
-                    List<Statement> extra = 
-                            other.getDirectOnlyStatementList(subjectResource, predicate, object, contexts);
-                    if (contexts.length > 0){
-                        fromOthers.addAll(extra);
-                    } else {
-                        fromOthers = mergeStatementListsIgnoringContext(fromOthers, extra);
-                    }
-                }  
-                if (!fromOthers.isEmpty()){
-                    return fromOthers;
-                }
-            }
-            repositoryResult = loadExternalAndGetTheStatementList(subjectResource, predicate, object, contexts);
-            if (repositoryResult != null && repositoryResult.hasNext()){
-                //ystem.out.println("Found something after loading more data.");
-                return repositoryResult.asList();
-            }
-            return findbyParentResouce(subjectResource, predicate, object, contexts);
-        } catch (RepositoryException ex) {
-            closeOnError();
-            throw new VoidValidatorException("Error converting to List of Statements ", ex);
+        List<Statement> results = getLocalStatementList(subjectResource, predicate, object, contexts);
+        if (!results.isEmpty()){
+            return results;
         }
+        if (subjectResource == null){
+            return new ArrayList<Statement>();
+        }
+        results = loadExternalAndGetTheStatementList(subjectResource, predicate, object);
+        if (!results.isEmpty()){
+            return results;
+        }
+         return findByParentResouce(subjectResource, predicate, object);
     }
 
-    @Override
+    private List<Statement> getLocalStatementList(Resource subjectResource, URI predicate, Value object, 
+            Resource... contexts) throws VoidValidatorException {
+        List<Statement> results = this.getDirectOnlyStatementList(subjectResource, predicate, object, contexts);
+        if (!results.isEmpty()){
+            return results;
+        }
+        results = this.getDirectOnlyStatementList(subjectResource, predicate, object);
+        if (!results.isEmpty()){
+            return results;
+        }
+        return getIndirectStatementList(subjectResource, predicate, object);
+    }
+
+
+    private List<Statement> getIndirectStatementList(Resource subjectResource, URI predicate, Value object) throws VoidValidatorException {
+        List<Statement> fromOthers = new ArrayList<Statement>();
+        if (!others.isEmpty()){
+            for (RdfInterface other:others){
+                List<Statement> extra = 
+                        other.getDirectOnlyStatementList(subjectResource, predicate, object);
+                fromOthers = mergeStatementListsIgnoringContext(fromOthers, extra);
+            }  
+        }
+        return fromOthers;
+   }
+     
+   @Override
     public void runSparqlQuery(String queryString, TupleQueryResultHandler handler) throws VoidValidatorException {
         TupleQueryResult result = null;
         try {
@@ -245,14 +249,14 @@ public class RdfReader implements RdfInterface{
         }
     }
 
-    private RepositoryResult<Statement> loadExternalAndGetTheStatementList(Resource subjectResource, URI predicate, Value object, 
-            Resource... contexts) throws VoidValidatorException {
+    private List<Statement> loadExternalAndGetTheStatementList(Resource subjectResource, URI predicate, Value object) 
+            throws VoidValidatorException {
         try {
             //ystem.out.println("looking for " + subjectResource);
             RepositoryConnection repositoryConnection = getConnection();
             if (!(subjectResource instanceof URI)){
                 //ystem.out.println("Not URI");
-                return null;
+                return new ArrayList<Statement>();
             }
             URI subjectUri = (URI)subjectResource;
             String contextString = subjectUri.getNamespace();
@@ -260,13 +264,13 @@ public class RdfReader implements RdfInterface{
             Resource subjectContext = new URIImpl(contextString);
             if (loadedContexts.contains(subjectContext)){
                 //ystem.out.println("Already loaded " + subjectContext);
-                return null;
+                return new ArrayList<Statement>();
             }
             try {
                 if (repositoryConnection.hasStatement(null, null, null, EXCLUDE_INFERRED, subjectContext)){
                     //ystem.out.println("Already loaded " + subjectContext + " so not trying again ");
                     loadedContexts.add(subjectContext);
-                    return null;
+                    return new ArrayList<Statement>();
                 }
             } catch (RepositoryException ex) {
                 throw new VoidValidatorException("Unable to check source " + subjectContext + " is loaded. ", ex);
@@ -277,18 +281,21 @@ public class RdfReader implements RdfInterface{
                 //ystem.out.println("Loaded " + subjectContext);                
             } catch (Exception ex){
                 //ystem.out.println("External load of " + subjectContext + " failed. quess it wasn't a URL (locator) after all");
-                return null;
+                return new ArrayList<Statement>();
             }
             if (!newSubjectContext.equals(subjectContext)){
                 throw new VoidValidatorException(newSubjectContext + " != " + subjectContext);
             }
-            return repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, subjectContext);
+            RepositoryResult<Statement> results = 
+                    repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, subjectContext);
+            return results.asList();
         } catch (RepositoryException ex) {
             closeOnError();
             throw new VoidValidatorException("Error loading external the Statements ", ex);
         }
     }
 
+    @Override
     public List<Statement> getDirectOnlyStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
             throws VoidValidatorException {
         try {
@@ -352,17 +359,14 @@ public class RdfReader implements RdfInterface{
         }
     }
 
-    private List<Statement> findbyParentResouce(Resource subjectResource, URI predicate, Value object, 
-            Resource... contexts) throws VoidValidatorException {
+    private List<Statement> findByParentResouce(Resource subjectResource, URI predicate, Value object) throws VoidValidatorException {
         //ystem.out.println ("check parent " + subjectResource);
         ArrayList<Statement> results = new ArrayList<Statement>();
         for (URI parentPredicate:parentPredicates){
-            //ystem.out.println("  " + parentPredicate);
-            List<Statement> parentStatements = this.getStatementList(null, parentPredicate, subjectResource, contexts);
+            List<Statement> parentStatements = this.getLocalStatementList(null, parentPredicate, subjectResource);
             for (Statement parentStatement:parentStatements){
-                //ystem.out.println(parentStatement);
                 List<Statement> found = 
-                        this.getStatementList(parentStatement.getSubject(), parentPredicate, subjectResource, contexts);
+                        this.getStatementList(parentStatement.getSubject(), predicate, object);
                 for (Statement find:found){
                     if (!results.contains(find)){
                         results.add(find);
@@ -419,6 +423,11 @@ public class RdfReader implements RdfInterface{
             }
         }
         return fullList;
+    }
+
+    @Override
+    public List<Statement> getStatementList(Resource resource) throws VoidValidatorException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
  

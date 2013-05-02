@@ -83,7 +83,6 @@ public class RdfReaderTest {
         URI predicate = new URIImpl("http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasStreet");
         statements = instance.getDirectOnlyStatementList(subject, predicate, null, subject);
         assertEquals(0, statements.size());
-        statements = instance.getDirectOnlyStatementList(null, null, null);
         statements = instance.getStatementList(subject, predicate, null, subject);
         assertEquals(1, statements.size());        
     }
@@ -103,13 +102,12 @@ public class RdfReaderTest {
         assertEquals(6, statements.size());
         Resource subject = new URIImpl("http://example.com#person1");
         URI predicate = new URIImpl("http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName");
-        statements = instance.getStatementList(subject, predicate, null, context);
+        statements = instance.getStatementList(subject, predicate, null);
         assertEquals(1, statements.size());
         subject = new URIImpl("http://example.com#person2");
-        statements = instance.getDirectOnlyStatementList(subject, predicate, null, context);
+        statements = instance.getDirectOnlyStatementList(subject, predicate, null);
         assertEquals(0, statements.size());
-        statements = instance.getDirectOnlyStatementList(null, null, null);
-        statements = instance.getStatementList(subject, predicate, null, context);
+        statements = instance.getStatementList(subject, predicate, null);
         assertEquals(1, statements.size());
     }
 

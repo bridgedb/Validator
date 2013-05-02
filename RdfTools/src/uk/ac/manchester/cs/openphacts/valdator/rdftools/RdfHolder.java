@@ -91,13 +91,26 @@ public class RdfHolder implements RdfInterface, Cloneable{
 
     @Override
     // Test that use this should not depend on importing
-    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) throws VoidValidatorException {
+    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
+            throws VoidValidatorException {
+        return this.getDirectOnlyStatementList(subjectResource, predicate, object, contexts);
+    }
+    
+    @Override
+    public List<Statement> getDirectOnlyStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) throws VoidValidatorException {
         List<Statement> results = new ArrayList<Statement>();
         for (Statement statement:statements){
             if (requested(statement, subjectResource, predicate, object, contexts)){ 
                 results.add(statement);
             }
         }
+        return results;
+    }
+    
+    @Override
+    public List<Statement> getStatementList(Resource resource) throws VoidValidatorException {
+        List<Statement> results = getDirectOnlyStatementList(resource, null, null);
+        results.addAll(getDirectOnlyStatementList(null, null, resource));
         return results;
     }
     
@@ -128,4 +141,4 @@ public class RdfHolder implements RdfInterface, Cloneable{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
- }
+  }

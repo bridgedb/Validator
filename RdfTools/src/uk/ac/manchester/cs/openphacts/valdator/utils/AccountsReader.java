@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 
 /**
@@ -100,10 +101,10 @@ public class AccountsReader {
     public static void main(String[] args) throws Exception {
         init();
         for (AccountInfo info:infos){
-            System.out.println(info);
+            Reporter.println(info.toString());
         }
-        System.out.println("   ");
+        Reporter.println("   ");
         AccountInfo info = findByUri("https://raw.github.com/openphacts/ops-platform-setup/master/void/drugbank_void.ttl");
-        System.out.println(info);        
+        Reporter.println(info.toString());        
     }
 }

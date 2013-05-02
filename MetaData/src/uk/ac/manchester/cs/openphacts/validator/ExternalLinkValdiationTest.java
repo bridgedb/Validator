@@ -60,7 +60,7 @@ public class ExternalLinkValdiationTest {
         if (!context.equals(expectedContext)){
             throw new VoidValidatorException("Context mismatch reading " + address + " is: " + context + " but expected " + expectedContext);
         }
-        List<Statement> statements = reader.getStatementList(null, null, null, context);
+        List<Statement> statements = reader.getDirectOnlyStatementList(null, null, null, context);
         if (statements.isEmpty()){
             throw new VoidValidatorException("No statements read from: " + address);
         }
@@ -79,7 +79,7 @@ public class ExternalLinkValdiationTest {
         RdfReader reader = RdfFactory.getMemory();
         File file = new File(fileName);
         Resource context = reader.loadFile(file);
-        List<Statement> statements = reader.getStatementList(null, null, null, context);
+        List<Statement> statements = reader.getDirectOnlyStatementList(null, null, null, context);
         if (statements.isEmpty()){
             throw new VoidValidatorException("No statements read from: " + fileName);
         }

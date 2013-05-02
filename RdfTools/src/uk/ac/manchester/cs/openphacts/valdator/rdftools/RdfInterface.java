@@ -35,6 +35,16 @@ public interface RdfInterface {
     public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException;
     
-    public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException;
+    public List<Statement> getDirectOnlyStatementList(Resource subjectResource, URI predicate, Value object, 
+            Resource...contexts) throws VoidValidatorException;
     
+    /*
+     * Find any Statement in any context that has this resource as either the subject or object.
+     * Should look in Other RDFInterfaces associated but not read externally.
+     * Also will not load from a parent resource (sush as void:subset) but only the parent(void:subset) declaration.
+     */
+    public List<Statement> getStatementList(Resource resource) throws VoidValidatorException;
+
+    public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException;
+
  }

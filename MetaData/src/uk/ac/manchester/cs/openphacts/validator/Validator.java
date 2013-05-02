@@ -77,7 +77,7 @@ public class Validator {
     
     private Set<Resource> getResourcesToCheck() throws VoidValidatorException {
         HashSet<Resource> resourcesToCheck = new HashSet<Resource>();
-        List<Statement> typeStatements = reader.getStatementList(null, RdfConstants.TYPE_URI, null, context);
+        List<Statement> typeStatements = reader.getDirectOnlyStatementList(null, RdfConstants.TYPE_URI, null, context);
         for (Statement typeStatement:typeStatements){
             resourcesToCheck.add(typeStatement.getSubject());
         }
@@ -108,7 +108,7 @@ public class Validator {
 
     private boolean appendValidate(Resource resource, boolean includeWarning) throws VoidValidatorException{
         this.resourcesChecked.add(resource);
-        List<Statement> typeStatements = reader.getStatementList(resource, RdfConstants.TYPE_URI, null, context);
+        List<Statement> typeStatements = reader.getDirectOnlyStatementList(resource, RdfConstants.TYPE_URI, null, context);
         boolean error = false;
         boolean unknownType = true;
         for (Statement typeStatement:typeStatements){

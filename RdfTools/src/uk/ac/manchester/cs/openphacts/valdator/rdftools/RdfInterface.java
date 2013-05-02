@@ -36,4 +36,5 @@ public interface RdfInterface {
             Resource... contexts) throws VoidValidatorException;
     
     public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException;
+    
  }

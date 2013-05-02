@@ -1,4 +1,4 @@
-@prefix : <#> .
+@prefix : <http://example.com/part1#> .
 @prefix ops: <http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .

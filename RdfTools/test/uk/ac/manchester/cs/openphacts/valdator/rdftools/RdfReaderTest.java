@@ -22,6 +22,7 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 import java.io.File;
 import java.util.List;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -35,7 +36,7 @@ import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
  */
 public class RdfReaderTest {
     
-    /**
+     /**
      * Test of loadFile method, of class RdfReader.
      */
     @Test
@@ -126,4 +127,42 @@ public class RdfReaderTest {
         instance.runSparqlQuery(queryString, writer);
     }
     
+       /**
+     * Test of loadFile method, of class RdfReader.
+     */
+    @Test
+    public void testFileBased() throws Exception {
+        Reporter.println("FileBased");
+        File inputFile = new File("test-data/test.ttl");
+        RdfReader instance = RdfFactory.getTestFilebase();
+        Resource expectedContext = new URIImpl(inputFile.toURI().toString());
+        Resource context = instance.loadFile(inputFile);
+        assertEquals(expectedContext, context);
+        List<Statement> statements = instance.getStatementList(null, null, null, context);
+        //for (Statement statement:statements){
+            //ystem.out.println(statement);
+        //}
+        assertEquals(10, statements.size());
+    }
+
+    /**
+     * Test of loadFile method, of class RdfReader.
+     */
+    @Test
+    public void testOtherRdfReader() throws Exception {
+        Reporter.println("OtherRdfReader");
+        File inputFile = new File("test-data/test.ttl");
+        RdfReader instance1 = RdfFactory.getMemory();
+        Resource context = instance1.loadFile(inputFile);
+        Resource subject = new URIImpl("http://example.com/part1#person2");
+        List<Statement> statements = instance1.getStatementList(subject, null, null, context);
+        assertEquals(7, statements.size());
+        RdfReader instance2 = RdfFactory.getMemory();
+        statements = instance2.getStatementList(subject, null, null, context);
+        assertEquals(0, statements.size()); 
+        instance2.addOtherSource(instance1);
+        statements = instance2.getStatementList(subject, null, null, context);
+        assertEquals(7, statements.size()); 
+    }
+
 }

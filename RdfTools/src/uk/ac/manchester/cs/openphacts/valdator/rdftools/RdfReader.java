@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -68,6 +66,7 @@ public class RdfReader implements RdfInterface{
     private RepositoryConnection connection = null;
     private final Set<URI> parentPredicates; //currently 1 hard coded value.
     private final Set<Resource> loadedContexts;
+    private final Set<RdfReader> others; 
     
     public static RdfReader factory(Repository repository) throws VoidValidatorException{
         RdfReader instance = new RdfReader(repository);
@@ -84,6 +83,7 @@ public class RdfReader implements RdfInterface{
         parentPredicates = new HashSet<URI>();
         parentPredicates.add(new URIImpl ("http://rdfs.org/ns/void#subset"));
         loadedContexts = new HashSet<Resource>();
+        others = new HashSet<RdfReader>();
     }
    
     public Resource loadFile(File inputFile) throws VoidValidatorException{
@@ -113,6 +113,10 @@ public class RdfReader implements RdfInterface{
         return loadInputStream(stream, address, format);
     }
    
+    public void addOtherSource(RdfReader other){
+        others.add(other);
+    }
+    
     private Resource loadInputStream(InputStream stream, String address, RDFFormat format) throws VoidValidatorException{
         try {
             Resource context = new URIImpl(address);
@@ -148,8 +152,23 @@ public class RdfReader implements RdfInterface{
             if (repositoryResult!= null){
                 return repositoryResult.asList();
             }
-            if (repositoryResult!= null){
-                return repositoryResult.asList();
+            if (subjectResource != null){
+                new ArrayList<Statement>();
+            }
+            if (!others.isEmpty()){
+                List<Statement> fromOthers = new ArrayList<Statement>();
+                for (RdfReader other:others){
+                    List<Statement> extra = 
+                            other.getDirectOnlyStatementList(subjectResource, predicate, object, contexts);
+                    if (contexts.length > 0){
+                        fromOthers.addAll(extra);
+                    } else {
+                        fromOthers = mergeStatementListsIgnoringContext(fromOthers, extra);
+                    }
+                }  
+                if (!fromOthers.isEmpty()){
+                    return fromOthers;
+                }
             }
             repositoryResult = loadExternalAndGetTheStatementList(subjectResource, predicate, object, contexts);
             if (repositoryResult != null && repositoryResult.hasNext()){
@@ -163,7 +182,7 @@ public class RdfReader implements RdfInterface{
         }
     }
 
-   @Override
+    @Override
     public void runSparqlQuery(String queryString, TupleQueryResultHandler handler) throws VoidValidatorException {
         TupleQueryResult result = null;
         try {
@@ -372,12 +391,34 @@ public class RdfReader implements RdfInterface{
         RdfReader reader =  RdfFactory.getMemory();
         reader.loadURI("https://github.com/openphacts/Validator/blob/Christian/MetaData/test-data/testSimple.ttl");
         for (RDFFormat format:RDFFormat.values() ){
-            System.out.println(format);
-            System.out.println("  " + format.getDefaultMIMEType());
+            Reporter.println(format.toString());
+            Reporter.println("  " + format.getDefaultMIMEType());
             //reader.write(format, System.out);
-            //System.out.println();
-            //System.out.println("**** " + format);            
+            //Reporter.println();
+            //Reporter.println("**** " + format);            
        }
+    }
+
+    private List<Statement> mergeStatementListsIgnoringContext(List<Statement> fullList, List<Statement> extraStatements) {
+        if (fullList.isEmpty()){
+            return extraStatements;
+        }
+        for (Statement extraStatement:extraStatements){
+            boolean found = false;
+            for (Statement existing:fullList){
+                if (existing.getSubject().equals(extraStatement.getSubject())){
+                    if (existing.getPredicate().equals(extraStatement.getPredicate())){
+                        if (existing.getObject().equals(extraStatement.getObject())){
+                            found = true;
+                        }
+                    }
+                }
+            }
+            if (!found){
+               fullList.add(extraStatement);
+            }
+        }
+        return fullList;
     }
 
  

@@ -19,10 +19,11 @@
 //
 package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -120,12 +121,47 @@ public class RdfReaderTest {
         File inputFile = new File("test-data/test.ttl");
         RdfReader instance = RdfFactory.getMemory();
         Resource context = instance.loadFile(inputFile);
-        SPARQLResultsXMLWriter writer = new SPARQLResultsXMLWriter(System.out);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();  
+        SPARQLResultsXMLWriter writer = new SPARQLResultsXMLWriter(stream);
         String queryString = "SELECT ?x ?y WHERE { ?x ?p ?y } ";
         instance.runSparqlQuery(queryString, writer);
+        String result = new String(stream.toByteArray(), "UTF-8");
+        assertThat(result.length(), greaterThan(100));
     }
     
-       /**
+   /**
+     * Test of loadFile method, of class RdfReader.
+     */
+    @Test
+    public void testRunSparqlQueryParts() throws Exception {
+        Reporter.println("runSparqlQueryParts");
+        RdfReader instance1 = RdfFactory.getMemory();
+        File inputFile = new File("test-data/testPart1.ttl");
+        instance1.loadFile(inputFile);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();  
+        SPARQLResultsXMLWriter writer = new SPARQLResultsXMLWriter(stream);
+        String queryString = "SELECT ?x ?y WHERE { ?x ?p ?y } ";
+        instance1.runSparqlQuery(queryString, writer);
+        String result1 = new String(stream.toByteArray(), "UTF-8");
+        assertThat(result1.length(), greaterThan(100));
+        RdfReader instance2 = RdfFactory.getMemory();
+        inputFile = new File("test-data/testSubset.ttl");
+        instance2.loadFile(inputFile);
+        stream = new ByteArrayOutputStream();  
+        writer = new SPARQLResultsXMLWriter(stream);
+        instance2.runSparqlQuery(queryString, writer);
+        String result2 = new String(stream.toByteArray(), "UTF-8");
+        assertThat(result2.length(), greaterThan(100));
+        assertThat(result1, not(result2));
+        instance2.addOtherSource(instance1);
+        stream = new ByteArrayOutputStream();  
+        writer = new SPARQLResultsXMLWriter(stream);
+        instance2.runSparqlQuery(queryString, writer);
+        String result3 = new String(stream.toByteArray(), "UTF-8");
+        assertThat(result3.length(), greaterThan(result2.length()));
+    }
+    
+   /**
      * Test of loadFile method, of class RdfReader.
      */
     @Test

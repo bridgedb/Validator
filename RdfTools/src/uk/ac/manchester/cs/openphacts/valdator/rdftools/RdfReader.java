@@ -186,19 +186,32 @@ public class RdfReader implements RdfInterface{
         return fromOthers;
    }
      
-   @Override
+    @Override
     public void runSparqlQuery(String queryString, TupleQueryResultHandler handler) throws VoidValidatorException {
+        runSparqlQuery(queryString, handler, true);
+    }
+    
+    private void runSparqlQuery(String queryString, TupleQueryResultHandler handler, boolean mainRdf) throws VoidValidatorException {
         TupleQueryResult result = null;
         try {
             RepositoryConnection repositoryConnection = getConnection();
             TupleQuery tupleQuery;
             tupleQuery = repositoryConnection.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
             result = tupleQuery.evaluate();
-            handler.startQueryResult(result.getBindingNames());
+            if (mainRdf){
+                handler.startQueryResult(result.getBindingNames());
+            }
             while (result.hasNext()){
                 handler.handleSolution(result.next());
             }
-            handler.endQueryResult();
+            for (RdfInterface other:others){
+                if (other instanceof RdfReader){
+                 ((RdfReader)other).runSparqlQuery(queryString, handler, false);
+                }
+            }
+            if (mainRdf){
+                handler.endQueryResult();
+            }
         } catch (RepositoryException ex) {
             closeOnError();
             throw new VoidValidatorException("Unable to connect to repository ", ex);

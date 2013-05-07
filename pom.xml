@@ -23,7 +23,8 @@
   <modules>
     <module>RdfTools</module>
     <module>MetaData</module>
-    <module>WebService</module>
+    <module>WebService-core</module>
+    <module>WebService-service</module>
   </modules>
   
    	<build>

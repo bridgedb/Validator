@@ -8,9 +8,9 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>uk.ac.manchester.cs.openphacts</groupId>
-  <artifactId>WebService</artifactId>
+  <artifactId>WebService-service</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>OpenPHACTS WebService</name>
+  <name>OpenPHACTS WebService Service</name>
   <packaging>jar</packaging>
    <!--url>http://maven.apache.org</ur-->
   <properties>
@@ -43,6 +43,12 @@
         <dependency>
             <groupId>uk.ac.manchester.cs.openphacts</groupId>
             <artifactId>MetaData</artifactId>
+			<version>${project.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.manchester.cs.openphacts</groupId>
+            <artifactId>WebService-core</artifactId>
 			<version>${project.version}</version>
             <type>jar</type>
         </dependency>

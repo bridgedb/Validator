@@ -21,15 +21,19 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
 import info.aduna.lang.FileFormat;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -42,6 +46,10 @@ import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.query.TupleQueryResultHandler;
 import org.openrdf.query.TupleQueryResultHandlerException;
+import org.openrdf.query.resultio.TupleQueryResultFormat;
+import org.openrdf.query.resultio.TupleQueryResultWriter;
+import org.openrdf.query.resultio.TupleQueryResultWriterFactory;
+import org.openrdf.query.resultio.TupleQueryResultWriterRegistry;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -237,6 +245,23 @@ public class RdfReader implements RdfInterface{
         }
     }
    
+    @Override
+    public String runSparqlQuery(String query, TupleQueryResultFormat format) throws VoidValidatorException {
+        TupleQueryResultWriterRegistry register = TupleQueryResultWriterRegistry.getInstance();
+        TupleQueryResultWriterFactory factory = register.get(format);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();  
+        TupleQueryResultWriter writer = factory.getWriter(stream);
+        runSparqlQuery(query, writer);
+        String result;
+        try {
+            result = new String(stream.toByteArray(), "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new VoidValidatorException("Error converting query result to string ", ex);
+        }
+        return result;
+    }
+
+
     private RepositoryResult<Statement> getTheStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException {
         try {

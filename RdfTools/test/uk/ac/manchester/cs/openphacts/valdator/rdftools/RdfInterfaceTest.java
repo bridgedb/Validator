@@ -32,6 +32,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
 import org.openrdf.rio.RDFFormat;
 
@@ -41,7 +42,7 @@ import org.openrdf.rio.RDFFormat;
  */
 public abstract class RdfInterfaceTest {
     
-    static RdfInterface instance;
+    static RdfMinimalInterface instance;
     public static RDFFormat NO_FORMAT_SPECIFIED = null;
     public RdfInterfaceTest() {
     }
@@ -77,19 +78,6 @@ public abstract class RdfInterfaceTest {
     }
 
     /**
-     * Test of getDirectOnlyStatementList method, of class RdfInterface.
-     */
-    @Test
-    public void testGetDirectOnlyStatementList() throws Exception {
-        Reporter.println("getDirectOnlyStatementList");
-        Resource subjectResource = null;
-        URI predicate = null;
-        Value object = null;
-        List result = instance.getDirectOnlyStatementList(subjectResource, predicate, object);
-        assertThat(result.size(), greaterThan(6));
-    }
-
-    /**
      * Test of getStatementList method, of class RdfInterface.
      */
     @Test
@@ -106,12 +94,13 @@ public abstract class RdfInterfaceTest {
     @Test
     public void testRunSparqlQuery() throws Exception {
         Reporter.println("runSparqlQuery");
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();  
-        SPARQLResultsXMLWriter writer = new SPARQLResultsXMLWriter(stream);
-        String queryString = "SELECT ?x ?y WHERE { ?x ?p ?y } ";
-        instance.runSparqlQuery(queryString, writer);
-        String result = new String(stream.toByteArray(), "UTF-8");
-        assertThat(result.length(), greaterThan(100));
+        String queryString = "SELECT ?p ?o WHERE { <http://example.com/part1#person2> ?p ?o } ";
+        for (TupleQueryResultFormat format:TupleQueryResultFormat.values()){
+            Reporter.println("   " + format.toString());
+            String result =  instance.runSparqlQuery(queryString, format);
+            assertThat(result.length(), greaterThan(450));//Binary = 452
+            System.out.println(result);
+        }
     }
 
 }

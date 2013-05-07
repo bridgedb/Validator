@@ -25,16 +25,27 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.TupleQueryResultHandler;
+import org.openrdf.query.resultio.TupleQueryResultFormat;
+import org.openrdf.rio.RDFFormat;
 
 /**
  *
  * @author Christian
  */
-public interface RdfInterface extends RdfMinimalInterface{
+public interface RdfMinimalInterface {
     
-    public List<Statement> getDirectOnlyStatementList(Resource subjectResource, URI predicate, Value object, 
-            Resource...contexts) throws VoidValidatorException;
+    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, 
+            Resource... contexts) throws VoidValidatorException;
     
-    public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException;
+    /*
+     * Find any Statement in any context that has this resource as either the subject or object.
+     * Should look in Other RDFInterfaces associated but not read externally.
+     * Also will not load from a parent resource (sush as void:subset) but only the parent(void:subset) declaration.
+     */
+    public List<Statement> getStatementList(Resource resource) throws VoidValidatorException;
+
+    public String runSparqlQuery(String query, TupleQueryResultFormat format) throws VoidValidatorException;
+
+    public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException;
 
  }

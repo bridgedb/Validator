@@ -42,7 +42,7 @@ import org.openrdf.rio.RDFFormat;
  */
 public abstract class RdfInterfaceTest {
     
-    static RdfMinimalInterface instance;
+    public static RdfMinimalInterface instance;
     public static RDFFormat NO_FORMAT_SPECIFIED = null;
     public RdfInterfaceTest() {
     }
@@ -50,6 +50,7 @@ public abstract class RdfInterfaceTest {
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
         instance.loadURI("https://github.com/openphacts/Validator/blob/master/RdfTools/test-data/testPart1.ttl", null);
+        Reporter.println("Loaded " + "https://github.com/openphacts/Validator/blob/master/RdfTools/test-data/testPart1.ttl");
     }
 
     @AfterClass
@@ -99,8 +100,7 @@ public abstract class RdfInterfaceTest {
             Reporter.println("   " + format.toString());
             String result =  instance.runSparqlQuery(queryString, format);
             assertThat(result.length(), greaterThan(450));//Binary = 452
-            System.out.println(result);
-        }
+         }
     }
 
 }

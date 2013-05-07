@@ -17,19 +17,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.openphacts.valdator.rdftools;
+package uk.ac.manchester.cs.server;
 
-import org.junit.BeforeClass;
+import java.util.List;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.server.bean.ResourceBean;
+import uk.ac.manchester.cs.server.bean.StatementBean;
 
 /**
  *
  * @author Christian
  */
-public class FileInterfaceTest extends RdfInterfaceTest{
-    @BeforeClass
-    public static void setUpClass() throws VoidValidatorException {
-        instance = RdfFactory.getTestFilebase();
-        RdfInterfaceTest.setUpClass();
-    }
+interface WSRdfInterface {
+
+    public List<StatementBean> getStatementList(String subjectString, String predicateString, String objectString, 
+            List<String> contextStrings) throws VoidValidatorException;
+
+    public List<StatementBean> getStatementList(String resourceString) throws VoidValidatorException;
+
+    public ResourceBean loadURI(String address, String formatName) throws VoidValidatorException;
+
+    public String runSparqlQuery(String query, String formatName) throws VoidValidatorException;
     
 }

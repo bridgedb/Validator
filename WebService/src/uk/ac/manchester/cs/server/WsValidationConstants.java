@@ -25,10 +25,21 @@ package uk.ac.manchester.cs.server;
  */
 public class WsValidationConstants {
     
-    public static final String VALIDATE = "validate";
-    public static final String RDF_FORMAT = "rdfFormat";
-    public static final String TEXT = "text";    
-    public static final String URI = "uri";
-    public static final String SPECIFICATION = "specification";
+    public static final String CONTEXT = "context";
+    public static final String FORMAT = "format";
     public static final String INCLUDE_WARNINGS = "includeWarnings";
+    public static final String LOAD_URI = "loadUri";
+    public static final String OBJECT = "object";
+    public static final String PREDICATE = "predicate";
+    public static final String QUERY = "query";    
+    public static final String RDF_FORMAT = "rdfFormat";
+    public static final String RESOURCE = "resource";    
+    public static final String TEXT = "text";    
+    public static final String SPECIFICATION = "specification";
+    public static final String STATEMENT_LIST = "statementList";
+    public static final String SUBJECT = "subject";
+    public static final String SPARQL = "sparql";    
+    public static final String URI = "uri";
+    public static final String VALIDATE = "validate";
+    
 }

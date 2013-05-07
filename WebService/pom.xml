@@ -43,7 +43,7 @@
         <dependency>
             <groupId>uk.ac.manchester.cs.openphacts</groupId>
             <artifactId>MetaData</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -58,6 +58,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>uk.ac.manchester.cs.openphacts</groupId>
+            <artifactId>RdfTools</artifactId>
+			<version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

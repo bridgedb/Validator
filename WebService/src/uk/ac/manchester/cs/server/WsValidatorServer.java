@@ -19,6 +19,7 @@
 //
 package uk.ac.manchester.cs.server;
 
+import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -31,29 +32,39 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import org.openrdf.model.Resource;
+import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
+import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.SpecificationsRegistry;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.server.bean.ResourceBean;
+import uk.ac.manchester.cs.server.bean.StatementBean;
+import uk.ac.manchester.cs.server.bean.URIBean;
+import uk.ac.manchester.cs.server.bean.ValueBean;
 
     
 /**
  *
  * @author Christian
  */
-public class WsValidatorServer {
+public class WsValidatorServer implements WSRdfInterface{
         
     static final Logger logger = Logger.getLogger(WsValidatorServer.class);
     private static final int DESCRIPTION_WIDTH = 100;
     private static final String DESCRIPTION_FIELD = "Description";
+    private final RdfInterface rdfInterface;
     
-    public WsValidatorServer() {
+    public WsValidatorServer() throws VoidValidatorException {
         logger.info("Validator Server setup");
+        rdfInterface = RdfFactory.getFilebase();
     }
             
     @GET
@@ -476,6 +487,69 @@ public class WsValidatorServer {
             sb.append(text);
         }
         sb.append("</textarea></p>\n");
+    }
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path(WsValidationConstants.STATEMENT_LIST)
+    @Override
+    public List<StatementBean> getStatementList(@QueryParam(WsValidationConstants.SUBJECT) String subjectString, 
+            @QueryParam(WsValidationConstants.PREDICATE) String predicateString, 
+            @QueryParam(WsValidationConstants.OBJECT) String objectString, 
+            @QueryParam(WsValidationConstants.CONTEXT) List<String> contextStrings) throws VoidValidatorException {
+        Resource subject = ResourceBean.asResource(subjectString);
+        URI predicate = URIBean.asURI(predicateString);
+        Value object = ValueBean.asValue(objectString);
+        Resource[] contexts = ResourceBean.asResourceArray(contextStrings);
+        List<Statement> statements = rdfInterface.getStatementList(subject, predicate, object, contexts);
+        return StatementBean.asBeans(statements);
+    }
+
+    @Override
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path(WsValidationConstants.RESOURCE +  "/{" + WsValidationConstants.RESOURCE +  "}")
+    public List<StatementBean> getStatementList(@QueryParam(WsValidationConstants.RESOURCE) String resourceString) 
+            throws VoidValidatorException{
+        Resource resource = ResourceBean.asResource(resourceString);
+        List<Statement> statements = rdfInterface.getStatementList(resource);
+        return StatementBean.asBeans(statements);
+    }
+
+    @Override
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path(WsValidationConstants.LOAD_URI)
+    public ResourceBean loadURI(@QueryParam(WsValidationConstants.URI) String address, 
+        @QueryParam(WsValidationConstants.RDF_FORMAT) String formatName)throws VoidValidatorException {
+        RDFFormat format;
+        if (formatName == null || formatName.isEmpty()){
+            format = null;
+        } else {
+            format = RDFFormat.valueOf(formatName);            
+            if (format == null){
+                throw new VoidValidatorException("No format known for " + formatName);
+            }
+        }
+        Resource result = rdfInterface.loadURI(address, format);
+        return ResourceBean.asBean(result);
+    }
+
+    @Override
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path(WsValidationConstants.SPARQL)
+    public String runSparqlQuery(@QueryParam(WsValidationConstants.QUERY)String query, 
+            @QueryParam(WsValidationConstants.FORMAT)String formatName) throws VoidValidatorException{
+        TupleQueryResultFormat format = null;
+        for (TupleQueryResultFormat check:TupleQueryResultFormat.values()){
+            if (check.getName().equalsIgnoreCase(formatName)){
+                format = check;
+            }
+        }
+        if (format == null){
+            throw new VoidValidatorException("No format known for " + formatName);
+        }
+        return rdfInterface.runSparqlQuery(query, format);
     }
 
 }

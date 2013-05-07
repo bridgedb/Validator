@@ -45,6 +45,7 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.TupleQueryResultHandler;
+import org.openrdf.rio.RDFFormat;
 
 /**
  * This is mainly for testing.
@@ -138,6 +139,11 @@ public class RdfHolder implements RdfInterface, Cloneable{
 
     @Override
     public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

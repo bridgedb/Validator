@@ -103,6 +103,7 @@ public class RdfReader implements RdfInterface{
         return loadURI(address, null);
     }
     
+    @Override
     public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException {
         if (address.startsWith("file")){
             File file = new File(address);

@@ -94,11 +94,11 @@ public class RdfReader implements RdfInterface{
         others = new HashSet<RdfInterface>();
     }
    
-    public Resource loadFile(File inputFile) throws VoidValidatorException{
+    public URI loadFile(File inputFile) throws VoidValidatorException{
         return loadFile(inputFile, null);
     }
     
-    public Resource loadFile(File inputFile, RDFFormat format) throws VoidValidatorException{
+    public URI loadFile(File inputFile, RDFFormat format) throws VoidValidatorException{
         try {
             InputStream stream = new FileInputStream(inputFile);
             return loadInputStream(stream, inputFile.toURI().toString(), format);
@@ -112,7 +112,7 @@ public class RdfReader implements RdfInterface{
     }
     
     @Override
-    public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException {
+    public URI loadURI(String address, RDFFormat format) throws VoidValidatorException {
         if (address.startsWith("file")){
             File file = new File(address);
             return loadFile(file);
@@ -126,9 +126,9 @@ public class RdfReader implements RdfInterface{
         others.add(other);
     }
     
-    private Resource loadInputStream(InputStream stream, String address, RDFFormat format) throws VoidValidatorException{
+    private URI loadInputStream(InputStream stream, String address, RDFFormat format) throws VoidValidatorException{
         try {
-            Resource context = new URIImpl(address);
+            URI context = new URIImpl(address);
             loadedContexts.add(context);
             RepositoryConnection repositoryConnection = getConnection();
             connection.setAutoCommit(false);

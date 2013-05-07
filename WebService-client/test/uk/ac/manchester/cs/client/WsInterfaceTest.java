@@ -17,11 +17,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server;
+package uk.ac.manchester.cs.client;
 
 
 import org.junit.BeforeClass;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.ws.RdfInterfaceToWS;
@@ -33,8 +32,8 @@ import uk.ac.manchester.cs.ws.RdfInterfaceToWS;
 public class WsInterfaceTest extends RdfInterfaceTest{
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
-        WsValidatorServer ws = new WsValidatorServer(RdfFactory.getMemory());
-        instance  = new RdfInterfaceToWS(ws);
+        WSRdfClient client = new WSRdfClient("http://localhost:8080/Validator");
+        instance  = new RdfInterfaceToWS(client);
         RdfInterfaceTest.setUpClass();
     }
     

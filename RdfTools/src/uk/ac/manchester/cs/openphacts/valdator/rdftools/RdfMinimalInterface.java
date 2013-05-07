@@ -46,6 +46,6 @@ public interface RdfMinimalInterface {
 
     public String runSparqlQuery(String query, TupleQueryResultFormat format) throws VoidValidatorException;
 
-    public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException;
+    public URI loadURI(String address, RDFFormat format) throws VoidValidatorException;
 
  }

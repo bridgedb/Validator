@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server.bean;
+package uk.ac.manchester.cs.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import org.openrdf.model.Literal;

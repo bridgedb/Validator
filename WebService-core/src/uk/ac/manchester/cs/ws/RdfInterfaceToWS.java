@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server;
+package uk.ac.manchester.cs.ws;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,9 @@ import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfMinimalInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.server.bean.ResourceBean;
-import uk.ac.manchester.cs.server.bean.StatementBean;
+import uk.ac.manchester.cs.bean.ResourceBean;
+import uk.ac.manchester.cs.bean.StatementBean;
+import uk.ac.manchester.cs.bean.URIBean;
 
 /**
  *
@@ -45,10 +46,8 @@ public class RdfInterfaceToWS implements RdfMinimalInterface {
     }
     
     @Override
-    //@GET
-    //@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    //@Path(WsValidationConstants.STATEMENT_LIST)
-    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) throws VoidValidatorException {
+    public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, Resource... contexts) 
+            throws VoidValidatorException {
         String subjectString = toString(subjectResource);
         String predicateString = toString(predicate);
         String objectString = toString(object);
@@ -65,14 +64,14 @@ public class RdfInterfaceToWS implements RdfMinimalInterface {
     }
 
     @Override
-    public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException {
-        ResourceBean bean;
+    public URI loadURI(String address, RDFFormat format) throws VoidValidatorException {
+        URIBean bean;
         if (format == null){
             bean = wsInterface.loadURI(address, null);
         } else {
             bean = wsInterface.loadURI(address, format.getName());
         }
-        return ResourceBean.asResource(bean);
+        return URIBean.asURI(bean);
     }
 
     @Override

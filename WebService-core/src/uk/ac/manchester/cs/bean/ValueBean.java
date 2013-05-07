@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server.bean;
+package uk.ac.manchester.cs.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import org.openrdf.model.Literal;
@@ -29,7 +29,6 @@ import org.openrdf.model.impl.LiteralImpl;
  *
  * @author Christian
  */
-@XmlRootElement(name="Value")
 public class ValueBean {
 
     public static Value asValue(ValueBean bean) {
@@ -39,7 +38,7 @@ public class ValueBean {
         if (bean instanceof LiteralBean){
             return LiteralBean.asLiteral((LiteralBean)bean);
         }
-        throw new UnsupportedOperationException("Not yet implemented");
+        throw new UnsupportedOperationException("Not yet implemented " + bean.getClass());
     }
 
     public static Value asValue(String valueString) {

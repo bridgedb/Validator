@@ -42,12 +42,6 @@
   <dependencies>
         <dependency>
             <groupId>uk.ac.manchester.cs.openphacts</groupId>
-            <artifactId>MetaData</artifactId>
-			<version>${project.version}</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>uk.ac.manchester.cs.openphacts</groupId>
             <artifactId>WebService-core</artifactId>
 			<version>${project.version}</version>
             <type>jar</type>

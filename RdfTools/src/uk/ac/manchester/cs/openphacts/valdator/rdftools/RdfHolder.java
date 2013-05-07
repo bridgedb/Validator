@@ -144,7 +144,7 @@ public class RdfHolder implements RdfInterface, Cloneable{
     }
 
     @Override
-    public Resource loadURI(String address, RDFFormat format) throws VoidValidatorException {
+    public URI loadURI(String address, RDFFormat format) throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

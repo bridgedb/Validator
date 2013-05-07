@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server;
+package uk.ac.manchester.cs.ws;
 
 /**
  *
@@ -25,6 +25,7 @@ package uk.ac.manchester.cs.server;
  */
 public class WsValidationConstants {
     
+    public static final String BY_RESOURCE = "byResource";    
     public static final String CONTEXT = "context";
     public static final String FORMAT = "format";
     public static final String INCLUDE_WARNINGS = "includeWarnings";

@@ -17,17 +17,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server.bean;
+package uk.ac.manchester.cs.bean;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.ContextStatementImpl;
-import org.openrdf.model.impl.StatementImpl;
 
 /**
  *
@@ -36,19 +36,23 @@ import org.openrdf.model.impl.StatementImpl;
 @XmlRootElement(name="Statement")
 public class StatementBean {
 
-    private ResourceBean subject;
+    private URIBean subject;
     private URIBean predicate;
-    private ValueBean object;
-    private ResourceBean context;
+    private URIBean object;
+    private LiteralBean literalObject;
+    private URIBean context;
     
     public StatementBean(){
     }
     
     public static Statement asStatement(StatementBean bean) {
-        Resource subject = ResourceBean.asResource(bean.getSubject());
+        URI subject = URIBean.asURI(bean.getSubject());
         URI predicate = URIBean.asURI(bean.getPredicate());
-        Value object = ValueBean.asValue(bean.getObject());
-        Resource context = ResourceBean.asResource(bean.getContext());
+        Value object = URIBean.asURI(bean.getObject());
+        if (object == null){
+            object = LiteralBean.asLiteral(bean.literalObject);
+        }
+        URI context = URIBean.asURI(bean.getContext());
         return new ContextStatementImpl(subject, predicate, object, context);
     }
 
@@ -70,24 +74,43 @@ public class StatementBean {
 
     private static StatementBean asBean(Statement statement) {
         StatementBean bean = new StatementBean();
-        bean.setSubject(ResourceBean.asBean(statement.getSubject()));
+        Resource subject = statement.getSubject();
+        if (subject instanceof URI){
+            bean.setSubject(URIBean.asBean((URI)subject)); 
+        } else {
+            throw new UnsupportedOperationException("Not yet implemented " + subject.getClass());
+        }
         bean.setPredicate(URIBean.asBean(statement.getPredicate()));
-        bean.setObject(ValueBean.asBean(statement.getObject()));
-        bean.setContext(ResourceBean.asBean(statement.getContext()));
+        Value object = statement.getObject();
+        if (object instanceof URI){
+            bean.setObject(URIBean.asBean((URI)object)); 
+        } else if (object instanceof Literal){
+            bean.setLiteralObject(LiteralBean.asBean((Literal)object)); 
+        } else {
+            throw new UnsupportedOperationException("Not yet implemented " + object.getClass());
+        }
+        Resource context = statement.getContext();
+        if (context != null){
+            if (context instanceof URI){
+                bean.setContext(URIBean.asBean((URI)context)); 
+            } else {
+                throw new UnsupportedOperationException("Not yet implemented " + context.getClass());
+            }
+        }
         return bean;
     }
 
     /**
      * @return the subject
      */
-    public ResourceBean getSubject() {
+    public URIBean getSubject() {
         return subject;
     }
 
     /**
      * @param subject the subject to set
      */
-    public void setSubject(ResourceBean subject) {
+    public void setSubject(URIBean subject) {
         this.subject = subject;
     }
 
@@ -108,29 +131,43 @@ public class StatementBean {
     /**
      * @return the object
      */
-    public ValueBean getObject() {
+    public URIBean getObject() {
         return object;
     }
 
     /**
      * @param object the object to set
      */
-    public void setObject(ValueBean object) {
+    public void setObject(URIBean object) {
         this.object = object;
+    }
+
+    /**
+     * @return the literalObject
+     */
+    public LiteralBean getLiteralObject() {
+        return literalObject;
+    }
+
+    /**
+     * @param literalObject the literalObject to set
+     */
+    public void setLiteralObject(LiteralBean literalObject) {
+        this.literalObject = literalObject;
     }
 
     /**
      * @return the context
      */
-    public ResourceBean getContext() {
+    public URIBean getContext() {
         return context;
     }
 
     /**
      * @param context the context to set
      */
-    public void setContext(ResourceBean context) {
+    public void setContext(URIBean context) {
         this.context = context;
     }
-    
+
 }

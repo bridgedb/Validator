@@ -25,6 +25,7 @@
     <module>MetaData</module>
     <module>WebService-core</module>
     <module>WebService-service</module>
+    <module>WebService-client</module>
   </modules>
   
    	<build>

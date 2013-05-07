@@ -38,6 +38,10 @@ import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
+import uk.ac.manchester.cs.bean.ResourceBean;
+import uk.ac.manchester.cs.bean.StatementBean;
+import uk.ac.manchester.cs.bean.URIBean;
+import uk.ac.manchester.cs.bean.ValueBean;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.SpecificationsRegistry;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
@@ -45,10 +49,8 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.Validator;
-import uk.ac.manchester.cs.server.bean.ResourceBean;
-import uk.ac.manchester.cs.server.bean.StatementBean;
-import uk.ac.manchester.cs.server.bean.URIBean;
-import uk.ac.manchester.cs.server.bean.ValueBean;
+import uk.ac.manchester.cs.ws.WSRdfInterface;
+import uk.ac.manchester.cs.ws.WsValidationConstants;
 
     
 /**
@@ -66,7 +68,12 @@ public class WsValidatorServer implements WSRdfInterface{
         logger.info("Validator Server setup");
         rdfInterface = RdfFactory.getFilebase();
     }
-            
+        
+    public WsValidatorServer(RdfInterface rdfInterface) throws VoidValidatorException {
+        logger.info("Validator Server setup");
+        this.rdfInterface = rdfInterface;
+    }
+    
     @GET
     @Produces(MediaType.TEXT_HTML)
     public Response welcomeMessage(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
@@ -504,12 +511,16 @@ public class WsValidatorServer implements WSRdfInterface{
         List<Statement> statements = rdfInterface.getStatementList(subject, predicate, object, contexts);
         return StatementBean.asBeans(statements);
     }
-
+    
     @Override
+    @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Path(WsValidationConstants.RESOURCE +  "/{" + WsValidationConstants.RESOURCE +  "}")
+    @Path(WsValidationConstants.BY_RESOURCE)
     public List<StatementBean> getStatementList(@QueryParam(WsValidationConstants.RESOURCE) String resourceString) 
             throws VoidValidatorException{
+        if (resourceString == null){
+            throw new VoidValidatorException ("Missing " + WsValidationConstants.RESOURCE + " parameter!");
+        }
         Resource resource = ResourceBean.asResource(resourceString);
         List<Statement> statements = rdfInterface.getStatementList(resource);
         return StatementBean.asBeans(statements);
@@ -519,8 +530,11 @@ public class WsValidatorServer implements WSRdfInterface{
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path(WsValidationConstants.LOAD_URI)
-    public ResourceBean loadURI(@QueryParam(WsValidationConstants.URI) String address, 
+    public URIBean loadURI(@QueryParam(WsValidationConstants.URI) String address, 
         @QueryParam(WsValidationConstants.RDF_FORMAT) String formatName)throws VoidValidatorException {
+        if (address == null){
+            throw new VoidValidatorException("Missing " + WsValidationConstants.URI + " parameter!");
+        }
         RDFFormat format;
         if (formatName == null || formatName.isEmpty()){
             format = null;
@@ -530,8 +544,8 @@ public class WsValidatorServer implements WSRdfInterface{
                 throw new VoidValidatorException("No format known for " + formatName);
             }
         }
-        Resource result = rdfInterface.loadURI(address, format);
-        return ResourceBean.asBean(result);
+        URI result = rdfInterface.loadURI(address, format);
+        return URIBean.asBean(result);
     }
 
     @Override

@@ -19,23 +19,24 @@
 //
 package uk.ac.manchester.cs.server;
 
-
-import org.junit.BeforeClass;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;
+import java.util.List;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.ws.RdfInterfaceToWS;
+import uk.ac.manchester.cs.bean.ResourceBean;
+import uk.ac.manchester.cs.bean.StatementBean;
 
 /**
  *
  * @author Christian
  */
-public class WsInterfaceTest extends RdfInterfaceTest{
-    @BeforeClass
-    public static void setUpClass() throws VoidValidatorException {
-        WsValidatorServer ws = new WsValidatorServer(RdfFactory.getMemory());
-        instance  = new RdfInterfaceToWS(ws);
-        RdfInterfaceTest.setUpClass();
-    }
+interface WSRdfInterface {
+
+    public List<StatementBean> getStatementList(String subjectString, String predicateString, String objectString, 
+            List<String> contextStrings) throws VoidValidatorException;
+
+    public List<StatementBean> getStatementList(String resourceString) throws VoidValidatorException;
+
+    public ResourceBean loadURI(String address, String formatName) throws VoidValidatorException;
+
+    public String runSparqlQuery(String query, String formatName) throws VoidValidatorException;
     
 }

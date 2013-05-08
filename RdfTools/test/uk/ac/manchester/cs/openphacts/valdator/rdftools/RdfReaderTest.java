@@ -50,7 +50,7 @@ public class RdfReaderTest {
         assertEquals(expectedContext, context);
         List<Statement> statements = instance.getStatementList(null, null, null, context);
         assertEquals(10, statements.size());
-        URI person = new URIImpl("http://example.com/part1#person2");
+        URI person = new URIImpl(ExampleConstants.EXAMPLE_RESOURCE);
         statements = instance.getStatementList(person);
         //7 statements as subject + one as object
         assertEquals(8, statements.size());
@@ -84,7 +84,7 @@ public class RdfReaderTest {
         assertEquals(expectedContext, context);
         List<Statement> statements = instance.getStatementList(null, null, null, context);
         assertEquals(7, statements.size());
-        Resource subject = new URIImpl("http://example.com/part1#person2");
+        Resource subject = new URIImpl(ExampleConstants.EXAMPLE_RESOURCE);
         URI predicate = new URIImpl("http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasStreet");
         statements = instance.getDirectOnlyStatementList(subject, predicate, null, subject);
         assertEquals(0, statements.size());

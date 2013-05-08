@@ -49,8 +49,8 @@ public abstract class RdfInterfaceTest {
 
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
-        instance.loadURI("https://github.com/openphacts/Validator/blob/master/RdfTools/test-data/testPart1.ttl", null);
-        Reporter.println("Loaded " + "https://github.com/openphacts/Validator/blob/master/RdfTools/test-data/testPart1.ttl");
+        instance.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+        Reporter.println("Loaded " + ExampleConstants.EXAMPLE_CONTEXT);
     }
 
     @AfterClass
@@ -84,7 +84,7 @@ public abstract class RdfInterfaceTest {
     @Test
     public void testGetStatementList_Resource() throws Exception {
         Reporter.println("getStatementList_Resource");
-        Resource resource = new URIImpl("http://example.com/part1#person2");
+        Resource resource = new URIImpl(ExampleConstants.EXAMPLE_RESOURCE);
         List result = instance.getStatementList(resource);
         assertThat(result.size(), greaterThan(6));
     }
@@ -95,7 +95,7 @@ public abstract class RdfInterfaceTest {
     @Test
     public void testRunSparqlQuery() throws Exception {
         Reporter.println("runSparqlQuery");
-        String queryString = "SELECT ?p ?o WHERE { <http://example.com/part1#person2> ?p ?o } ";
+        String queryString = "SELECT ?p ?o WHERE { <" + ExampleConstants.EXAMPLE_RESOURCE + "> ?p ?o } ";
         for (TupleQueryResultFormat format:TupleQueryResultFormat.values()){
             Reporter.println("   " + format.toString());
             String result =  instance.runSparqlQuery(queryString, format);

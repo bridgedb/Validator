@@ -45,9 +45,8 @@ public class ResourceBean extends ValueBean{
             URI uri = new URIImpl(string);
             return uri;
         } catch (IllegalArgumentException ex){
-            //do nothing
+            throw new UnsupportedOperationException("Unable to convert string " + string + " to a Resource ", ex);
         }
-        return null;
     }
 
     public static Resource[] asResourceArray(List<String> contextStrings) {

@@ -34,7 +34,7 @@ import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
 public class WsInterfaceTest extends RdfInterfaceTest{
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
-        WsValidatorServer ws = new WsValidatorServer(RdfFactory.getMemory());
+        WsValidatorServer ws = new WsFrame(RdfFactory.getMemory());
         instance  = new RdfInterfaceToWS(ws);
         RdfInterfaceTest.setUpClass();
     }

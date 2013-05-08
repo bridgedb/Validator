@@ -22,6 +22,7 @@ package uk.ac.manchester.cs.openphacts.valdator.server;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -48,20 +49,22 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WSRdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
+import uk.ac.manchester.cs.openphacts.validator.Validator;
 
     
 /**
  *
  * @author Christian
  */
-public class WsValidatorServer implements WSRdfInterface{
+public abstract class WsValidatorServer implements WSRdfInterface{
         
     static final Logger logger = Logger.getLogger(WsValidatorServer.class);
     private static final int DESCRIPTION_WIDTH = 100;
     private static final String DESCRIPTION_FIELD = "Description";
+    private static final String NO_ON_SUBMIT = null;
+    
     private final RdfInterface rdfInterface;
     
     public WsValidatorServer() throws VoidValidatorException {
@@ -76,39 +79,30 @@ public class WsValidatorServer implements WSRdfInterface{
     
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public Response welcomeMessage(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
-        StringBuilder sb = getHeader();
-
+    @Path(WsValidationConstants.VALIDATE_HOME)
+    public Response validateHome(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
+        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        sb.append("<h1> Welcome to the OpenPhacts Validation Service.</h1>");
+        sb.append("<p>The form below gives an example of how to use the Validation service.</p>");
+        sb.append("<p>Select another service from the side.</p>");
+        sb.append("<p>To Try a different ontology please contact Christian.</p>");
+        sb.append("<hr/>");
         appendValidationForm(sb, null, null, null, null, true, httpServletRequest);                     
-        sb.append("</body></html>");
+        footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();
     }
+    
+     protected void addValidatorSideBar(StringBuilder sb, HttpServletRequest httpServletRequest) {
+        sb.append("<div class=\"menugroup\">OPS Validation Service</div>");
+        addSideBarItem(sb, WsValidationConstants.VALIDATE_HOME, "Home", httpServletRequest);
+        addSideBarItem(sb, WsValidationConstants.VALIDATE,WsValidationConstants.VALIDATE, httpServletRequest);
+        addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
+        addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
+        addSideBarItem(sb, WsValidationConstants.SPARQL, WsValidationConstants.SPARQL, httpServletRequest);
+        addSideBarItem(sb, WsValidationConstants.LOAD_URI, WsValidationConstants.LOAD_URI, httpServletRequest);
+    }
 
-    private StringBuilder getHeader(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("<?xml version=\"1.0\"?>");
-        sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
-                + "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-        sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">");
-        sb.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=ISO-8859-1\"/>\n");
-        sb.append("<head><title>OPS Validator</title></head>\n<body>");
-        sb.append("<h1>Open PHACTS Validator</h1>\n");        
-        return sb;
-    }
-    
     @GET
-    @Produces(MediaType.TEXT_HTML)
-    @Path(WsValidationConstants.VALIDATE)
-    public Response validateGet(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
-            @QueryParam(WsValidationConstants.TEXT) String text, 
-            @QueryParam(WsValidationConstants.URI) String uri, 
-            @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
-            @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) boolean includeWarning,
-            @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
-        return validate(rdfFormat, text, uri, specification, includeWarning, httpServletRequest);
-    }
-    
-    @POST
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
     public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
@@ -117,13 +111,25 @@ public class WsValidatorServer implements WSRdfInterface{
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
-        StringBuilder sb = getHeader();
+        StringBuilder sb = topAndSide("Validation Service", httpServletRequest);
         appendValidationResult(sb, rdfFormat, text, uri, specification, includeWarning);
         appendValidationForm(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest);                             
-        sb.append("</body></html>");
+        footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
     }
 
+    @POST
+    @Produces(MediaType.TEXT_HTML)
+    @Path(WsValidationConstants.VALIDATE)
+    public Response validatePost(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
+            @QueryParam(WsValidationConstants.TEXT) String text, 
+            @QueryParam(WsValidationConstants.URI) String uri, 
+            @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
+            @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
+            @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
+        return this.validate(rdfFormat, text, uri, specification, includeWarning, httpServletRequest);
+    }
+    
     private void appendValidationResult(StringBuilder sb, String format, String text, String uri, String specification, 
             Boolean includeWarnings) throws VoidValidatorException  {   
         boolean error = false;
@@ -273,27 +279,47 @@ public class WsValidatorServer implements WSRdfInterface{
          }     
     }
     
-    private void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, 
+    void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, 
             Boolean includeWarnings, HttpServletRequest httpServletRequest) throws VoidValidatorException {
-     	sb.append("<form method=\"get\" action=\"");
-        sb.append(httpServletRequest.getContextPath());
-        sb.append("/");
-    	sb.append(WsValidationConstants.VALIDATE);
-    	sb.append("\" onsubmit=\"return checkform(this);\"");
-    	sb.append("\">");
-    	sb.append("<fieldset>");
-    	sb.append("<legend>Validator Input</legend>\n");
+     	appendFormStart(sb, WsValidationConstants.VALIDATE, "return checkform(this);", httpServletRequest);
         appendRDFFormat(sb, format);
         appendIncludeWarnings(sb, includeWarnings);
         appendText(sb, text);
-        appendUri(sb, uri);
+        appendInput(sb, WsValidationConstants.URI, uri);
     	generateSpecificationsSelector(sb, specification);
+    	appendFormEnd(sb, httpServletRequest);
+        generateScripts(sb);
+   }
+    
+   private void appendStatementListForm(StringBuilder sb, String subjectString, String predicateString, String objectString, List<String> contextStrings, HttpServletRequest httpServletRequest) {
+      	appendFormStart(sb, WsValidationConstants.STATEMENT_LIST,  NO_ON_SUBMIT, httpServletRequest);
+        appendInput(sb, WsValidationConstants.SUBJECT, subjectString);
+        appendInput(sb, WsValidationConstants.PREDICATE, predicateString);
+        appendInput(sb, WsValidationConstants.OBJECT, objectString);
+        appendInput(sb, WsValidationConstants.CONTEXT, "");
+    	appendFormEnd(sb, httpServletRequest);
+   }
+
+   private void appendFormStart(StringBuilder sb, String action, String onsubmit, HttpServletRequest httpServletRequest) {
+     	sb.append("<form method=\"get\" action=\"");
+        sb.append(httpServletRequest.getContextPath());
+        sb.append("/");
+    	sb.append(action);
+        if (onsubmit != null){
+            sb.append("\" onsubmit=\"");
+            sb.append(onsubmit);
+        }
+     	sb.append("\">");
+    	sb.append("<fieldset>");
+    	sb.append("<legend>Validator Input</legend>\n");
+    }
+ 
+    private void appendFormEnd(StringBuilder sb, HttpServletRequest httpServletRequest) {
     	sb.append("<p><input type=\"submit\" value=\"Submit\"/></p>");
     	sb.append("</fieldset></form>\n");
     	sb.append("<p>Note: If the new page does not open click on the address bar and press enter</p>");
-        generateScripts(sb);
-   }
-
+    }
+    
     private void generateSpecificationsSelector(StringBuilder sb, String specification) throws VoidValidatorException {
 		Set<String> names = SpecificationsRegistry.getSpecificationNames();
         sb.append("<p>");
@@ -430,18 +456,20 @@ public class WsValidatorServer implements WSRdfInterface{
         sb.append("}\n");         
     }
     
-    private void appendUri(StringBuilder sb, String uri) {     
+    private void appendInput(StringBuilder sb, String label, String value) {     
     	sb.append("<p><label for=\"");
-    	sb.append(WsValidationConstants.URI);
-    	sb.append("\">Input URI</label>");
+    	sb.append(label);
+    	sb.append("\">");
+    	sb.append(label);        
+    	sb.append("</label>");
     	sb.append("<input type=\"text\" id=\"");
-    	sb.append(WsValidationConstants.URI);
+    	sb.append(label);
     	sb.append("\" name=\"");
-    	sb.append(WsValidationConstants.URI);
+    	sb.append(label);
     	sb.append("\" style=\"width:80%");
-        if (uri != null){
+        if (value != null){
         	sb.append("\" value=\"");
-            sb.append(uri);            
+            sb.append(value);            
         }
     	sb.append("\"/></p>\n");
     }
@@ -504,14 +532,40 @@ public class WsValidatorServer implements WSRdfInterface{
             @QueryParam(WsValidationConstants.PREDICATE) String predicateString, 
             @QueryParam(WsValidationConstants.OBJECT) String objectString, 
             @QueryParam(WsValidationConstants.CONTEXT) List<String> contextStrings) throws VoidValidatorException {
+        List<Statement> statements = getTheStatementList(subjectString, predicateString, objectString, contextStrings);
+        return StatementBean.asBeans(statements);
+    }
+    
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path(WsValidationConstants.STATEMENT_LIST)
+    public Response getStatementList(@QueryParam(WsValidationConstants.SUBJECT) String subjectString, 
+            @QueryParam(WsValidationConstants.PREDICATE) String predicateString, 
+            @QueryParam(WsValidationConstants.OBJECT) String objectString, 
+            @QueryParam(WsValidationConstants.CONTEXT) List<String> contextStrings,
+            @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
+        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        appendStatementListForm(sb, subjectString, predicateString, objectString, contextStrings, httpServletRequest); 
+        if ((subjectString != null && !subjectString.isEmpty()) || 
+                (predicateString != null && !predicateString.isEmpty()) || 
+                (objectString != null && !objectString.isEmpty()) || 
+                (contextStrings != null &&!contextStrings.isEmpty())){
+            List<Statement> statements = getTheStatementList(subjectString, predicateString, objectString, contextStrings);
+            appendStatements(sb, statements, httpServletRequest);
+        }
+        footerAndEnd(sb);
+        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
+    }
+    
+    private List<Statement> getTheStatementList(String subjectString, String predicateString, String objectString, 
+            List<String> contextStrings) throws VoidValidatorException {
         Resource subject = ResourceBean.asResource(subjectString);
         URI predicate = URIBean.asURI(predicateString);
         Value object = ValueBean.asValue(objectString);
         Resource[] contexts = ResourceBean.asResourceArray(contextStrings);
-        List<Statement> statements = rdfInterface.getStatementList(subject, predicate, object, contexts);
-        return StatementBean.asBeans(statements);
+        return rdfInterface.getStatementList(subject, predicate, object, contexts);
     }
-    
+
     @Override
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -565,7 +619,59 @@ public class WsValidatorServer implements WSRdfInterface{
         }
         return rdfInterface.runSparqlQuery(query, format);
     }
+    
+   private void appendStatements(StringBuilder sb, List<Statement> statements, HttpServletRequest httpServletRequest) {
+        sb.append("<hr/>");
+        sb.append("<table border=\"1\">");
+        sb.append("<tr>");
+        sb.append("<th>Subject</th>");
+        sb.append("<th>Predicate</th>");
+        sb.append("<th>Object</th>");
+        sb.append("<th>Context</th>");
+        sb.append("</tr>");
+        for (Statement statement:statements){
+            sb.append("<tr>");
+            appendValueCell(sb, statement.getSubject(), false, httpServletRequest);
+            appendValueCell(sb, statement.getPredicate(), true, httpServletRequest);
+            appendValueCell(sb, statement.getObject(), false, httpServletRequest);
+            appendValueCell(sb, statement.getContext(), true, httpServletRequest);
+            sb.append("</tr>");
+        }
+        sb.append("</table>");
+    }
+    
+    private void appendValueCell(StringBuilder sb, Value value, boolean direct, HttpServletRequest httpServletRequest) {
+        sb.append("<td>");
+        if (value instanceof URI){
+            sb.append("<a href=\"");
+            if (!direct){
+                sb.append(httpServletRequest.getContextPath());
+                sb.append("/");
+                sb.append(WsValidationConstants.BY_RESOURCE);
+                sb.append("?");
+                sb.append(WsValidationConstants.RESOURCE);
+                sb.append("=");
+            }
+            sb.append(value.stringValue());
+            sb.append("\"</a>&lt;");
+            sb.append(value.stringValue());
+            sb.append("&gt;");
+        } else {
+            sb.append(value.toString());
+        }
+        sb.append("</td>");
+    }
 
+    protected abstract StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest);
+    
+    protected abstract void footerAndEnd(StringBuilder sb);
+    
+   /**
+     * Adds an item to the SideBar for this service
+     */
+    protected abstract void addSideBarItem(StringBuilder sb, String page, String name, HttpServletRequest httpServletRequest);
+
+ 
 }
 
 

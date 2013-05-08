@@ -42,5 +42,6 @@ public class WsValidationConstants {
     public static final String SPARQL = "sparql";    
     public static final String URI = "uri";
     public static final String VALIDATE = "validate";
+    public static final String VALIDATE_HOME = "validate-home";
     
 }

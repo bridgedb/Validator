@@ -17,6 +17,6 @@
         </jaxrs:serviceBeans>
     </jaxrs:server>
     
-    <bean id="ValdatorImpl" class="uk.ac.manchester.cs.openphacts.valdator.server.WsValidatorServer" />
+    <bean id="ValdatorImpl" class="uk.ac.manchester.cs.openphacts.valdator.server.WsFrame" />
 
 </beans>

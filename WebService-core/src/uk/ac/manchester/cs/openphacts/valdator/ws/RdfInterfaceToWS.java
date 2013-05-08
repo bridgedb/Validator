@@ -59,7 +59,7 @@ public class RdfInterfaceToWS implements RdfMinimalInterface {
     @Override
     public List<Statement> getStatementList(Resource resource) throws VoidValidatorException {
         String resourceString = toString(resource);
-        List<StatementBean> beans = wsInterface.getStatementList(resourceString);
+        List<StatementBean> beans = wsInterface.getByResource(resourceString);
         return StatementBean.asStatements(beans);
     }
 

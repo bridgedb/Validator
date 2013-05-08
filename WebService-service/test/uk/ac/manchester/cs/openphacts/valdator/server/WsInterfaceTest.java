@@ -20,7 +20,6 @@
 package uk.ac.manchester.cs.openphacts.valdator.server;
 
 
-import uk.ac.manchester.cs.openphacts.valdator.server.WsValidatorServer;
 import org.junit.BeforeClass;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;

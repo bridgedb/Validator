@@ -19,10 +19,13 @@
 //
 package uk.ac.manchester.cs.openphacts.valdator.server;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -281,7 +284,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     
     void appendValidationForm(StringBuilder sb, String format, String text, String uri, String specification, 
             Boolean includeWarnings, HttpServletRequest httpServletRequest) throws VoidValidatorException {
-     	appendFormStart(sb, WsValidationConstants.VALIDATE, "return checkform(this);", httpServletRequest);
+     	appendFormStart(sb, WsValidationConstants.VALIDATE, "return " + WsValidationConstants.CHECK_VALIDATE_FORM + "(this);", httpServletRequest);
         appendRDFFormat(sb, format);
         appendIncludeWarnings(sb, includeWarnings);
         appendText(sb, text);
@@ -291,6 +294,12 @@ public abstract class WsValidatorServer implements WSRdfInterface{
         generateScripts(sb);
    }
     
+   private void appendByResourceForm(StringBuilder sb, String resourceString, HttpServletRequest httpServletRequest) {
+      	appendFormStart(sb, WsValidationConstants.STATEMENT_LIST,  NO_ON_SUBMIT, httpServletRequest);
+        appendInput(sb, WsValidationConstants.RESOURCE, resourceString);
+     	appendFormEnd(sb, httpServletRequest);
+   }
+
    private void appendStatementListForm(StringBuilder sb, String subjectString, String predicateString, String objectString, List<String> contextStrings, HttpServletRequest httpServletRequest) {
       	appendFormStart(sb, WsValidationConstants.STATEMENT_LIST,  NO_ON_SUBMIT, httpServletRequest);
         appendInput(sb, WsValidationConstants.SUBJECT, subjectString);
@@ -300,7 +309,15 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     	appendFormEnd(sb, httpServletRequest);
    }
 
-   private void appendFormStart(StringBuilder sb, String action, String onsubmit, HttpServletRequest httpServletRequest) {
+    private void appendLoadUriForm(StringBuilder sb, String uri, String formatName, HttpServletRequest httpServletRequest) {
+     	appendFormStart(sb, WsValidationConstants.LOAD_URI, "return " + WsValidationConstants.CHECK_LOAD_FORM + "(this);", httpServletRequest);
+        appendRDFFormat(sb, formatName);
+        appendInput(sb, WsValidationConstants.URI, uri);
+    	appendFormEnd(sb, httpServletRequest);
+        generateCheckLoadForm(sb);
+    }
+    
+    private void appendFormStart(StringBuilder sb, String action, String onsubmit, HttpServletRequest httpServletRequest) {
      	sb.append("<form method=\"get\" action=\"");
         sb.append(httpServletRequest.getContextPath());
         sb.append("/");
@@ -317,7 +334,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     private void appendFormEnd(StringBuilder sb, HttpServletRequest httpServletRequest) {
     	sb.append("<p><input type=\"submit\" value=\"Submit\"/></p>");
     	sb.append("</fieldset></form>\n");
-    	sb.append("<p>Note: If the new page does not open click on the address bar and press enter</p>");
+    	sb.append("<p>Note: If the new page does not open click on the address bar and press enter</p>\n");
     }
     
     private void generateSpecificationsSelector(StringBuilder sb, String specification) throws VoidValidatorException {
@@ -367,7 +384,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     private void generateScripts(StringBuilder sb) throws VoidValidatorException {
         sb.append("<script>\n");
         generateSpecificationsScript(sb);
-        generateCheckForm(sb);
+        generateCheckValidateForm(sb);
         sb.append("</script>\n");
     }
 
@@ -394,64 +411,51 @@ public abstract class WsValidatorServer implements WSRdfInterface{
         sb.append("}\n");
     }
 
-    private void generateCheckForm(StringBuilder sb) {
-        sb.append("function checkform ( form )	{\n");
+    private void generateCheckValidateForm(StringBuilder sb) {
+        sb.append("function " + WsValidationConstants.CHECK_VALIDATE_FORM + " ( form )	{\n");
             // Check a specification selected 
-            sb.append("if (form.");
-                    sb.append(WsValidationConstants.SPECIFICATION);
-                    sb.append(".value == \"\") {\n");
-                sb.append("alert( \"Please select the ");
-                        sb.append(WsValidationConstants.SPECIFICATION);
-                        sb.append(" to use.\" );\n");
-                sb.append("form.");
-                        sb.append(WsValidationConstants.SPECIFICATION);
-                       sb.append(".focus();\n");
-            sb.append("return false ;\n");
+            sb.append("if (form.").append(WsValidationConstants.SPECIFICATION).append(".value == \"\") {\n");
+                sb.append("alert( \"Please select the ").append(WsValidationConstants.SPECIFICATION).append(" to use.\" );\n");
+                sb.append("form.").append(WsValidationConstants.SPECIFICATION).append(".focus();\n");
+                sb.append("return false ;\n");
             sb.append("}\n");
             //Check if URI or text selected. And if text RdfFormat is provided. **
-            sb.append("if (form.");
-                   sb.append(WsValidationConstants.TEXT);
-                   sb.append(".value == \"\") {\n");
-                sb.append("if (form.");
-                        sb.append(WsValidationConstants.TEXT);
-                        sb.append(".value == \"\"){\n");
-                    sb.append("alert(\"Please provided either the ");
-                            sb.append(WsValidationConstants.TEXT);
-                            sb.append(" to validate or a ");
-                            sb.append(WsValidationConstants.TEXT);
-                            sb.append(" to the text.\" );\n");
-                    sb.append("form.");
-                            sb.append(WsValidationConstants.TEXT);
-                            sb.append(".focus();\n");
+            sb.append("if (form.").append(WsValidationConstants.TEXT).append(".value == \"\") {\n");
+                sb.append("if (form.").append(WsValidationConstants.URI).append(".value == \"\"){\n");
+                    sb.append("alert(\"Please provided either the ").append(WsValidationConstants.TEXT)
+                            .append(" to validate or a ").append(WsValidationConstants.URI).append(" to the text.\" );\n");
+                    sb.append("form.").append(WsValidationConstants.TEXT).append(".focus();\n");
                     sb.append("return false ;\n");
                 sb.append("} else {\n");
                     sb.append("return true;\n");
                 sb.append("}\n");
             sb.append("} else {\n");
-                sb.append("if (form.");
-                        sb.append(WsValidationConstants.URI);
-                        sb.append(".value == \"\"){\n");
-                    sb.append("if (form.");
-                            sb.append(WsValidationConstants.RDF_FORMAT);
-                            sb.append(".value == \"\"){\n");
-                        sb.append("alert( \"Please select the ");
-                                sb.append(WsValidationConstants.RDF_FORMAT);
-                                sb.append(" to use.\" );\n");
-                        sb.append("form.rdfFormat");
-                                sb.append(WsValidationConstants.RDF_FORMAT);
-                                sb.append(".focus();\n");
+                sb.append("if (form.").append(WsValidationConstants.URI).append(".value == \"\"){\n");
+                    sb.append("if (form.").append(WsValidationConstants.RDF_FORMAT).append(".value == \"\"){\n");
+                        sb.append("alert( \"Please select the ").append(WsValidationConstants.RDF_FORMAT).append(" to use.\" );\n");
+                        sb.append("form.rdfFormat").append(WsValidationConstants.RDF_FORMAT).append(".focus();\n");
                         sb.append("return false ;\n");
                     sb.append("} else {\n");
                         sb.append("return true;\n");
                     sb.append("}\n");
                 sb.append("}  else {\n");
-                    sb.append("alert(\"Validate works on either the text to validate or a url to the text. Please clear one of the values.\" );\n");
-                       sb.append(WsValidationConstants.TEXT);
-                    sb.append("form.");
-                            sb.append(WsValidationConstants.TEXT);
-                            sb.append(".focus();\n");
+                    sb.append("alert(\"Validate works on either the ").append(WsValidationConstants.TEXT)
+                            .append(" to validate or a ").append(WsValidationConstants.URI)
+                            .append(" to the text. Please clear one of the values.\" );\n");
+                     sb.append("form.").append(WsValidationConstants.TEXT).append(".focus();\n");
                     sb.append("return false ;\n");
                 sb.append("}\n");
+            sb.append("}\n");
+        sb.append("}\n");         
+    }
+
+    private void generateCheckLoadForm(StringBuilder sb) {
+        sb.append("function " + WsValidationConstants.CHECK_LOAD_FORM + " ( form )	{\n");
+            //Check if URI selected.
+            sb.append("if (form.").append(WsValidationConstants.URI).append(".value == \"\"){\n");
+                sb.append("alert(\"Please provided the ").append(WsValidationConstants.URI).append(" to validate \" );\n");
+                sb.append("form.").append(WsValidationConstants.URI).append(".focus();\n");
+                sb.append("return false ;\n");
             sb.append("}\n");
         sb.append("}\n");         
     }
@@ -532,7 +536,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             @QueryParam(WsValidationConstants.PREDICATE) String predicateString, 
             @QueryParam(WsValidationConstants.OBJECT) String objectString, 
             @QueryParam(WsValidationConstants.CONTEXT) List<String> contextStrings) throws VoidValidatorException {
-        List<Statement> statements = getTheStatementList(subjectString, predicateString, objectString, contextStrings);
+        List<Statement> statements = getStatementListImplementation(subjectString, predicateString, objectString, contextStrings);
         return StatementBean.asBeans(statements);
     }
     
@@ -550,14 +554,14 @@ public abstract class WsValidatorServer implements WSRdfInterface{
                 (predicateString != null && !predicateString.isEmpty()) || 
                 (objectString != null && !objectString.isEmpty()) || 
                 (contextStrings != null &&!contextStrings.isEmpty())){
-            List<Statement> statements = getTheStatementList(subjectString, predicateString, objectString, contextStrings);
+            List<Statement> statements = getStatementListImplementation(subjectString, predicateString, objectString, contextStrings);
             appendStatements(sb, statements, httpServletRequest);
         }
         footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }
     
-    private List<Statement> getTheStatementList(String subjectString, String predicateString, String objectString, 
+    private List<Statement> getStatementListImplementation(String subjectString, String predicateString, String objectString, 
             List<String> contextStrings) throws VoidValidatorException {
         Resource subject = ResourceBean.asResource(subjectString);
         URI predicate = URIBean.asURI(predicateString);
@@ -570,22 +574,69 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path(WsValidationConstants.BY_RESOURCE)
-    public List<StatementBean> getStatementList(@QueryParam(WsValidationConstants.RESOURCE) String resourceString) 
+    public List<StatementBean> getByResource(@QueryParam(WsValidationConstants.RESOURCE) String resourceString) 
+            throws VoidValidatorException{
+        List<Statement> statements = this.getByResourceImplmentation(resourceString);
+        return StatementBean.asBeans(statements);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path(WsValidationConstants.BY_RESOURCE)
+    public Response getByResource(@QueryParam(WsValidationConstants.RESOURCE) String resourceString,
+            @Context HttpServletRequest httpServletRequest) throws VoidValidatorException{        
+        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        appendByResourceForm(sb, resourceString, httpServletRequest); 
+        if (resourceString!= null && !resourceString.isEmpty()){
+            List<Statement> statements = this.getByResourceImplmentation(resourceString);
+            appendStatements(sb, statements, httpServletRequest);
+        }
+        footerAndEnd(sb);
+        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
+    }
+
+    public List<Statement> getByResourceImplmentation(@QueryParam(WsValidationConstants.RESOURCE) String resourceString) 
             throws VoidValidatorException{
         if (resourceString == null){
             throw new VoidValidatorException ("Missing " + WsValidationConstants.RESOURCE + " parameter!");
         }
         Resource resource = ResourceBean.asResource(resourceString);
-        List<Statement> statements = rdfInterface.getStatementList(resource);
-        return StatementBean.asBeans(statements);
+        return rdfInterface.getStatementList(resource);
     }
-
+    
     @Override
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path(WsValidationConstants.LOAD_URI)
     public URIBean loadURI(@QueryParam(WsValidationConstants.URI) String address, 
         @QueryParam(WsValidationConstants.RDF_FORMAT) String formatName)throws VoidValidatorException {
+        URI result = this.loadURIImplementation(address, formatName);
+        return URIBean.asBean(result);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path(WsValidationConstants.LOAD_URI)
+    public Response loadURI(@QueryParam(WsValidationConstants.URI) String address, 
+            @QueryParam(WsValidationConstants.RDF_FORMAT) String formatName,
+            @Context HttpServletRequest httpServletRequest)throws VoidValidatorException {
+        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        appendLoadUriForm(sb, address, formatName, httpServletRequest); 
+        if (address!= null && !address.isEmpty()){
+            URI context = this.loadURIImplementation(address, formatName);
+            sb.append("Succfully loaded the following statements from ");
+            sb.append(address);
+            sb.append("<br/>\n");
+            ArrayList<String> contexts = new ArrayList<String>();
+            contexts.add(context.stringValue());
+            List<Statement> statements = getStatementListImplementation(null, null, null, contexts);
+            appendStatements(sb, statements, httpServletRequest);
+        }
+        footerAndEnd(sb);
+        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
+    }
+
+    private URI loadURIImplementation(String address, String formatName)throws VoidValidatorException {
         if (address == null){
             throw new VoidValidatorException("Missing " + WsValidationConstants.URI + " parameter!");
         }
@@ -598,8 +649,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
                 throw new VoidValidatorException("No format known for " + formatName);
             }
         }
-        URI result = rdfInterface.loadURI(address, format);
-        return URIBean.asBean(result);
+        return rdfInterface.loadURI(address, format);
     }
 
     @Override
@@ -621,14 +671,14 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     }
     
    private void appendStatements(StringBuilder sb, List<Statement> statements, HttpServletRequest httpServletRequest) {
-        sb.append("<hr/>");
-        sb.append("<table border=\"1\">");
+        sb.append("<hr/>\n");
+        sb.append("<table border=\"1\">\n");
         sb.append("<tr>");
         sb.append("<th>Subject</th>");
         sb.append("<th>Predicate</th>");
         sb.append("<th>Object</th>");
         sb.append("<th>Context</th>");
-        sb.append("</tr>");
+        sb.append("</tr>\n");
         for (Statement statement:statements){
             sb.append("<tr>");
             appendValueCell(sb, statement.getSubject(), false, httpServletRequest);
@@ -637,7 +687,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             appendValueCell(sb, statement.getContext(), true, httpServletRequest);
             sb.append("</tr>");
         }
-        sb.append("</table>");
+        sb.append("</table>\n");
     }
     
     private void appendValueCell(StringBuilder sb, Value value, boolean direct, HttpServletRequest httpServletRequest) {
@@ -652,14 +702,18 @@ public abstract class WsValidatorServer implements WSRdfInterface{
                 sb.append(WsValidationConstants.RESOURCE);
                 sb.append("=");
             }
-            sb.append(value.stringValue());
+            try {
+                sb.append(URLEncoder.encode(value.stringValue(), "UTF-8"));
+            } catch (UnsupportedEncodingException ex) {
+                sb.append(value.stringValue());
+            }
             sb.append("\"</a>&lt;");
             sb.append(value.stringValue());
             sb.append("&gt;");
         } else {
             sb.append(value.toString());
         }
-        sb.append("</td>");
+        sb.append("</td>\n");
     }
 
     protected abstract StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest);
@@ -670,6 +724,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
      * Adds an item to the SideBar for this service
      */
     protected abstract void addSideBarItem(StringBuilder sb, String page, String name, HttpServletRequest httpServletRequest);
+
 
  
 }

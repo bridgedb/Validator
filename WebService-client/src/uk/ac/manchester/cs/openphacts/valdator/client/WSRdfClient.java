@@ -79,7 +79,7 @@ public class WSRdfClient implements WSRdfInterface {
     }
 
     @Override
-    public List<StatementBean> getStatementList(String resourceString) throws VoidValidatorException {
+    public List<StatementBean> getByResource(String resourceString) throws VoidValidatorException {
         MultivaluedMap<String, String> params = new MultivaluedMapImpl();
         params.add(WsValidationConstants.RESOURCE, resourceString);
         //Make service call

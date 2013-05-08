@@ -26,6 +26,8 @@ package uk.ac.manchester.cs.openphacts.valdator.ws;
 public class WsValidationConstants {
     
     public static final String BY_RESOURCE = "byResource";    
+    public static final String CHECK_VALIDATE_FORM = "checkValidateForm";
+    public static final String CHECK_LOAD_FORM = "checkLoadForm";
     public static final String CONTEXT = "context";
     public static final String FORMAT = "format";
     public static final String INCLUDE_WARNINGS = "includeWarnings";

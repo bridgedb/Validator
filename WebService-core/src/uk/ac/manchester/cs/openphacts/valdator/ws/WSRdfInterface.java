@@ -33,7 +33,7 @@ public interface WSRdfInterface {
     public List<StatementBean> getStatementList(String subjectString, String predicateString, String objectString, 
             List<String> contextStrings) throws VoidValidatorException;
 
-    public List<StatementBean> getStatementList(String resourceString) throws VoidValidatorException;
+    public List<StatementBean> getByResource(String resourceString) throws VoidValidatorException;
 
     public URIBean loadURI(String address, String formatName) throws VoidValidatorException;
 

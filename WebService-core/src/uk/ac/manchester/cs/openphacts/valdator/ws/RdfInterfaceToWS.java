@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.ws;
+package uk.ac.manchester.cs.openphacts.valdator.ws;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +29,9 @@ import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfMinimalInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.bean.ResourceBean;
-import uk.ac.manchester.cs.bean.StatementBean;
-import uk.ac.manchester.cs.bean.URIBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.ResourceBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.StatementBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.URIBean;
 
 /**
  *

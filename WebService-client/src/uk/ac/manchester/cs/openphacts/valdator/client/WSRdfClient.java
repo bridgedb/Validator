@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.client;
+package uk.ac.manchester.cs.openphacts.valdator.client;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
@@ -28,12 +28,12 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import uk.ac.manchester.cs.bean.ResourceBean;
-import uk.ac.manchester.cs.bean.StatementBean;
-import uk.ac.manchester.cs.bean.URIBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.ResourceBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.StatementBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.URIBean;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.ws.WSRdfInterface;
-import uk.ac.manchester.cs.ws.WsValidationConstants;
+import uk.ac.manchester.cs.openphacts.valdator.ws.WSRdfInterface;
+import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
 
 /**
  *

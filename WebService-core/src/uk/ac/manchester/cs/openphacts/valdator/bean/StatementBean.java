@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.bean;
+package uk.ac.manchester.cs.openphacts.valdator.bean;
 
 import java.util.ArrayList;
 import java.util.List;

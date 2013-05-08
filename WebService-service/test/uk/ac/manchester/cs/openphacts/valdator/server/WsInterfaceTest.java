@@ -17,14 +17,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server;
+package uk.ac.manchester.cs.openphacts.valdator.server;
 
 
+import uk.ac.manchester.cs.openphacts.valdator.server.WsValidatorServer;
 import org.junit.BeforeClass;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.ws.RdfInterfaceToWS;
+import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
 
 /**
  *

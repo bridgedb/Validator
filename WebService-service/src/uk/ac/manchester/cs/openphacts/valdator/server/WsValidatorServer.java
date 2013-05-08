@@ -17,7 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.server;
+package uk.ac.manchester.cs.openphacts.valdator.server;
 
 import java.util.List;
 import java.util.Set;
@@ -38,10 +38,10 @@ import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
-import uk.ac.manchester.cs.bean.ResourceBean;
-import uk.ac.manchester.cs.bean.StatementBean;
-import uk.ac.manchester.cs.bean.URIBean;
-import uk.ac.manchester.cs.bean.ValueBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.ResourceBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.StatementBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.URIBean;
+import uk.ac.manchester.cs.openphacts.valdator.bean.ValueBean;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.SpecificationsRegistry;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
@@ -49,8 +49,8 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.Validator;
-import uk.ac.manchester.cs.ws.WSRdfInterface;
-import uk.ac.manchester.cs.ws.WsValidationConstants;
+import uk.ac.manchester.cs.openphacts.valdator.ws.WSRdfInterface;
+import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
 
     
 /**

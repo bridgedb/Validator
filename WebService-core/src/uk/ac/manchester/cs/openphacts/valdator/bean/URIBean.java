@@ -17,11 +17,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.bean;
+package uk.ac.manchester.cs.openphacts.valdator.bean;
 
-import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
 
@@ -29,16 +27,19 @@ import org.openrdf.model.impl.URIImpl;
  *
  * @author Christian
  */
-public class ResourceBean extends ValueBean{
+@XmlRootElement(name="URI")
+public class URIBean extends ResourceBean {
 
-    public static Resource asResource(ResourceBean bean) {
-        if (bean instanceof URIBean){
-            return URIBean.asURI((URIBean)bean);
+    private String address;
+    
+    public static URI asURI(URIBean bean) {
+        if (bean == null){
+            return null;
         }
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new URIImpl(bean.getAddress());
     }
 
-    public static Resource asResource(String string) {
+    public static URI asURI(String string) {
         if (string == null || string.isEmpty()){
             return null;
         }
@@ -48,28 +49,30 @@ public class ResourceBean extends ValueBean{
         } catch (IllegalArgumentException ex){
             //do nothing
         }
-        System.out.println(string);
         return null;
     }
 
-    public static Resource[] asResourceArray(List<String> contextStrings) {
-        if (contextStrings == null){
-            return new Resource[0];
-        }
-        Resource[] results = new Resource[contextStrings.size()];
-        for (int i = 0; i< contextStrings.size(); i++){
-            results[i] = asResource(contextStrings.get(i));
-        }
-        return results;
-    }
-
-    public static ResourceBean asBean(Resource result) {
-        if (result == null){
+    public static URIBean asBean(URI uri) {
+        if (uri == null){
             return null;
         }
-        if (result instanceof URI){
-            return URIBean.asBean((URI)result);
-        }
-        throw new UnsupportedOperationException("Not yet implemented");
+        URIBean bean = new URIBean();
+        bean.setAddress(uri.stringValue());
+        return bean;
     }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
 }

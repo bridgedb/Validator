@@ -12,14 +12,18 @@
 
 #Note 3 and 4 above will locate this actual file so accounts info will not work.
 
-############ RDF Repository ##############
+########### RDF Repository ##############
 #WARNING leaving the default relative links is not recommended.
 #Relative links will fail if loading and running is not done from the same directory.
 #Remember to grant READ and WRITE ACCESS to all users running any Validators programs including tomcat.
 
-#Main RDF store
-SailNativeStore         ../rdf/linksets
+#RDF store used by validator directly
+validatorRdfStore          ../../rdf/validator
 #WARNING: The tests will delete and the create a "test" subdirectory in this folder.
+
+#RDF store to be used by the IMS 
+imsRdfStore         ../../rdf/ims
+#This allow the RDf store of the validator to be more permissive in what unauthorized people can write to it.
 
 ####  MetaDataSpecification ######
 #This section list where to load the MetaDataSpecifications from

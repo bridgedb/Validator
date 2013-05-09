@@ -70,11 +70,6 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     
     private final RdfInterface rdfInterface;
     
-    public WsValidatorServer() throws VoidValidatorException {
-        logger.info("Validator Server setup");
-        rdfInterface = RdfFactory.getFilebase();
-    }
-        
     public WsValidatorServer(RdfInterface rdfInterface) throws VoidValidatorException {
         logger.info("Validator Server setup");
         this.rdfInterface = rdfInterface;

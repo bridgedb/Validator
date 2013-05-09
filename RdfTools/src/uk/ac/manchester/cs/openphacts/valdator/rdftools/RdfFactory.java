@@ -33,9 +33,12 @@ import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
  */
 public class RdfFactory {
    
-    public static RdfReader fileReader = null;
-    public static final String RDF_DIRECTORY = "SailNativeStore";
-    public static final String DEFAULT_DIRECTORY = "../rdf/";
+    public static RdfReader validatorFileReader = null;
+    public static final String VALIDATOR_RDF_DIRECTORY = "validatorRdfStore ";
+    public static final String DEFAULT_VALIDATOR_DIRECTORY = "../../rdf/validator";
+    public static RdfReader imsFileReader = null;
+    public static final String IMS_RDF_DIRECTORY = "imsRdfStore ";
+    public static final String DEFAULT_IMS_DIRECTORY = "../../rdf/ims";
     
     public static RdfReader getMemory() throws VoidValidatorException{
         Repository repository = new SailRepository(new MemoryStore());
@@ -43,35 +46,49 @@ public class RdfFactory {
         return rdfReader;
     } 
     
-    public static RdfReader getFilebase() throws VoidValidatorException{
-        if (fileReader == null) {
+    public static RdfReader getValidatorFilebase() throws VoidValidatorException{
+        if (validatorFileReader == null) {
             Properties properties = ConfigReader.getProperties();
-            String directoryName = properties.getProperty(RDF_DIRECTORY);
+            String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
             if (directoryName == null){
-                directoryName = DEFAULT_DIRECTORY;
+                directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
             File directory = getDirectory(directoryName);
             Repository repository = new SailRepository(new NativeStore(directory));
-            fileReader = RdfReader.factory(repository);
+            validatorFileReader = RdfReader.factory(repository);
         }
-        return fileReader;        
+        return validatorFileReader;        
     }
 
-    public static RdfReader getTestFilebase() throws VoidValidatorException{
-        if (fileReader == null) {
+   public static RdfReader getImsFilebase() throws VoidValidatorException{
+        if (imsFileReader == null) {
             Properties properties = ConfigReader.getProperties();
-            String directoryName = properties.getProperty(RDF_DIRECTORY);
+            String directoryName = properties.getProperty(IMS_RDF_DIRECTORY);
             if (directoryName == null){
-                directoryName = DEFAULT_DIRECTORY;
+                directoryName = DEFAULT_IMS_DIRECTORY;
+            }
+            File directory = getDirectory(directoryName);
+            Repository repository = new SailRepository(new NativeStore(directory));
+            imsFileReader = RdfReader.factory(repository);
+        }
+        return imsFileReader;        
+    }
+
+   public static RdfReader getTestFilebase() throws VoidValidatorException{
+        if (validatorFileReader == null) {
+            Properties properties = ConfigReader.getProperties();
+            String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
+            if (directoryName == null){
+                directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
             File directory = getDirectory(directoryName);
             File testDirectory = new File(directory, "test");
             //delete(testDirectory);
             testDirectory.deleteOnExit();
             Repository repository = new SailRepository(new NativeStore(testDirectory));
-            fileReader = RdfReader.factory(repository);
+            validatorFileReader = RdfReader.factory(repository);
         }
-        return fileReader;        
+        return validatorFileReader;        
     }
 
     private static File getDirectory(String directoryName) throws VoidValidatorException{

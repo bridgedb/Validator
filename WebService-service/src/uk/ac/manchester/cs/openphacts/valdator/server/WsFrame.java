@@ -29,6 +29,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.ExampleConstants;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
@@ -46,7 +47,8 @@ public class WsFrame extends WsValidatorServer {
     static final Logger logger = Logger.getLogger(WsFrame.class);
 
     public WsFrame() throws VoidValidatorException {
-        super();
+        super(RdfFactory.getValidatorFilebase());
+        RdfFactory.getValidatorFilebase().loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
         /*formatter = NumberFormat.getInstance();
         if (formatter instanceof DecimalFormat) {
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();

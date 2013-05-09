@@ -47,7 +47,6 @@ import uk.ac.manchester.cs.openphacts.valdator.bean.StatementBean;
 import uk.ac.manchester.cs.openphacts.valdator.bean.URIBean;
 import uk.ac.manchester.cs.openphacts.valdator.bean.ValueBean;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
-import uk.ac.manchester.cs.openphacts.valdator.metadata.SpecificationsRegistry;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.ExampleConstants;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
@@ -101,6 +100,13 @@ public abstract class WsValidatorServer implements WSRdfInterface{
      */
     protected abstract void addSideBarItem(StringBuilder sb, String page, String name, HttpServletRequest httpServletRequest);
 
+    protected abstract String getExampleResource();
+    
+    protected abstract String getExampleURI();
+    
+    protected abstract String getExampleSpecificationName();
+    
+    protected abstract String getExampleQuery();
 //Public calls 
     
     @GET
@@ -157,7 +163,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             appendStatements(sb, statements, httpServletRequest);
         } else {
             appendExampleButton(sb, WsValidationConstants.STATEMENT_LIST, httpServletRequest, 
-                    WsValidationConstants.SUBJECT, ExampleConstants.EXAMPLE_RESOURCE);
+                    WsValidationConstants.SUBJECT, getExampleResource());
         }
         footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
@@ -185,7 +191,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             appendStatements(sb, statements, httpServletRequest);
         } else {
             appendExampleButton(sb, WsValidationConstants.BY_RESOURCE, httpServletRequest, 
-                    WsValidationConstants.RESOURCE, ExampleConstants.EXAMPLE_RESOURCE);
+                    WsValidationConstants.RESOURCE, getExampleResource());
         }
         footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
@@ -220,9 +226,8 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             appendStatements(sb, statements, httpServletRequest);
         } else {
             appendExampleButton(sb, WsValidationConstants.LOAD_URI, httpServletRequest, 
-                   WsValidationConstants.URI, ExampleConstants.EXAMPLE_CONTEXT);
+                   WsValidationConstants.URI, getExampleURI());
         }
-        sb.append(address);
         footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }
@@ -250,7 +255,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
          } else {
             appendExampleButton(sb, WsValidationConstants.SPARQL, httpServletRequest, 
                     WsValidationConstants.FORMAT, ExampleConstants.EXAMPLE_OUTPUT_FORMAT,
-                    WsValidationConstants.QUERY, ExampleConstants.EXAMPLE_QUERY);
+                    WsValidationConstants.QUERY, getExampleQuery());
          }
         footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
@@ -266,8 +271,13 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
         StringBuilder sb = topAndSide("Validation Service", httpServletRequest);
-        showValidationResult(sb, rdfFormat, text, uri, specification, includeWarning);
-        formValidation(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest);                             
+        boolean validated = getAndShowValidationResult(sb, rdfFormat, text, uri, specification, includeWarning);
+        formValidation(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest); 
+        if (!validated){
+            appendExampleButton(sb, WsValidationConstants.VALIDATE, httpServletRequest, 
+                    WsValidationConstants.URI, getExampleURI(),
+                    WsValidationConstants.SPECIFICATION, getExampleSpecificationName());          
+        }
         footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
     }
@@ -412,7 +422,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     
 //Form parts    
     private void generateSpecificationsSelector(StringBuilder sb, String specification) throws VoidValidatorException {
-		Set<String> names = SpecificationsRegistry.getSpecificationNames();
+		Set<String> names = MetaDataSpecification.getSpecificationNames();
         sb.append("<p>");
     	sb.append(WsValidationConstants.SPECIFICATION);
         sb.append("<select name=\"");
@@ -432,7 +442,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             }
 			sb.append(name);
 			sb.append("</option>");
-            MetaDataSpecification specs = SpecificationsRegistry.specificationByName(name);
+            MetaDataSpecification specs = MetaDataSpecification.specificationByName(name);
             String description = specs.getDescription();
             if (description.length() > maxDescription){
                 maxDescription = description.length();
@@ -449,7 +459,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
         sb.append(DESCRIPTION_WIDTH);      
         sb.append("\" disabled=\"disabled\"/>");
         if (names.contains(specification)){
-           MetaDataSpecification specs = SpecificationsRegistry.specificationByName(specification); 
+           MetaDataSpecification specs = MetaDataSpecification.specificationByName(specification); 
             sb.append(specs.getDescription());
         }
         sb.append("</textarea>\n");
@@ -536,12 +546,9 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             for (TupleQueryResultFormat check:TupleQueryResultFormat.values()){
                 if (check.getName().equals(formatName)){
                     format = check;
-                } else {
-                    sb.append("<br/>" + check.getName() + "\n");
                 }
             }
         } 
-        sb.append("<br/>" + formatName + " " + format);
         sb.append("<p>");
     	sb.append(WsValidationConstants.FORMAT);
         sb.append("<select name=\"");
@@ -585,7 +592,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     }
 
 //Result viewers      
-    private void showValidationResult(StringBuilder sb, String format, String text, String uri, String specification, 
+    private boolean getAndShowValidationResult(StringBuilder sb, String format, String text, String uri, String specification, 
             Boolean includeWarnings) throws VoidValidatorException  {   
         boolean error = false;
         RDFFormat rdfFormat = null;
@@ -624,7 +631,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
         MetaDataSpecification specs = null;
         if (specification != null && !specification.isEmpty()){
             try {
-                specs = SpecificationsRegistry.specificationByName(specification);
+                specs = MetaDataSpecification.specificationByName(specification);
                 if (specs == null){
                     sb.append("Sorry no ");
                     sb.append(WsValidationConstants.SPECIFICATION);
@@ -645,33 +652,34 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             }
         }
         if (error){
-            return;
+            return false;
         }
         if (text.isEmpty() && URI == null){
-            return;
+            return false;
         }
         if (specs == null){
             sb.append("Please specify a ");
             sb.append(WsValidationConstants.SPECIFICATION);
             sb.append("<br>");
-            return;
+            return false;
         }
        if (URI == null){
-            showValidationResult(sb, rdfFormat, text, specs, includeWarnings);
+            return getAndShowValidationResult(sb, rdfFormat, text, specs, includeWarnings);
         } else {
             if (text.isEmpty()){
-                showValidationResult(sb, rdfFormat, URI, specs, includeWarnings);
+                return getAndShowValidationResult(sb, rdfFormat, URI, specs, includeWarnings);
             } else {
                 sb.append("Please clear either the ");
                 sb.append(WsValidationConstants.TEXT);
                 sb.append(" or the ");
                 sb.append(WsValidationConstants.URI);
-                sb.append("parameter! <br>");         
+                sb.append("parameter! <br>");   
+                return false;
             }
         }      
     }
     
-    private void showValidationResult(StringBuilder sb, RDFFormat rdfFormat, String text, 
+    private boolean getAndShowValidationResult(StringBuilder sb, RDFFormat rdfFormat, String text, 
             MetaDataSpecification specifications, Boolean includeWarnings) throws VoidValidatorException {
         try {
             if (rdfFormat == null){
@@ -680,27 +688,31 @@ public abstract class WsValidatorServer implements WSRdfInterface{
                 sb.append(" parameter when using a ");
                 sb.append(WsValidationConstants.TEXT);
                 sb.append("parameter.<br>\n");
-                return;
+                return false;
             }
              
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadString(text, rdfFormat);
             String results = Validator.validate(reader, context, specifications, includeWarnings);
             showValidationResult(sb, results);
+            return true;
         } catch (Exception ex){
             showException(sb, ex);
+            return false;
         }     
      }
     
-     private void showValidationResult(StringBuilder sb, RDFFormat rdfFormat, URI URI, 
+     private boolean getAndShowValidationResult(StringBuilder sb, RDFFormat rdfFormat, URI URI, 
              MetaDataSpecification specifications, Boolean includeWarnings) throws VoidValidatorException {
          try {
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadURI(URI.stringValue(), rdfFormat);
             String results = Validator.validate(reader, context, specifications, includeWarnings);
             showValidationResult(sb, results);
+            return true;
         } catch (Exception ex){
             showException(sb, ex);
+            return false;
         }     
      }
      
@@ -785,13 +797,13 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     
 //Javascripts    
     private void insertSpecificationsScript(StringBuilder sb) throws VoidValidatorException {
-		Set<String> names = SpecificationsRegistry.getSpecificationNames();
+		Set<String> names = MetaDataSpecification.getSpecificationNames();
         sb.append(   "function populateData(sel){\n");
         sb.append(      "var form = sel.form,\n");
         sb.append(         "value = sel.options[sel.selectedIndex].value;\n");
         sb.append(      "switch(value){\n");
 		for (String name : names) {
-            MetaDataSpecification specs = SpecificationsRegistry.specificationByName(name);
+            MetaDataSpecification specs = MetaDataSpecification.specificationByName(name);
             sb.append("case '");
             sb.append(name);
             sb.append("':\n");

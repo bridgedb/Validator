@@ -20,9 +20,6 @@
 package uk.ac.manchester.cs.openphacts.valdator.server;
 
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
@@ -31,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.ExampleConstants;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
@@ -235,6 +233,26 @@ public class WsFrame extends WsValidatorServer {
         sb.append("<div id=\"footer\">");
         sb.append("This site is run by <a href=\"https://wiki.openphacts.org/index.php/User:Christian\">Christian Brenninkmeijer</a>.");
         sb.append("\n<div></body></html>");
+    }
+
+    @Override
+    protected String getExampleResource() {
+        return ExampleConstants.EXAMPLE_RESOURCE;
+    }
+
+    @Override
+    protected String getExampleURI() {
+        return ExampleConstants.EXAMPLE_CONTEXT;
+    }
+
+    @Override
+    protected String getExampleSpecificationName() {
+        return ValidatorExampleConstants.SIMPLE_NAME;
+    }
+
+    @Override
+    protected String getExampleQuery() {
+               return ExampleConstants.EXAMPLE_QUERY;
     }
 
 }

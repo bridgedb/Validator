@@ -242,17 +242,22 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     public Response runSparqlQuery(@QueryParam(WsValidationConstants.QUERY)String query, 
             @QueryParam(WsValidationConstants.FORMAT)String formatName,
             @Context HttpServletRequest httpServletRequest)throws VoidValidatorException {
+        logger.info("runSparqlQuery called query = " + query + " formatName = " + formatName);
         StringBuilder sb = topAndSide("SPARQL Service ",  httpServletRequest);
         formSparql(sb, query, formatName, httpServletRequest); 
         if (query != null && !query.isEmpty() && formatName != null && !formatName.isEmpty()){
+            logger.info("running Sparql Query");
             String result = this.runSparqlQueryImplmentation(query, formatName);
+            logger.info("run Sparql Query");
             this.generateTextarea(sb, "Query Result", result);
+            logger.info("generated text area");
          } else {
             appendExampleButton(sb, WsValidationConstants.SPARQL, httpServletRequest, 
                     WsValidationConstants.FORMAT, ExampleConstants.EXAMPLE_OUTPUT_FORMAT,
                     WsValidationConstants.QUERY, getExampleQuery());
          }
         footerAndEnd(sb);
+        logger.info("returning");
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }
 

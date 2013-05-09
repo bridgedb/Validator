@@ -57,13 +57,14 @@ public class WsFrame extends WsValidatorServer {
         }*/
         MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
-
+        logger.info("Test Data added");
     }
     
     public WsFrame(RdfInterface rdfInterface) throws VoidValidatorException{
         super(rdfInterface);
         MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
+        logger.info("Setup using provided rdf.");
     }
         
     @GET

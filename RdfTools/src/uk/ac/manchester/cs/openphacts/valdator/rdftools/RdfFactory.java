@@ -21,6 +21,7 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
 import java.io.File;
 import java.util.Properties;
+import org.apache.log4j.Logger;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
@@ -34,11 +35,13 @@ import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
 public class RdfFactory {
    
     public static RdfReader validatorFileReader = null;
-    public static final String VALIDATOR_RDF_DIRECTORY = "validatorRdfStore ";
+    public static final String VALIDATOR_RDF_DIRECTORY = "validatorRdfStore";
     public static final String DEFAULT_VALIDATOR_DIRECTORY = "../../rdf/validator";
     public static RdfReader imsFileReader = null;
     public static final String IMS_RDF_DIRECTORY = "imsRdfStore ";
     public static final String DEFAULT_IMS_DIRECTORY = "../../rdf/ims";
+    
+    static final Logger logger = Logger.getLogger(RdfFactory.class);
     
     public static RdfReader getMemory() throws VoidValidatorException{
         Repository repository = new SailRepository(new MemoryStore());
@@ -48,6 +51,8 @@ public class RdfFactory {
     
     public static RdfReader getValidatorFilebase() throws VoidValidatorException{
         if (validatorFileReader == null) {
+            ConfigReader.configureLogger();
+            logger.info("Setting up Validator RDF store: ");
             Properties properties = ConfigReader.getProperties();
             String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
             if (directoryName == null){
@@ -56,12 +61,15 @@ public class RdfFactory {
             File directory = getDirectory(directoryName);
             Repository repository = new SailRepository(new NativeStore(directory));
             validatorFileReader = RdfReader.factory(repository);
+            logger.info("RDF store setup at: " + directory);
         }
         return validatorFileReader;        
     }
 
    public static RdfReader getImsFilebase() throws VoidValidatorException{
         if (imsFileReader == null) {
+            ConfigReader.configureLogger();
+            logger.info("Setting up IMS RDF store: ");
             Properties properties = ConfigReader.getProperties();
             String directoryName = properties.getProperty(IMS_RDF_DIRECTORY);
             if (directoryName == null){

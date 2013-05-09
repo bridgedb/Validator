@@ -1,42 +1,39 @@
 #This is an example Config.txt file with the default values in it.
-#To set your own file copy this file for example to $CATALINA_HOME/conf/OPS-IMS and edit it there.
-#Ideally point Environment variable OPS-IMS-CONFIG to the folder containing your config files.
+#Please copy this file to $CATALINA_HOME/conf/OPS-IMS and edit it there.
+#This config file will be shared with any other program looking for config.txt in the same location.
 
-#Directories configuration
-#WARNING leaving the default relative links is not recommended.
-#Relative links will fail if loading and running is not done from the same directory.
-#Remember that the parent directories (in the defaults ../***) MUST exist.
-#Remember to grant READ and WRITE ACCESS to all users running any Validators programs including tomcat.
+#The code will attempt to look for the config.txt in a number of places as shown in:
+#https://github.com/openphacts/Validator/blob/master/RdfTools/src/uk/ac/manchester/cs/openphacts/valdator/utils/ConfigReader.java
+#Main location in order are:
+#1. Directly in the directory the code is run from
+#2. In $CATALINA_HOME/conf/OPS-IMS
+#3. In the ../rdfTools/resources
+#4. Directly from the jar or war
+
+#Note 3 and 4 above will locate this actual file so accounts info will not work.
 
 ############ RDF Repository ##############
+#WARNING leaving the default relative links is not recommended.
+#Relative links will fail if loading and running is not done from the same directory.
+#Remember to grant READ and WRITE ACCESS to all users running any Validators programs including tomcat.
+
 #Main RDF store
 SailNativeStore         ../rdf/linksets
+#WARNING: The tests will delete and the create a "test" subdirectory in this folder.
 
-#Test and temporary RDF store
-#This folder MUST exist as for non admins to save data in and is therefor used in validation.
-#WARNING do not set the test store to be the same as the production store as many of the tests erases the store!
-#the default relative directory will use the RDF directory directly below $Validator
-TestSailNativeStore     ../rdf/testLinksets
+####  MetaDataSpecification ######
+#This section list where to load the MetaDataSpecifications from
 
-##### Directories ############
-#Directory where void files uploaded by any method except direct local file reads are stored
-VoidDirectory           ../voids
+#This is the OpenPhacts void specifications and is required by unit tests.
+specification.opsVoid.file           VoidInfo.owl
+specification.opsVoid.description    The OpenPhacts specifications for void description files.
 
-#Directory where linkset files uploaded by any method except direct local file reads are stored
-LinksetDirectory        ../linksets
- 
-#Directory where transative linksets that are created are written
-TransativeDirectory     ../transatives
-
-#Directory where Export files are placed directory or indirectly
-ExportDirectory         ../export
-
-#Directory where all junit tests will write to 
-#This directory is cleared at the begining of each test run.
-#Warning WS Client test will still cause the server to write to the normal directories.
-TestDirectory           ../TestDirectory
+#A simple/test specification is added in the code but may not be in code which extends the Validator
+#specification.simpleTest.file           simpleOntology.owl
+#specification.simpleTest.description    Test ontology..
 
 ######## IP Address configuration ########
+#NOT CURRENTLY USED
 #Local Host always OK
 127.0.0.1   LocalHost
 
@@ -76,9 +73,4 @@ accounts.chemspiderftp.uri        ftp://ftp.rsc-us.org
 accounts.chemspiderftp.login      ask RSC
 accounts.chemspiderftp.password   ask RSC
 
-#MetaDataSpecification
-#This section list where to load the MetaDataSpecifications from
-
-#This is the OpenPhacts void specifications and is required by unit tests.
-specification.opsVoid.file           VoidInfo.owl
-specification.opsVoid.description    The OpenPhacts specifications for void description files.
+#

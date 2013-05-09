@@ -54,7 +54,7 @@ public class ValidationTest {
         File file = new File ("test-data/testMin.ttl");
         minReader = RdfFactory.getMemory();
         minContext = minReader.loadFile(file);
-        specifications = SpecificationsRegistry.specificationByName("opsVoid");
+        specifications = MetaDataSpecification.specificationByName("opsVoid");
      }
     
     @AfterClass

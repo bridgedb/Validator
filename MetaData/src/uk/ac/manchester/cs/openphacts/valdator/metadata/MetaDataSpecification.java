@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
@@ -34,7 +35,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLCardinalityRestriction;
@@ -56,7 +56,7 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.owl.owlapi.OWLAnnotationPropertyImpl;
+import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
 
 /**
@@ -72,8 +72,15 @@ public class MetaDataSpecification {
     private static String THING_ID = "http://www.w3.org/2002/07/owl#Thing";
 //    private final Set<URI> linkingPredicates;    
     private String description;
+
+    private static HashMap<String,MetaDataSpecification> register = null;
+    private static HashMap<String,String> descriptions = null;
     
-    public MetaDataSpecification(String fileName) throws VoidValidatorException{
+    private static final String DESCRIPTION = "description";
+    private static final String FILE = "file";
+    private static final String SPECIFICATIONS_PREFIX = "specification.";
+
+    private MetaDataSpecification(String fileName) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         File file = new File(fileName);
         try {
@@ -85,7 +92,7 @@ public class MetaDataSpecification {
         description = "Read from " + fileName;
     }
     
-    public MetaDataSpecification(InputStream stream, String source) throws VoidValidatorException{
+    private MetaDataSpecification(InputStream stream, String source) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         try {
             ontology = m.loadOntologyFromOntologyDocument(stream);
@@ -305,5 +312,71 @@ public class MetaDataSpecification {
         this.description = description;
     }
 
+    //Regitry methods
+    private static void setUpRegistry() throws VoidValidatorException{
+        if (register != null){
+            return;
+        }
+        Properties properties = ConfigReader.getProperties();
+        register = new HashMap<String,MetaDataSpecification>();
+        descriptions = new HashMap<String,String>();
+        Set<String> keys = properties.stringPropertyNames();
+        for (String key:keys){
+            if (key.startsWith(SPECIFICATIONS_PREFIX)){
+                String[] parts = key.split("\\.");
+                if (parts.length == 3){
+                    if (parts[2].equals(FILE)){
+                        String fileName = properties.getProperty(key);
+                        InputStream stream = ConfigReader.getInputStream(fileName);
+                        MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
+                        if (descriptions.containsKey(parts[1])){
+                            specification.setDescription(descriptions.get(parts[1]));
+                            descriptions.remove(parts[1]);
+                        }
+                        register.put(parts[1], specification);
+                    } else if (parts[2].equals(DESCRIPTION)){
+                        if (register.containsKey(parts[1])){
+                            MetaDataSpecification specification = register.get(parts[1]);
+                            specification.setDescription(properties.getProperty(key));
+                        } else {
+                            descriptions.put(parts[1], properties.getProperty(key));
+                        }
+                    } else {
+                        throw new VoidValidatorException ("Unexpected  " + SPECIFICATIONS_PREFIX +  " property." + key );                    
+                    }
+                } else {
+                    throw new VoidValidatorException ("Unexpected " + SPECIFICATIONS_PREFIX +  " property. It should be three dot seperated parts." + key );
+                }
+            }
+        }
+        if (!descriptions.isEmpty()){
+            throw new VoidValidatorException ("Found " + SPECIFICATIONS_PREFIX + "*." + DESCRIPTION + 
+                    " property(ies). " + descriptions + " But no loading instruction.");
+        }
+    }
+    
+    public static void LoadSpecification (String fileName, String specificationName, String description) 
+            throws VoidValidatorException{
+        setUpRegistry();
+        InputStream stream = ConfigReader.getInputStream(fileName);
+        MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
+        specification.setDescription(description);
+        register.put(specificationName, specification);
+    } 
+    
+    public static MetaDataSpecification specificationByName(String name) throws VoidValidatorException{
+       setUpRegistry();
+       MetaDataSpecification result = register.get(name);
+       if (result == null){
+           throw new VoidValidatorException("No specifications known for " + name);
+       }
+       return result;
+       
+   }
+    
+   public static Set<String> getSpecificationNames() throws VoidValidatorException{
+       setUpRegistry();
+       return register.keySet();
+   }
 
 }

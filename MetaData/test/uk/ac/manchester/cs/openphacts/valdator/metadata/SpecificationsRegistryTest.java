@@ -29,6 +29,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
 
 /**
  *
@@ -61,8 +62,9 @@ public class SpecificationsRegistryTest {
     @Test
     public void testSpecification() throws VoidValidatorException {
         Reporter.println("specification");
-        SpecificationsRegistry.init();
-        Set<String> names = SpecificationsRegistry.getSpecificationNames();
+        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+               ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
+        Set<String> names = MetaDataSpecification.getSpecificationNames();
         assertThat(names.size(), greaterThan(0));
     }
 }

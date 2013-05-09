@@ -45,6 +45,7 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
 
 /**
  *
@@ -70,7 +71,9 @@ public class SimpleTest {
         File file = new File ("test-data/testSimple.ttl");
         minReader = RdfFactory.getMemory();
         minContext = minReader.loadFile(file);
-        specifications = SpecificationsRegistry.specificationByName("simpleTest");
+       MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+               ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
+       specifications = MetaDataSpecification.specificationByName(ValidatorExampleConstants.SIMPLE_NAME);
     }
     
     @AfterClass

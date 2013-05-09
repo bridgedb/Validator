@@ -30,8 +30,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
+import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
 
 
 /**
@@ -53,10 +55,15 @@ public class WsFrame extends WsValidatorServer {
             dfs.setGroupingSeparator(',');
             ((DecimalFormat) formatter).setDecimalFormatSymbols(dfs);
         }*/
+        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+               ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
+
     }
     
     public WsFrame(RdfInterface rdfInterface) throws VoidValidatorException{
         super(rdfInterface);
+        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+               ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
     }
         
     @GET

@@ -25,7 +25,6 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.impl.URIImpl;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
-import uk.ac.manchester.cs.openphacts.valdator.metadata.SpecificationsRegistry;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
@@ -38,17 +37,17 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 public class ExternalLinkValdiationTest {
     
     private static void validateURIOps(String address, boolean includeWarning) throws VoidValidatorException{
-        MetaDataSpecification specifications = SpecificationsRegistry.specificationByName("opsVoid");
+        MetaDataSpecification specifications = MetaDataSpecification.specificationByName("opsVoid");
         validateURI(address, specifications, includeWarning);
     }
     
     private static void validateURISimple(String address, boolean includeWarning) throws VoidValidatorException{
-        MetaDataSpecification specifications = SpecificationsRegistry.specificationByName("simpleTest");
+        MetaDataSpecification specifications = MetaDataSpecification.specificationByName("simpleTest");
         validateURI(address, specifications, includeWarning);
     }
 
     private static void validateFileSimple(String fileName, boolean includeWarning) throws VoidValidatorException{
-        MetaDataSpecification specifications = SpecificationsRegistry.specificationByName("simpleTest");
+        MetaDataSpecification specifications = MetaDataSpecification.specificationByName("simpleTest");
         validateFile(fileName, specifications, includeWarning);
     }
 
@@ -95,6 +94,8 @@ public class ExternalLinkValdiationTest {
     }
 
     public static void main(String[] args) throws VoidValidatorException{
+       MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+               ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
        validateURISimple("https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl", true);
        validateFileSimple("test-data/remoteTest2.ttl", true);
     //   validateURIOps("https://github.com/openphacts/ops-platform-setup/blob/master/void/chebi/chebi93_void.ttl");

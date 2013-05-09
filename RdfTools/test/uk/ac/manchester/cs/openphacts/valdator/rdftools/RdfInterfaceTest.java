@@ -71,7 +71,7 @@ public abstract class RdfInterfaceTest {
     @Test
     public void testGetStatementList() throws Exception {
         Reporter.println("getStatementList");
-        Resource subjectResource = null;
+        Resource subjectResource = new URIImpl(ExampleConstants.EXAMPLE_RESOURCE);
         URI predicate = null;
         Value object = null;
         List result = instance.getStatementList(subjectResource, predicate, object);
@@ -95,10 +95,9 @@ public abstract class RdfInterfaceTest {
     @Test
     public void testRunSparqlQuery() throws Exception {
         Reporter.println("runSparqlQuery");
-        String queryString = "SELECT ?p ?o WHERE { <" + ExampleConstants.EXAMPLE_RESOURCE + "> ?p ?o } ";
         for (TupleQueryResultFormat format:TupleQueryResultFormat.values()){
             Reporter.println("   " + format.toString());
-            String result =  instance.runSparqlQuery(queryString, format);
+            String result =  instance.runSparqlQuery(ExampleConstants.EXAMPLE_QUERY, format);
             assertThat(result.length(), greaterThan(450));//Binary = 452
          }
     }

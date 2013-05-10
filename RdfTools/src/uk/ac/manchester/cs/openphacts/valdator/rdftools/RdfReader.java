@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -130,12 +128,12 @@ public class RdfReader implements RdfInterface{
         try {
             URI context = new URIImpl(address);
             loadedContexts.add(context);
-            RepositoryConnection repositoryConnection = getConnection();
+            RepositoryConnection connection = getConnection();
             connection.setAutoCommit(false);
             if (format == null){
                 format = getFormat(address);
             }
-            repositoryConnection.add(stream, address, format, context);
+            connection.add(stream, address, format, context);
             connection.commit();
             return context;
         } catch (Exception ex) {

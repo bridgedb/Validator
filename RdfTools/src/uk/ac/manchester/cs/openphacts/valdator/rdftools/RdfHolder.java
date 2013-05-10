@@ -153,4 +153,9 @@ public class RdfHolder implements RdfInterface, Cloneable{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void close() throws VoidValidatorException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
   }

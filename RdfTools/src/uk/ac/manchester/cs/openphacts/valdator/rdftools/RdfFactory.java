@@ -21,9 +21,11 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
 import java.io.File;
 import java.util.Properties;
+import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.nativerdf.NativeStore;
 import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
@@ -58,10 +60,7 @@ public class RdfFactory {
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
-            File directory = getDirectory(directoryName);
-            Repository repository = new SailRepository(new NativeStore(directory));
-            validatorFileReader = RdfReader.factory(repository);
-            logger.info("RDF store setup at: " + directory);
+            validatorFileReader = getReader(directoryName, true);
         }
         return validatorFileReader;        
     }
@@ -75,9 +74,7 @@ public class RdfFactory {
             if (directoryName == null){
                 directoryName = DEFAULT_IMS_DIRECTORY;
             }
-            File directory = getDirectory(directoryName);
-            Repository repository = new SailRepository(new NativeStore(directory));
-            imsFileReader = RdfReader.factory(repository);
+            imsFileReader = getReader(directoryName, false);
         }
         return imsFileReader;        
     }
@@ -89,14 +86,26 @@ public class RdfFactory {
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
-            File directory = getDirectory(directoryName);
-            File testDirectory = new File(directory, "test");
-            //delete(testDirectory);
-            testDirectory.deleteOnExit();
-            Repository repository = new SailRepository(new NativeStore(testDirectory));
-            validatorFileReader = RdfReader.factory(repository);
+            validatorFileReader = getReader(directoryName, true);
         }
         return validatorFileReader;        
+    }
+
+    public static RdfReader getReader(String directoryName, boolean test) throws VoidValidatorException{
+        File directory = getDirectory(directoryName);
+        if (test){
+            directory = new File(directory, "test");
+            directory.deleteOnExit();
+        }
+        File lockDirectory = new File(directory, "lock");
+        if (lockDirectory.exists()){
+            delete(lockDirectory);
+        }
+        NativeStore store = new NativeStore(directory);
+        Repository repository = new SailRepository(store);
+        RdfReader reader = RdfReader.factory(repository);
+        logger.info("RDF store setup at: " + directory);
+        return reader;        
     }
 
     private static File getDirectory(String directoryName) throws VoidValidatorException{
@@ -133,5 +142,5 @@ public class RdfFactory {
             throw new VoidValidatorException("Unable to delete " + file.getAbsolutePath());        
         }
     }
-    
-}
+
+ }

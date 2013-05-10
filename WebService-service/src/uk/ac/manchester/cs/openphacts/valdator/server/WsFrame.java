@@ -46,10 +46,11 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
         
     static final Logger logger = Logger.getLogger(WsFrame.class);
 
-    public WsFrame() throws VoidValidatorException {
+    public WsFrame() {
         super(RdfFactory.getValidatorFilebase());
         super.setFrame(this);
         rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+        rdfInterface.close();
         /*formatter = NumberFormat.getInstance();
         if (formatter instanceof DecimalFormat) {
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();

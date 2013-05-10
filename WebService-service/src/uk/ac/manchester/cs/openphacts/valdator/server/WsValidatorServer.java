@@ -70,7 +70,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
     final RdfInterface rdfInterface;
     private FrameInterface frame;
     
-    public WsValidatorServer(RdfInterface rdfInterface) throws VoidValidatorException {
+    public WsValidatorServer(RdfInterface rdfInterface) {
         logger.info("Validator Server setup");
         this.rdfInterface = rdfInterface;
     }
@@ -298,7 +298,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (subject == null && predicate == null && object == null && (contexts == null || contexts.length == 0)){
             return new ArrayList<Statement>();
         } else {
-            return rdfInterface.getStatementList(subject, predicate, object, contexts);
+            List<Statement> result = rdfInterface.getStatementList(subject, predicate, object, contexts);
+            rdfInterface.close();
+            return result;
         }
     }
     
@@ -308,7 +310,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
             throw new VoidValidatorException ("Missing " + WsValidationConstants.RESOURCE + " parameter!");
         }
         Resource resource = ResourceBean.asResource(resourceString);
-        return rdfInterface.getStatementList(resource);
+        List<Statement> result = rdfInterface.getStatementList(resource);
+        rdfInterface.close();
+        return result;
     }
     
     private URI loadURIImplementation(String address, String formatName)throws VoidValidatorException {
@@ -324,7 +328,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
                 throw new VoidValidatorException("No format known for " + formatName);
             }
         }
-        return rdfInterface.loadURI(address, format);
+        URI result = rdfInterface.loadURI(address, format);
+        rdfInterface.close();
+        return result;
     }
 
     private String runSparqlQueryImplmentation(String query, String formatName) throws VoidValidatorException{
@@ -337,7 +343,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (format == null){
             throw new VoidValidatorException("No format known for " + formatName);
         }
-        return rdfInterface.runSparqlQuery(query, format);
+        String result = rdfInterface.runSparqlQuery(query, format);
+        rdfInterface.close();
+        return result;
     }
     
 //Forms

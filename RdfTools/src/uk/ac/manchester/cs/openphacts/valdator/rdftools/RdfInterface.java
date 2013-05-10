@@ -37,4 +37,6 @@ public interface RdfInterface extends RdfMinimalInterface{
     
     public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException;
 
+    public void close() throws VoidValidatorException;
+
  }

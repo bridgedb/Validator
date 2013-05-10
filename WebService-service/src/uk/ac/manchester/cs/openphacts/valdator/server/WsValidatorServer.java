@@ -52,7 +52,6 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.valdator.ws.WSRdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
 import uk.ac.manchester.cs.openphacts.validator.Validator;
 
@@ -61,61 +60,51 @@ import uk.ac.manchester.cs.openphacts.validator.Validator;
  *
  * @author Christian
  */
-public abstract class WsValidatorServer implements WSRdfInterface{
+public class WsValidatorServer implements ValidatorWSInterface{
         
     static final Logger logger = Logger.getLogger(WsValidatorServer.class);
     private static final int DESCRIPTION_WIDTH = 100;
     private static final String DESCRIPTION_FIELD = "Description";
     private static final String NO_ON_SUBMIT = null;
     
-    private final RdfInterface rdfInterface;
+    final RdfInterface rdfInterface;
+    private FrameInterface frame;
     
     public WsValidatorServer(RdfInterface rdfInterface) throws VoidValidatorException {
         logger.info("Validator Server setup");
         this.rdfInterface = rdfInterface;
     }
 
+    public void setFrame(FrameInterface frame){
+        this.frame = frame;
+    }
+    
 //Super class calls    
     protected void addValidatorSideBar(StringBuilder sb, HttpServletRequest httpServletRequest) {
         sb.append("<div class=\"menugroup\">OPS Validation Service</div>");
-        addSideBarItem(sb, WsValidationConstants.VALIDATE_HOME, "Home", httpServletRequest);
-        addSideBarItem(sb, WsValidationConstants.VALIDATE,WsValidationConstants.VALIDATE, httpServletRequest);
-        addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
-        addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
-        addSideBarItem(sb, WsValidationConstants.SPARQL, WsValidationConstants.SPARQL, httpServletRequest);
-        addSideBarItem(sb, WsValidationConstants.LOAD_URI, WsValidationConstants.LOAD_URI, httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.VALIDATE_HOME, "Home", httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.VALIDATE,WsValidationConstants.VALIDATE, httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.SPARQL, WsValidationConstants.SPARQL, httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.LOAD_URI, WsValidationConstants.LOAD_URI, httpServletRequest);
     }
     
-    protected abstract StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest);
-    
-    protected abstract void footerAndEnd(StringBuilder sb);
-    
-   /**
-     * Adds an item to the SideBar for this service
-     */
-    protected abstract void addSideBarItem(StringBuilder sb, String page, String name, HttpServletRequest httpServletRequest);
-
-    protected abstract String getExampleResource();
-    
-    protected abstract String getExampleURI();
-    
-    protected abstract String getExampleSpecificationName();
-    
-    protected abstract String getExampleQuery();
 //Public calls 
     
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE_HOME)
+    @Override
     public Response validateHome(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
-        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
         sb.append("<h1> Welcome to the OpenPhacts Validation Service.</h1>");
         sb.append("<p>The form below gives an example of how to use the Validation service.</p>");
         sb.append("<p>Select another service from the side.</p>");
         sb.append("<p>To Try a different ontology please contact Christian.</p>");
         sb.append("<hr/>");
         formValidation(sb, null, null, null, null, true, httpServletRequest);                     
-        footerAndEnd(sb);
+        frame.footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();
     }
     
@@ -134,6 +123,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.STATEMENT_LIST)
+    @Override
     public Response getStatementList(@QueryParam(WsValidationConstants.SUBJECT) String subjectString, 
             @QueryParam(WsValidationConstants.PREDICATE) String predicateString, 
             @QueryParam(WsValidationConstants.OBJECT) String objectString, 
@@ -148,7 +138,7 @@ public abstract class WsValidatorServer implements WSRdfInterface{
                 }
             }
         }
-        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
         formStatementList(sb, subjectString, predicateString, objectString, contextStrings, httpServletRequest); 
         if ((subjectString != null && !subjectString.isEmpty()) || 
                 (predicateString != null && !predicateString.isEmpty()) || 
@@ -158,9 +148,9 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             appendStatements(sb, statements, httpServletRequest);
         } else {
             appendExampleButton(sb, WsValidationConstants.STATEMENT_LIST, httpServletRequest, 
-                    WsValidationConstants.SUBJECT, getExampleResource());
+                    WsValidationConstants.SUBJECT, frame.getExampleResource());
         }
-        footerAndEnd(sb);
+        frame.footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }
 
@@ -177,18 +167,19 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.BY_RESOURCE)
+    @Override
     public Response getByResource(@QueryParam(WsValidationConstants.RESOURCE) String resourceString,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException{        
-        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
         formByResource(sb, resourceString, httpServletRequest); 
         if (resourceString!= null && !resourceString.isEmpty()){
             List<Statement> statements = this.getByResourceImplmentation(resourceString);
             appendStatements(sb, statements, httpServletRequest);
         } else {
             appendExampleButton(sb, WsValidationConstants.BY_RESOURCE, httpServletRequest, 
-                    WsValidationConstants.RESOURCE, getExampleResource());
+                    WsValidationConstants.RESOURCE, frame.getExampleResource());
         }
-        footerAndEnd(sb);
+        frame.footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }    
     
@@ -205,10 +196,11 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.LOAD_URI)
+    @Override
     public Response loadURI(@QueryParam(WsValidationConstants.URI) String address, 
             @QueryParam(WsValidationConstants.RDF_FORMAT) String formatName,
             @Context HttpServletRequest httpServletRequest)throws VoidValidatorException {
-        StringBuilder sb = topAndSide("Validation Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
         formLoadUri(sb, address, formatName, httpServletRequest); 
         if (address!= null && !address.isEmpty()){
             URI context = this.loadURIImplementation(address, formatName);
@@ -221,9 +213,9 @@ public abstract class WsValidatorServer implements WSRdfInterface{
             appendStatements(sb, statements, httpServletRequest);
         } else {
             appendExampleButton(sb, WsValidationConstants.LOAD_URI, httpServletRequest, 
-                   WsValidationConstants.URI, getExampleURI());
+                   WsValidationConstants.URI, frame.getExampleURI());
         }
-        footerAndEnd(sb);
+        frame.footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }
 
@@ -239,11 +231,12 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.SPARQL)
+    @Override
     public Response runSparqlQuery(@QueryParam(WsValidationConstants.QUERY)String query, 
             @QueryParam(WsValidationConstants.FORMAT)String formatName,
             @Context HttpServletRequest httpServletRequest)throws VoidValidatorException {
         logger.info("runSparqlQuery called query = " + query + " formatName = " + formatName);
-        StringBuilder sb = topAndSide("SPARQL Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide("SPARQL Service ",  httpServletRequest);
         formSparql(sb, query, formatName, httpServletRequest); 
         if (query != null && !query.isEmpty() && formatName != null && !formatName.isEmpty()){
             logger.info("running Sparql Query");
@@ -254,9 +247,9 @@ public abstract class WsValidatorServer implements WSRdfInterface{
          } else {
             appendExampleButton(sb, WsValidationConstants.SPARQL, httpServletRequest, 
                     WsValidationConstants.FORMAT, ExampleConstants.EXAMPLE_OUTPUT_FORMAT,
-                    WsValidationConstants.QUERY, getExampleQuery());
+                    WsValidationConstants.QUERY, frame.getExampleQuery());
          }
-        footerAndEnd(sb);
+        frame.footerAndEnd(sb);
         logger.info("returning");
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }
@@ -264,21 +257,22 @@ public abstract class WsValidatorServer implements WSRdfInterface{
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
+    @Override
     public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
             @QueryParam(WsValidationConstants.TEXT) String text, 
             @QueryParam(WsValidationConstants.URI) String uri, 
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
-        StringBuilder sb = topAndSide("Validation Service", httpServletRequest);
+        StringBuilder sb = frame.topAndSide("Validation Service", httpServletRequest);
         boolean validated = getAndShowValidationResult(sb, rdfFormat, text, uri, specification, includeWarning);
         formValidation(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest); 
         if (!validated){
             appendExampleButton(sb, WsValidationConstants.VALIDATE, httpServletRequest, 
-                    WsValidationConstants.URI, getExampleURI(),
-                    WsValidationConstants.SPECIFICATION, getExampleSpecificationName());          
+                    WsValidationConstants.URI, frame.getExampleURI(),
+                    WsValidationConstants.SPECIFICATION, frame.getExampleSpecificationName());          
         }
-        footerAndEnd(sb);
+        frame.footerAndEnd(sb);
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
     }
 

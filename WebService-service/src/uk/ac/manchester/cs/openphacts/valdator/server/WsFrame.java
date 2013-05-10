@@ -40,7 +40,7 @@ import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
  * 
  * @author Christian
  */
-public class WsFrame extends WsValidatorServer {
+public class WsFrame extends WsValidatorServer implements FrameInterface{
     
     //protected final NumberFormat formatter;
         
@@ -48,7 +48,8 @@ public class WsFrame extends WsValidatorServer {
 
     public WsFrame() throws VoidValidatorException {
         super(RdfFactory.getValidatorFilebase());
-        RdfFactory.getValidatorFilebase().loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+        super.setFrame(this);
+        rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
         /*formatter = NumberFormat.getInstance();
         if (formatter instanceof DecimalFormat) {
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();
@@ -62,6 +63,7 @@ public class WsFrame extends WsValidatorServer {
     
     public WsFrame(RdfInterface rdfInterface) throws VoidValidatorException{
         super(rdfInterface);
+        super.setFrame(this);
         MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
         logger.info("Setup using provided rdf.");
@@ -73,7 +75,8 @@ public class WsFrame extends WsValidatorServer {
         return validateHome(httpServletRequest);
     }
 
-    protected StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest) {
+    @Override
+    public StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest) {
         StringBuilder sb = header(header);
         top(sb, header);      
         sideBar(sb, httpServletRequest);
@@ -213,7 +216,8 @@ public class WsFrame extends WsValidatorServer {
     /**
      * Adds an item to the SideBar for this service
      */
-    protected void addSideBarItem(StringBuilder sb, String page, String name, HttpServletRequest httpServletRequest) {
+    @Override
+    public void addSideBarItem(StringBuilder sb, String page, String name, HttpServletRequest httpServletRequest) {
         sb.append("\n<div id=\"menu");
         sb.append(page);
         sb.append("_text\" class=\"texthotlink\" ");
@@ -232,29 +236,30 @@ public class WsFrame extends WsValidatorServer {
         sb.append("</div>");
      }
 
-    protected void footerAndEnd(StringBuilder sb){
+    @Override
+    public void footerAndEnd(StringBuilder sb){
         sb.append("<div id=\"footer\">");
         sb.append("This site is run by <a href=\"https://wiki.openphacts.org/index.php/User:Christian\">Christian Brenninkmeijer</a>.");
         sb.append("\n<div></body></html>");
     }
 
     @Override
-    protected String getExampleResource() {
+    public String getExampleResource() {
         return ExampleConstants.EXAMPLE_RESOURCE;
     }
 
     @Override
-    protected String getExampleURI() {
+    public String getExampleURI() {
         return ExampleConstants.EXAMPLE_CONTEXT;
     }
 
     @Override
-    protected String getExampleSpecificationName() {
+    public String getExampleSpecificationName() {
         return ValidatorExampleConstants.SIMPLE_NAME;
     }
 
     @Override
-    protected String getExampleQuery() {
+    public String getExampleQuery() {
                return ExampleConstants.EXAMPLE_QUERY;
     }
 

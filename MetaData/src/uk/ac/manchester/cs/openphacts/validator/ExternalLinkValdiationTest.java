@@ -63,8 +63,8 @@ public class ExternalLinkValdiationTest {
         if (statements.isEmpty()){
             throw new VoidValidatorException("No statements read from: " + address);
         }
-        String results = Validator.validate(reader, context, specifications, includeWarning);
-        if (!results.endsWith(Validator.SUCCESS)){
+        String results = RdfValidator.validate(reader, context, specifications, includeWarning);
+        if (!results.endsWith(RdfValidator.SUCCESS)){
             throw new VoidValidatorException("Validation failed");
         }
         //statements = reader.getStatementList(null, null, null);
@@ -82,7 +82,7 @@ public class ExternalLinkValdiationTest {
         if (statements.isEmpty()){
             throw new VoidValidatorException("No statements read from: " + fileName);
         }
-        String results = Validator.validate(reader, context, specifications, includeWarning);
+        String results = RdfValidator.validate(reader, context, specifications, includeWarning);
         //ystem.out.println(results);
         //statements = reader.getStatementList(null, null, null);
         //for (Statement statement:statements){

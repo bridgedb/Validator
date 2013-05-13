@@ -44,7 +44,7 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfHolder;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
 
 /**
@@ -91,8 +91,8 @@ public class SimpleTest {
     @Test
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
-        String result = Validator.validate(minReader, minContext, specifications, INCLUDE_WARNINGS);
-        assertThat(result,  endsWith(Validator.SUCCESS));       
+        String result = RdfValidator.validate(minReader, minContext, specifications, INCLUDE_WARNINGS);
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));       
     }
     
     @Test
@@ -103,9 +103,9 @@ public class SimpleTest {
                 minReader.getDirectOnlyStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEBSITE, ALL_OBJECTS, minContext);
         assertThat( remove.size(), greaterThan(0));
         holder.removeStatements(remove);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(CardinalityMetaData.NOT_FOUND));
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
     }
    
     @Test
@@ -116,18 +116,18 @@ public class SimpleTest {
                 minReader.getDirectOnlyStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(MetaDataAlternatives.INCLUDE_ALTERNATIVE));
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
     }
 
     @Test   
     public void extraValueTestValidate() throws VoidValidatorException   {
         Reporter.println("extraValueTestValidate");
         RdfHolder holder = new RdfHolder(minReader, minContext);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(ResourceMetaData.NO_ERRORS));
-        assertThat(result,  endsWith(Validator.SUCCESS));
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));
         List<Statement> oldStatements = 
                 minReader.getDirectOnlyStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_PHONE_NUMBER, ALL_OBJECTS, minContext);
         Statement oldStatement = oldStatements.get(0);
@@ -135,7 +135,7 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        String result2 = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result2 = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertEquals(result, result2);
    }
     
@@ -150,9 +150,9 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(CardinalityMetaData.REMOVE));
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
    }
 
     @Test
@@ -167,9 +167,9 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
    }
     
     @Test
@@ -183,9 +183,9 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
    }
         
     @Test
@@ -196,9 +196,9 @@ public class SimpleTest {
                 minReader.getDirectOnlyStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_HOUSE_NUMBER, ALL_OBJECTS, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(MetaDataGroup.INCLUDE_ALL));       
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
     }
 
     @Test
@@ -212,8 +212,8 @@ public class SimpleTest {
         Statement newStatement = new ContextStatementImpl(
                 oldStatement.getSubject(), OpsTestConstants.HAS_HOUSE_NUMBER, oldStatement.getObject(), minContext);
         holder.addStatement(newStatement);       
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
-        assertThat(result,  endsWith(Validator.SUCCESS));
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));
     }
 
     @Test
@@ -224,8 +224,8 @@ public class SimpleTest {
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
           
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
-        assertThat(result,  endsWith(Validator.SUCCESS));
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));
     }
     
     @Test
@@ -240,9 +240,9 @@ public class SimpleTest {
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
          
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(LinkedResource.NO_KNOWN_TYPE));       
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
     }
  
     @Test
@@ -252,12 +252,12 @@ public class SimpleTest {
         List<Statement> remove = minReader.getDirectOnlyStatementList(ALL_SUBJECTS, OpsTestConstants.HAS_WEDDING_DATE , ALL_OBJECTS, minContext);
         assertThat(remove.size(), greaterThan(0));
         holder.removeStatements(remove);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(CardinalityMetaData.WARNING));          
-        assertThat(result,  endsWith(Validator.SUCCESS));     
-        result = Validator.validate(holder, minContext, specifications, NO_WARNINGS);
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));     
+        result = RdfValidator.validate(holder, minContext, specifications, NO_WARNINGS);
         assertThat(result, not(containsString(CardinalityMetaData.WARNING)));          
-        assertThat(result,  endsWith(Validator.SUCCESS));     
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));     
     }
 
     @Test
@@ -271,11 +271,11 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, not(containsString(CardinalityMetaData.WARNING)));          
-        assertThat(result,  endsWith(Validator.FAILED));     
+        assertThat(result,  endsWith(RdfValidator.FAILED));     
         assertThat(result, containsString(PropertyMetaData.EXPECTED_TYPE));
-        String result2 = Validator.validate(holder, minContext, specifications, NO_WARNINGS);
+        String result2 = RdfValidator.validate(holder, minContext, specifications, NO_WARNINGS);
         assertEquals(result, result2);
      }
  
@@ -289,11 +289,11 @@ public class SimpleTest {
         Statement newStatement = 
                 new ContextStatementImpl(oldStatement.getSubject(), oldStatement.getPredicate(), newObject, minContext);
         holder.addStatement(newStatement);
-        String result = Validator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(holder, minContext, specifications, INCLUDE_WARNINGS);
         assertThat(result, not(containsString(CardinalityMetaData.WARNING)));          
-        assertThat(result,  endsWith(Validator.FAILED));     
+        assertThat(result,  endsWith(RdfValidator.FAILED));     
         assertThat(result, containsString(CardinalityMetaData.HOWEVER_FOUND));
-        String result2 = Validator.validate(holder, minContext, specifications, NO_WARNINGS);
+        String result2 = RdfValidator.validate(holder, minContext, specifications, NO_WARNINGS);
         assertEquals(result, result2);
      }
 }

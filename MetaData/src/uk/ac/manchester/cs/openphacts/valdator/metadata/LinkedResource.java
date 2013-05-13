@@ -27,7 +27,7 @@ import org.openrdf.model.URI;
 import uk.ac.manchester.cs.openphacts.valdator.constants.RdfConstants;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 
 /**
  *
@@ -50,7 +50,7 @@ class LinkedResource extends CardinalityMetaData {
 
      @Override
      protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
-            Resource context, int tabLevel, Validator validator) throws VoidValidatorException {
+            Resource context, int tabLevel, RdfValidator validator) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (statement.getObject() instanceof Resource){

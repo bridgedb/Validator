@@ -27,7 +27,7 @@ import uk.ac.manchester.cs.openphacts.valdator.metadata.type.MetaDataType;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.type.MetaDataTypeFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 
 /**
  *
@@ -46,7 +46,7 @@ class PropertyMetaData extends CardinalityMetaData {
     
     @Override
     protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
-            Resource context, int tabLevel, Validator validator) throws VoidValidatorException {
+            Resource context, int tabLevel, RdfValidator validator) throws VoidValidatorException {
         boolean appended = false;
         for (Statement statement:statements){
             if (!metaDataType.correctType(statement.getObject())){

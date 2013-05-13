@@ -27,11 +27,10 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfMinimalInterface;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.valdator.bean.ResourceBean;
 import uk.ac.manchester.cs.openphacts.valdator.bean.StatementBean;
 import uk.ac.manchester.cs.openphacts.valdator.bean.URIBean;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfMinimalInterface;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 
 /**
  *

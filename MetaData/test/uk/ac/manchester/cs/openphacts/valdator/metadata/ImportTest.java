@@ -33,7 +33,7 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
 
 /**
@@ -67,8 +67,8 @@ public class ImportTest {
         Resource context = reader.loadFile(part2);
         List<Statement> list2 = reader.getDirectOnlyStatementList(ALL_SUBJECTS, ALL_PREDICATES, ALL_OBJECTS);
         assertThat(list2.size(), greaterThan(list1.size()));
-        String result = Validator.validate(reader, context, specifications, INCLUDE_WARNINGS);
-        assertThat(result,  endsWith(Validator.SUCCESS));
+        String result = RdfValidator.validate(reader, context, specifications, INCLUDE_WARNINGS);
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));
     }
 
     @Test
@@ -82,9 +82,9 @@ public class ImportTest {
         Resource context = reader.loadFile(part2);
         List<Statement> list2 = reader.getDirectOnlyStatementList(ALL_SUBJECTS, ALL_PREDICATES, ALL_OBJECTS);
         assertThat(list2.size(), greaterThan(list1.size()));
-        String result = Validator.validate(reader, context, specifications, INCLUDE_WARNINGS);
+        String result = RdfValidator.validate(reader, context, specifications, INCLUDE_WARNINGS);
         assertThat(result, containsString(LinkedResource.ERROR_SEE_REPORT));
-        assertThat(result,  endsWith(Validator.FAILED));
+        assertThat(result,  endsWith(RdfValidator.FAILED));
     }
     
     @Test
@@ -93,8 +93,8 @@ public class ImportTest {
         RdfReader reader = RdfFactory.getMemory();
         File file = new File ("test-data/testSubset.ttl");
         Resource context = reader.loadFile(file);
-        String result = Validator.validate(reader, context, specifications, INCLUDE_WARNINGS);
-        assertThat(result,  endsWith(Validator.SUCCESS));
+        String result = RdfValidator.validate(reader, context, specifications, INCLUDE_WARNINGS);
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));
     }
 
 }

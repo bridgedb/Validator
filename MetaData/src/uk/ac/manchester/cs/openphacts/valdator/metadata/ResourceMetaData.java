@@ -24,7 +24,7 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 
 /**
  *
@@ -42,7 +42,7 @@ public class ResourceMetaData extends HasChildrenMetaData {
 
     @Override
     public boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, 
-            boolean includeWarning, int tabLevel, Validator validator) throws VoidValidatorException {
+            boolean includeWarning, int tabLevel, RdfValidator validator) throws VoidValidatorException {
         tab(builder, tabLevel);
         builder.append("Validation report for: (");
         this.addValue(builder, type, context);

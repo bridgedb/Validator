@@ -35,7 +35,7 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-public class Validator {
+public class RdfValidator {
     
     private final RdfInterface reader;
     private final Resource context;
@@ -50,7 +50,7 @@ public class Validator {
     
     public static String validate(RdfInterface reader, Resource context, MetaDataSpecification specifications, 
             Boolean includeWarning) throws VoidValidatorException{
-        Validator validator = new Validator(reader, context, specifications);
+        RdfValidator validator = new RdfValidator(reader, context, specifications);
         validator.validate(includeWarning);
         return validator.builder.toString();
     }
@@ -65,7 +65,7 @@ public class Validator {
         extraResourcesToCheck.add(resource);
     }
     
-    private Validator(RdfInterface reader, Resource context, MetaDataSpecification specifications) throws VoidValidatorException{
+    private RdfValidator(RdfInterface reader, Resource context, MetaDataSpecification specifications) throws VoidValidatorException{
         this.reader = reader;
         this.context = context;
         this.specifications = specifications;

@@ -25,7 +25,7 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 
 /**
  *
@@ -36,9 +36,9 @@ abstract class MetaDataBase {
     String name;
 
     abstract boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, 
-            int tabLevel, Validator validator)  throws VoidValidatorException;
+            int tabLevel, RdfValidator validator)  throws VoidValidatorException;
     
-    abstract boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLeve, Validator validator)
+    abstract boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLeve, RdfValidator validator)
             throws VoidValidatorException;
 
     abstract void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) 

@@ -25,7 +25,7 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 
 /**
  *
@@ -49,7 +49,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     
     @Override
     boolean appendValidate(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, boolean includeWarnings, 
-            int tabLevel, Validator validator) throws VoidValidatorException {
+            int tabLevel, RdfValidator validator) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
         boolean result = appendIncorrectReport(builder, rdf, statements, context, tabLevel, validator);
         if (appendCardinalityReport(builder, statements, context, includeWarnings, tabLevel)){
@@ -59,7 +59,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     }
 
     @Override
-    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel, Validator validator) throws VoidValidatorException {
+    boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel, RdfValidator validator) throws VoidValidatorException {
         List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
         boolean result = appendIncorrectReport(builder, rdf, statements,  context, tabLevel, validator);
         if (cardinality != NO_CARDINALITY && statements.size() >= cardinality) {
@@ -107,7 +107,7 @@ abstract class CardinalityMetaData extends MetaDataBase {
     protected abstract String getType();
     
     protected abstract boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
-            Resource context, int tabLevel, Validator validator) throws VoidValidatorException;
+            Resource context, int tabLevel, RdfValidator validator) throws VoidValidatorException;
 
     protected boolean appendCardinalityReport(StringBuilder builder, List<Statement> statements, Resource context,
             boolean includeWarnings, 

@@ -32,7 +32,7 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 
 /**
  *
@@ -72,8 +72,8 @@ public class ValidationTest {
     @Test
     public void minFileValidate() throws VoidValidatorException {
         Reporter.println("minFileValidate");
-        String result = Validator.validate(minReader, minContext, specifications, INCLUDE_WARNINGS);
-        assertThat(result, endsWith(Validator.SUCCESS));
+        String result = RdfValidator.validate(minReader, minContext, specifications, INCLUDE_WARNINGS);
+        assertThat(result, endsWith(RdfValidator.SUCCESS));
     }
     
  

@@ -54,7 +54,7 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
-import uk.ac.manchester.cs.openphacts.validator.Validator;
+import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 
     
 /**
@@ -803,7 +803,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
              
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadString(text, rdfFormat);
-            String results = Validator.validate(reader, context, specifications, includeWarnings);
+            String results = RdfValidator.validate(reader, context, specifications, includeWarnings);
             showValidationResult(sb, results);
             return true;
         } catch (Exception ex){
@@ -817,7 +817,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
          try {
             RdfReader reader = RdfFactory.getMemory();
             Resource context = reader.loadURI(URI.stringValue(), rdfFormat);
-            String results = Validator.validate(reader, context, specifications, includeWarnings);
+            String results = RdfValidator.validate(reader, context, specifications, includeWarnings);
             showValidationResult(sb, results);
             return true;
         } catch (Exception ex){

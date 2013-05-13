@@ -19,18 +19,24 @@
 //
 package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author Christian
  */
 public class VoidValidatorException extends Exception {
 
+    static final Logger logger = Logger.getLogger(VoidValidatorException.class);
+    
     public VoidValidatorException(String msg) {
         super(msg);
+        logger.error(msg);
     }
 
     public VoidValidatorException(String msg, Exception ex) {
         super(msg, ex);
+        logger.error(msg, ex);
     }
     
 }

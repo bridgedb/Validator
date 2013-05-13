@@ -21,9 +21,12 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStreamWriter;
 import java.util.List;
+import org.apache.log4j.ConsoleAppender;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -36,8 +39,10 @@ import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
  * @author Christian
  */
 public class RdfReaderTest {
-    
-     /**
+       
+    static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(RdfReaderTest.class);
+
+    /**
      * Test of loadFile method, of class RdfReader.
      */
     @Test

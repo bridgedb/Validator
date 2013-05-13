@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.log4j.Level;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -69,28 +70,34 @@ public class RdfReader implements RdfInterface{
     private static final boolean EXCLUDE_INFERRED =false;
     
     private final Repository repository;
+    private final boolean fileBased;
     private RepositoryConnection connection = null;
     private final Set<URI> parentPredicates; //currently 1 hard coded value.
     private final Set<Resource> loadedContexts;
     private final Set<RdfInterface> others; 
     
-    public static RdfReader factory(Repository repository) throws VoidValidatorException{
-        RdfReader instance = new RdfReader(repository);
-        try {
-            repository.initialize();
-            return instance;
-        } catch (Exception ex) {
-            throw new VoidValidatorException ("Error parsing RDf file ", ex);
-        }       
+    static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(RdfReader.class);
+
+    public static RdfReader factory(Repository repository, boolean fileBased) throws VoidValidatorException{
+        RdfReader instance = new RdfReader(repository, fileBased);
+        return instance;
     } 
    
-    private RdfReader(Repository repository) throws VoidValidatorException{
+    private RdfReader(Repository repository, boolean fileBased) throws VoidValidatorException{
         this.repository = repository; 
+        this.fileBased = fileBased;
+        if (!fileBased){
+            try {
+                repository.initialize();
+            } catch (Exception ex) {
+                throw new VoidValidatorException ("Error parsing RDf file ", ex);
+            }       
+        }
         parentPredicates = new HashSet<URI>();
         parentPredicates.add(new URIImpl ("http://rdfs.org/ns/void#subset"));
         loadedContexts = new HashSet<Resource>();
         others = new HashSet<RdfInterface>();
-    }
+   }
    
     public URI loadFile(File inputFile) throws VoidValidatorException{
         return loadFile(inputFile, null);
@@ -135,6 +142,7 @@ public class RdfReader implements RdfInterface{
             }
             connection.add(stream, address, format, context);
             connection.commit();
+            close();
             return context;
         } catch (Exception ex) {
             closeOnError();
@@ -353,6 +361,13 @@ public class RdfReader implements RdfInterface{
                     return connection;
                 }         
             }
+            if (fileBased){
+                try {
+                    repository.initialize();
+                } catch (Exception ex) {
+                    throw new VoidValidatorException ("Error parsing RDf file ", ex);
+                }       
+            }
             connection = repository.getConnection();
             return connection;
         } catch (Exception ex) {
@@ -379,9 +394,15 @@ public class RdfReader implements RdfInterface{
             if (connection != null){
                 if (connection.isOpen()){
                     connection.close();
+                    if (fileBased){
+                        try {
+                            repository.shutDown();
+                        } catch (Exception ex) {
+                            throw new VoidValidatorException ("Error parsing RDf file ", ex);
+                        }       
+                    }
                     connection = null;
-                }
-            
+                 }
             }
         } catch (Exception ex) {
             throw new VoidValidatorException ("Error shutting down connection", ex);
@@ -434,9 +455,6 @@ public class RdfReader implements RdfInterface{
         for (RDFFormat format:RDFFormat.values() ){
             Reporter.println(format.toString());
             Reporter.println("  " + format.getDefaultMIMEType());
-            //reader.write(format, System.out);
-            //Reporter.println();
-            //Reporter.println("**** " + format);            
        }
     }
 

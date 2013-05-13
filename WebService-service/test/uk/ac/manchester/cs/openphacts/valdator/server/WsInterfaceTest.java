@@ -21,6 +21,7 @@ package uk.ac.manchester.cs.openphacts.valdator.server;
 
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
@@ -30,6 +31,7 @@ import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
  *
  * @author Christian
  */
+@Ignore
 public class WsInterfaceTest extends RdfInterfaceTest{
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {

@@ -21,11 +21,9 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
 import java.io.File;
 import java.util.Properties;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.nativerdf.NativeStore;
 import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
@@ -42,25 +40,29 @@ public class RdfFactory {
     public static RdfReader imsFileReader = null;
     public static final String IMS_RDF_DIRECTORY = "imsRdfStore ";
     public static final String DEFAULT_IMS_DIRECTORY = "../../rdf/ims";
+    private static final boolean TEST = true;
+    private static final boolean LIVE = false;
+    private static final boolean FILE_BASED = true;
+    private static final boolean MEMORY_BASED = false;;
+    
     
     static final Logger logger = Logger.getLogger(RdfFactory.class);
     
     public static RdfReader getMemory() throws VoidValidatorException{
         Repository repository = new SailRepository(new MemoryStore());
-        RdfReader rdfReader = RdfReader.factory(repository);
+        RdfReader rdfReader = RdfReader.factory(repository, MEMORY_BASED);
         return rdfReader;
     } 
     
     public static RdfReader getValidatorFilebase() throws VoidValidatorException{
         if (validatorFileReader == null) {
             ConfigReader.configureLogger();
-            logger.info("Setting up Validator RDF store: ");
             Properties properties = ConfigReader.getProperties();
             String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
-            validatorFileReader = getReader(directoryName, true);
+            validatorFileReader = getReader(directoryName, LIVE);
         }
         return validatorFileReader;        
     }
@@ -68,13 +70,12 @@ public class RdfFactory {
    public static RdfReader getImsFilebase() throws VoidValidatorException{
         if (imsFileReader == null) {
             ConfigReader.configureLogger();
-            logger.info("Setting up IMS RDF store: ");
             Properties properties = ConfigReader.getProperties();
             String directoryName = properties.getProperty(IMS_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_IMS_DIRECTORY;
             }
-            imsFileReader = getReader(directoryName, false);
+            imsFileReader = getReader(directoryName, LIVE);
         }
         return imsFileReader;        
     }
@@ -86,7 +87,7 @@ public class RdfFactory {
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
-            validatorFileReader = getReader(directoryName, true);
+            validatorFileReader = getReader(directoryName, TEST);
         }
         return validatorFileReader;        
     }
@@ -99,11 +100,19 @@ public class RdfFactory {
         }
         File lockDirectory = new File(directory, "lock");
         if (lockDirectory.exists()){
-            delete(lockDirectory);
+           delete(lockDirectory);
         }
         NativeStore store = new NativeStore(directory);
         Repository repository = new SailRepository(store);
-        RdfReader reader = RdfReader.factory(repository);
+        /*try {
+            repository.shutDown();
+            repository.initialize();
+            repository.shutDown();
+        } catch (RepositoryException ex) {
+            ex.printStackTrace();
+            int error = 1/0;
+      }*/
+        RdfReader reader = RdfReader.factory(repository, FILE_BASED);
         logger.info("RDF store setup at: " + directory);
         return reader;        
     }

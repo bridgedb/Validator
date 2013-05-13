@@ -20,6 +20,7 @@
 package uk.ac.manchester.cs.openphacts.valdator.metadata;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
@@ -80,6 +83,8 @@ public class MetaDataSpecification {
     private static final String FILE = "file";
     private static final String SPECIFICATIONS_PREFIX = "specification.";
 
+    static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(MetaDataSpecification.class);
+    
     private MetaDataSpecification(String fileName) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         File file = new File(fileName);
@@ -98,6 +103,12 @@ public class MetaDataSpecification {
             ontology = m.loadOntologyFromOntologyDocument(stream);
         } catch (OWLOntologyCreationException ex) {
             throw new VoidValidatorException("Unable to read owl from inputStream", ex);
+        } finally {
+            try {
+                stream.close();
+            } catch (IOException ex) {
+                logger.error(ex);
+            }          
         }
         init();
         description = "Read from " + source;

@@ -20,7 +20,6 @@
 package uk.ac.manchester.cs.openphacts.valdator.server;
 
 
-import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
@@ -275,6 +274,25 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
                return ExampleConstants.EXAMPLE_QUERY;
     }
 
+    @Override
+    public String getExampleText() {
+        return "@prefix : <http://example.com/part1#> .\n"
+        + "@prefix ops: <http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#> .\n"
+        + "@prefix void: <http://rdfs.org/ns/void#> .\n"
+        + "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
+        + "\n"
+        + ":person1 a ops:Parent;\n"
+        + "    ops:hasName \"John\";\n"
+        + "    ops:hasChild :person2.\n"
+        + "\n"
+        + ":person2 a ops:Person;\n"
+        + "    ops:hasName \"Peter\";\n"
+        + "    ops:hasPhoneNumber \"1234567\";\n"
+        + "    ops:hasBirthdate \"2003-01-17T16:02:27Z\"^^xsd:dateTime;\n"
+        + "    ops:hasStreet \"mainStreet\";\n"
+        + "    ops:hasHouseNumber \"23\";\n"
+        + "    ops:hasWebsite <http://bbc.co.uk>.\n";
+    }
 }
 
 

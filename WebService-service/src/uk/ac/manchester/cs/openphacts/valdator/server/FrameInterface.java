@@ -45,6 +45,7 @@ public interface FrameInterface{
     
     String getExampleQuery();
 
+    String getExampleText();
 }
 
 

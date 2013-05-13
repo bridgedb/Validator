@@ -20,6 +20,7 @@
 package uk.ac.manchester.cs.openphacts.valdator.server;
 
 
+import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
@@ -47,27 +48,37 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
     static final Logger logger = Logger.getLogger(WsFrame.class);
 
     public WsFrame() {
-        super(RdfFactory.getValidatorFilebase());
-        super.setFrame(this);
-        rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
-        rdfInterface.close();
+        super();
+        RdfInterface rdfInterface;
+        try {
+            rdfInterface = RdfFactory.getValidatorFilebase();
+            rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+            rdfInterface.close();
+            super.setUp(rdfInterface, this);
+            MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+                    ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
+             logger.info("Test Data added");  
+        } catch (VoidValidatorException ex) {
+            logger.error("Initisation of Validation Service failed!", ex);
+        }
         /*formatter = NumberFormat.getInstance();
         if (formatter instanceof DecimalFormat) {
             DecimalFormatSymbols dfs = new DecimalFormatSymbols();
             dfs.setGroupingSeparator(',');
             ((DecimalFormat) formatter).setDecimalFormatSymbols(dfs);
         }*/
-        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
-               ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
-        logger.info("Test Data added");
     }
     
-    public WsFrame(RdfInterface rdfInterface) throws VoidValidatorException{
-        super(rdfInterface);
-        super.setFrame(this);
-        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
-               ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
-        logger.info("Setup using provided rdf.");
+    public WsFrame(RdfInterface rdfInterface) {
+        super();
+        try {
+            MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+                   ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
+            logger.info("Test Data added");  
+            super.setUp(rdfInterface, this);
+        } catch (VoidValidatorException ex) {
+            logger.error("Initisation of Validation Service failed!", ex);
+        }
     }
         
     @GET

@@ -67,16 +67,25 @@ public class WsValidatorServer implements ValidatorWSInterface{
     private static final String DESCRIPTION_FIELD = "Description";
     private static final String NO_ON_SUBMIT = null;
     
-    final RdfInterface rdfInterface;
+    private RdfInterface rdfInterface;
     private FrameInterface frame;
+    private boolean errorState = true;
     
-    public WsValidatorServer(RdfInterface rdfInterface) {
-        logger.info("Validator Server setup");
-        this.rdfInterface = rdfInterface;
+    public WsValidatorServer() {
+        logger.info("Validator created but not yet setup");
     }
 
-    public void setFrame(FrameInterface frame){
+    public void setUp(RdfInterface rdfInterface, FrameInterface frame) throws VoidValidatorException{
         this.frame = frame;
+        this.rdfInterface = rdfInterface;
+        if (this.frame == null){
+            throw new VoidValidatorException("Illegal call to setup with null frame");
+        }
+        if (this.rdfInterface == null){
+            throw new VoidValidatorException("Illegal call to setup with null frame");
+        }
+        errorState = false;
+        logger.info("Validator Server setup");
     }
     
 //Super class calls    
@@ -97,6 +106,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
     @Path(WsValidationConstants.VALIDATE_HOME)
     @Override
     public Response validateHome(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
+        if (errorState){
+            return errorReport();
+        }
         StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
         sb.append("<h1> Welcome to the OpenPhacts Validation Service.</h1>");
         sb.append("<p>The form below gives an example of how to use the Validation service.</p>");
@@ -116,6 +128,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
             @QueryParam(WsValidationConstants.PREDICATE) String predicateString, 
             @QueryParam(WsValidationConstants.OBJECT) String objectString, 
             @QueryParam(WsValidationConstants.CONTEXT) List<String> contextStrings) throws VoidValidatorException {
+        checkErrorState();
         List<Statement> statements = getStatementListImplementation(subjectString, predicateString, objectString, contextStrings);
         return StatementBean.asBeans(statements);
     }
@@ -129,6 +142,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
             @QueryParam(WsValidationConstants.OBJECT) String objectString, 
             @QueryParam(WsValidationConstants.CONTEXT) List<String> contextStrings,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {
+        if (errorState){
+            return errorReport();
+        }
         if (contextStrings != null){
             Iterator<String> iterator = contextStrings.iterator();
             while (iterator.hasNext()){
@@ -160,6 +176,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
     @Path(WsValidationConstants.BY_RESOURCE)
     public List<StatementBean> getByResource(@QueryParam(WsValidationConstants.RESOURCE) String resourceString) 
             throws VoidValidatorException{
+        checkErrorState();
         List<Statement> statements = this.getByResourceImplmentation(resourceString);
         return StatementBean.asBeans(statements);
     }
@@ -170,6 +187,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
     @Override
     public Response getByResource(@QueryParam(WsValidationConstants.RESOURCE) String resourceString,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException{        
+        if (errorState){
+            return errorReport();
+        }
         StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
         formByResource(sb, resourceString, httpServletRequest); 
         if (resourceString!= null && !resourceString.isEmpty()){
@@ -189,6 +209,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
     @Path(WsValidationConstants.LOAD_URI)
     public URIBean loadURI(@QueryParam(WsValidationConstants.URI) String address, 
         @QueryParam(WsValidationConstants.RDF_FORMAT) String formatName)throws VoidValidatorException {
+        checkErrorState();
         URI result = this.loadURIImplementation(address, formatName);
         return URIBean.asBean(result);
     }
@@ -200,6 +221,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
     public Response loadURI(@QueryParam(WsValidationConstants.URI) String address, 
             @QueryParam(WsValidationConstants.RDF_FORMAT) String formatName,
             @Context HttpServletRequest httpServletRequest)throws VoidValidatorException {
+        if (errorState){
+            return errorReport();
+        }
         StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
         formLoadUri(sb, address, formatName, httpServletRequest); 
         if (address!= null && !address.isEmpty()){
@@ -225,6 +249,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
     @Path(WsValidationConstants.SPARQL)
     public String runSparqlQuery(@QueryParam(WsValidationConstants.QUERY)String query, 
             @QueryParam(WsValidationConstants.FORMAT)String formatName) throws VoidValidatorException{
+        checkErrorState();
         return this.runSparqlQueryImplmentation(query, formatName);
     }
 
@@ -235,6 +260,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
     public Response runSparqlQuery(@QueryParam(WsValidationConstants.QUERY)String query, 
             @QueryParam(WsValidationConstants.FORMAT)String formatName,
             @Context HttpServletRequest httpServletRequest)throws VoidValidatorException {
+        if (errorState){
+            return errorReport();
+        }
         logger.info("runSparqlQuery called query = " + query + " formatName = " + formatName);
         StringBuilder sb = frame.topAndSide("SPARQL Service ",  httpServletRequest);
         formSparql(sb, query, formatName, httpServletRequest); 
@@ -264,6 +292,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
+        if (errorState){
+            return errorReport();
+        }
         StringBuilder sb = frame.topAndSide("Validation Service", httpServletRequest);
         boolean validated = getAndShowValidationResult(sb, rdfFormat, text, uri, specification, includeWarning);
         formValidation(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest); 
@@ -285,6 +316,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
+        if (errorState){
+            return errorReport();
+        }
         return this.validate(rdfFormat, text, uri, specification, includeWarning, httpServletRequest);
     }
     
@@ -941,6 +975,22 @@ public class WsValidatorServer implements ValidatorWSInterface{
         sb.append("}\n");  
         sb.append("</script>\n");
         return scriptName;
+    }
+
+    private Response errorReport() {
+        return Response.status(404).build();
+    }
+
+    private void checkErrorState() throws VoidValidatorException {
+        if (errorState){
+            if (rdfInterface == null){
+                logger.warn("Call failed due to no rdfInterface Set");
+            }
+            if (frame == null){
+                logger.warn("Call failed due to no frame Set");
+            }
+            throw new VoidValidatorException("Service not intitalized correctly");
+        }
     }
 }
 

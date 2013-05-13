@@ -38,8 +38,10 @@ public class WsInterfaceTest extends RdfInterfaceTest{
         try {
             RdfInterfaceTest.setUpClass();
         } catch (Exception ex){
+            Reporter.println("********************************************************************************");
             Reporter.println("Unable to connect to server.");
             Reporter.println("Skipping all client tests.");
+            Reporter.println("********************************************************************************");
             org.junit.Assume.assumeTrue(false);
         }
     }

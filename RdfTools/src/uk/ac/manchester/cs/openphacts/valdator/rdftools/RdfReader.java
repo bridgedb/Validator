@@ -375,7 +375,7 @@ public class RdfReader implements RdfInterface{
         }        
     }
 
-   private static RDFFormat getFormat(String fileName) throws VoidValidatorException{
+   public static RDFFormat getFormat(String fileName) throws VoidValidatorException{
         if (fileName.endsWith(".n3")){
             fileName = "try.ttl";
         }

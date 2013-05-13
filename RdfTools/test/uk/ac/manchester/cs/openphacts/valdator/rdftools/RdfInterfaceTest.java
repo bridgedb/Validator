@@ -47,13 +47,8 @@ public abstract class RdfInterfaceTest {
 
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException{
-        try {
-            instance.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
-        } catch (Exception ex){
-            Reporter.println("Unable to connect to server.");
-            Reporter.println("Skipping all tests.");
-            org.junit.Assume.assumeTrue(false);
-        }
+        TestUtils.checkURI(ExampleConstants.EXAMPLE_CONTEXT);
+        instance.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
         Reporter.println("Loaded " + ExampleConstants.EXAMPLE_CONTEXT);
     }
 

@@ -19,7 +19,6 @@
 //
 package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import static org.hamcrest.Matchers.*;
 import org.junit.After;
@@ -33,7 +32,6 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
-import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
 import org.openrdf.rio.RDFFormat;
 
 /**
@@ -48,8 +46,14 @@ public abstract class RdfInterfaceTest {
     }
 
     @BeforeClass
-    public static void setUpClass() throws VoidValidatorException {
-        instance.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+    public static void setUpClass() throws VoidValidatorException{
+        try {
+            instance.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+        } catch (Exception ex){
+            Reporter.println("Unable to connect to server.");
+            Reporter.println("Skipping all tests.");
+            org.junit.Assume.assumeTrue(false);
+        }
         Reporter.println("Loaded " + ExampleConstants.EXAMPLE_CONTEXT);
     }
 

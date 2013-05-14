@@ -28,18 +28,18 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import uk.ac.manchester.cs.openphacts.valdator.bean.ResourceBean;
 import uk.ac.manchester.cs.openphacts.valdator.bean.StatementBean;
 import uk.ac.manchester.cs.openphacts.valdator.bean.URIBean;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WSRdfInterface;
+import uk.ac.manchester.cs.openphacts.valdator.ws.WSValidatorInterface;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
 
 /**
  *
  * @author Christian
  */
-public class WSRdfClient implements WSRdfInterface {
+public class WSRdfClient implements WSRdfInterface, WSValidatorInterface {
 
     protected final WebResource webResource;
     
@@ -117,6 +117,33 @@ public class WSRdfClient implements WSRdfInterface {
         //Make service call
         String result = 
                 webResource.path(WsValidationConstants.SPARQL)
+                .queryParams(params)
+                .accept(MediaType.APPLICATION_XML_TYPE)
+                .get(new GenericType<String>() {});
+         return result;
+    }
+
+    @Override
+    public String validate(String text, String uri, String rdfFormat, String specification, Boolean includeWarning) throws VoidValidatorException {
+        MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+        if (text != null){
+            params.add(WsValidationConstants.TEXT, text);
+        }
+        if (uri != null){
+            params.add(WsValidationConstants.URI, uri);
+        }
+        if (rdfFormat != null){
+            params.add(WsValidationConstants.RDF_FORMAT, rdfFormat);
+        }
+        if (specification != null){
+            params.add(WsValidationConstants.SPECIFICATION, specification);
+        }
+        if (includeWarning != null){
+            params.add(WsValidationConstants.INCLUDE_WARNINGS, includeWarning.toString());
+        }
+        //Make service call
+        String result = 
+                webResource.path(WsValidationConstants.VALIDATE)
                 .queryParams(params)
                 .accept(MediaType.APPLICATION_XML_TYPE)
                 .get(new GenericType<String>() {});

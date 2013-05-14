@@ -32,7 +32,9 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.ExampleConstants;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.openphacts.validator.Validator;
 import uk.ac.manchester.cs.openphacts.validator.ValidatorExampleConstants;
+import uk.ac.manchester.cs.openphacts.validator.ValidatorImpl;
 
 
 /**
@@ -53,7 +55,8 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
             rdfInterface = RdfFactory.getValidatorFilebase();
             rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
             rdfInterface.close();
-            super.setUp(rdfInterface, this);
+            Validator validator = new ValidatorImpl(rdfInterface);
+            super.setUp(rdfInterface, validator, this);
             MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                     ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
              logger.info("Test Data added");  
@@ -74,7 +77,8 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
             MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                    ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
             logger.info("Test Data added");  
-            super.setUp(rdfInterface, this);
+            Validator validator = new ValidatorImpl(rdfInterface);
+            super.setUp(rdfInterface, validator, this);
         } catch (VoidValidatorException ex) {
             logger.error("Initisation of Validation Service failed!", ex);
         }

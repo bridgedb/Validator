@@ -34,7 +34,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -55,13 +54,14 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfReader;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
 import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
+import uk.ac.manchester.cs.openphacts.validator.Validator;
 
     
 /**
  *
  * @author Christian
  */
-public class WsValidatorServer implements ValidatorWSInterface{
+public class WsValidatorServer implements HtmlWSInterface{
         
     static final Logger logger = Logger.getLogger(WsValidatorServer.class);
     private static final int DESCRIPTION_WIDTH = 100;
@@ -70,19 +70,24 @@ public class WsValidatorServer implements ValidatorWSInterface{
     
     private RdfInterface rdfInterface;
     private FrameInterface frame;
+    private Validator validator;
    
     public WsValidatorServer() {
         logger.info("Validator created but not yet setup");
      }
 
-    public void setUp(RdfInterface rdfInterface, FrameInterface frame) throws VoidValidatorException{
+    public void setUp(RdfInterface rdfInterface, Validator validator, FrameInterface frame) throws VoidValidatorException{
         this.frame = frame;
         this.rdfInterface = rdfInterface;
+        this.validator = validator;
         if (this.frame == null){
             throw new VoidValidatorException("Illegal call to setup with null frame");
         }
         if (this.rdfInterface == null){
-            throw new VoidValidatorException("Illegal call to setup with null frame");
+            throw new VoidValidatorException("Illegal call to setup with null rdfInterface");
+        }
+        if (this.validator == null){
+            throw new VoidValidatorException("Illegal call to setup with null validator");
         }
         logger.info("Validator Server setup");
     }
@@ -337,14 +342,30 @@ public class WsValidatorServer implements ValidatorWSInterface{
         }
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
     }
+ 
+    @Override
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path(WsValidationConstants.VALIDATE)
+    public String validate(@QueryParam(WsValidationConstants.TEXT) String text, 
+            @QueryParam(WsValidationConstants.URI) String uri, 
+            @QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat,
+            @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
+            @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning) throws VoidValidatorException {
+        if (logger.isDebugEnabled()){
+            logger.debug("json validate called");
+        }
+        checkErrorState();
+        return this.validateImplmentation(text, uri, rdfFormat, specification, includeWarning);
+    }
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
     @Override
-    public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
-            @QueryParam(WsValidationConstants.TEXT) String text, 
+    public Response validate(@QueryParam(WsValidationConstants.TEXT) String text, 
             @QueryParam(WsValidationConstants.URI) String uri, 
+            @QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat,
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
@@ -355,7 +376,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
             return errorReport();
         }
         StringBuilder sb = frame.topAndSide("Validation Service", httpServletRequest);
-        boolean validated = getAndShowValidationResult(sb, rdfFormat, text, uri, specification, includeWarning);
+        boolean validated = getAndShowValidationResult(sb, text, uri, rdfFormat, specification, includeWarning);
         formValidation(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest); 
         if (!validated){
             appendButton(sb, "URI example!", WsValidationConstants.VALIDATE, httpServletRequest, 
@@ -376,9 +397,9 @@ public class WsValidatorServer implements ValidatorWSInterface{
     @POST
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
-    public Response validatePost(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
-            @QueryParam(WsValidationConstants.TEXT) String text, 
-            @QueryParam(WsValidationConstants.URI) String uri, 
+    public Response validatePost(@QueryParam(WsValidationConstants.TEXT) String text, 
+            @QueryParam(WsValidationConstants.URI) String uri,
+            @QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat,  
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {        
@@ -388,7 +409,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (errorState()){
             return errorReport();
         }
-        return this.validate(rdfFormat, text, uri, specification, includeWarning, httpServletRequest);
+        return this.validate(text, uri, rdfFormat, specification, includeWarning, httpServletRequest);
     }
     
 // Implementations
@@ -449,6 +470,23 @@ public class WsValidatorServer implements ValidatorWSInterface{
         String result = rdfInterface.runSparqlQuery(query, format);
         rdfInterface.close();
         return result;
+    }
+    
+    private String validateImplmentation(String text, String uri, String rdfFormat, String specification, 
+            Boolean includeWarning) throws VoidValidatorException{
+        if (text == null || text.isEmpty()){
+            if (uri == null || uri.isEmpty()){
+                throw new VoidValidatorException("");
+            } else {
+                return validator.validateUri(uri, rdfFormat, specification, includeWarning);
+            }
+        } else {
+            if (uri == null || uri.isEmpty()){
+                return validator.validateText(text, rdfFormat, specification, includeWarning);
+            } else {
+                throw new VoidValidatorException("");
+            }   
+        }
     }
     
 //Forms
@@ -702,83 +740,26 @@ public class WsValidatorServer implements ValidatorWSInterface{
     }
 
 //Result viewers      
-    private boolean getAndShowValidationResult(StringBuilder sb, String format, String text, String uri, String specification, 
-            Boolean includeWarnings) throws VoidValidatorException  {   
-        boolean error = false;
-        RDFFormat rdfFormat = null;
-        if (format != null && !format.isEmpty()){
-            for (RDFFormat check:RDFFormat.values()){
-                if (check.getName().equals(format)){
-                    rdfFormat = check;
-                }
-            }
-            if (rdfFormat == null){
-                sb.append(WsValidationConstants.RDF_FORMAT);
-                sb.append(" ");
-                sb.append(format);
-                sb.append(" is not known. Please select one from the dropdown list.<br>");
-                error = true;
-            }
-        }       
-        if (text == null){
-            text = "";
-        }
-        URI URI = null;
-        if (uri != null && !uri.isEmpty()){
-            try {
-                URI = new URIImpl(uri);
-            } catch (Exception ex){
-                sb.append("Error with ");
-                sb.append(WsValidationConstants.URI);
-                sb.append(" \"");
-                sb.append(uri);
-                sb.append("\"<br>");
-                sb.append(ex.getMessage());
-                sb.append("<br>");
-                error = true;
-            }
-        }
-        MetaDataSpecification specs = null;
-        if (specification != null && !specification.isEmpty()){
-            try {
-                specs = MetaDataSpecification.specificationByName(specification);
-                if (specs == null){
-                    sb.append("Sorry no ");
-                    sb.append(WsValidationConstants.SPECIFICATION);
-                    sb.append(" with name ");
-                    sb.append(specification);
-                    sb.append(" known!<br>");  
-                    error = true;
-                }
-            } catch (Exception ex){
-                sb.append("Error getting  ");
-                sb.append(WsValidationConstants.SPECIFICATION);
-                sb.append(" with name ");
-                sb.append(specification);
-                sb.append("<br>");            
-                sb.append(ex.getMessage());
-                sb.append("<br>");
-                error = true;
-            }
-        }
-        if (error){
-            return false;
-        }
-        if (text.isEmpty() && URI == null){
-            return false;
-        }
-        if (specs == null){
-            sb.append("Please specify a ");
-            sb.append(WsValidationConstants.SPECIFICATION);
-            sb.append("<br>");
-            return false;
-        }
-       if (URI == null){
-            return getAndShowValidationResult(sb, rdfFormat, text, specs, includeWarnings);
-        } else {
-            if (text.isEmpty()){
-                return getAndShowValidationResult(sb, rdfFormat, URI, specs, includeWarnings);
+    
+    private boolean getAndShowValidationResult(StringBuilder sb, String text, String uri, String format, String specification, 
+            Boolean includeWarnings) throws VoidValidatorException  { 
+        boolean ok = checkRdfFormat(sb, format) && checkSpecification(sb, specification);
+        if (text == null || text.isEmpty()){
+            if (uri == null || uri.isEmpty()){
+                //both empty is ok nothing to show
+                return false;
             } else {
+                if (format == null || format.isEmpty()){
+                    sb.append("You must supply an ");
+                    sb.append(WsValidationConstants.RDF_FORMAT);
+                    sb.append(" parameter when using a ");
+                    sb.append(WsValidationConstants.TEXT);
+                    sb.append("parameter.<br>\n");
+                    return false; 
+                }
+            }
+        } else {
+            if (uri != null || !uri.isEmpty()){
                 sb.append("Please clear either the ");
                 sb.append(WsValidationConstants.TEXT);
                 sb.append(" or the ");
@@ -786,47 +767,69 @@ public class WsValidatorServer implements ValidatorWSInterface{
                 sb.append("parameter! <br>");   
                 return false;
             }
-        }      
-    }
-    
-    private boolean getAndShowValidationResult(StringBuilder sb, RDFFormat rdfFormat, String text, 
-            MetaDataSpecification specifications, Boolean includeWarnings) throws VoidValidatorException {
-        try {
-            if (rdfFormat == null){
-                sb.append("You must supply an ");
-                sb.append(WsValidationConstants.RDF_FORMAT);
-                sb.append(" parameter when using a ");
-                sb.append(WsValidationConstants.TEXT);
-                sb.append("parameter.<br>\n");
-                return false;
+        }
+        if (specification == null || specification.isEmpty()){
+            sb.append(WsValidationConstants.SPECIFICATION);
+            sb.append(" parameter missing!<br> Please select one from the dropdown list.<br>");
+            return false;
+        }
+        if (!ok){
+            return false;
+        }
+        String results;
+        if (text == null || text.isEmpty()){
+           results =  validator.validateUri(uri, format, specification, includeWarnings);
+        } else {
+            results =  validator.validateText(text, format, specification, includeWarnings);
+        }
+        this.showValidationResult(sb, results);
+        return true;
+    }  
+
+    private boolean checkRdfFormat(StringBuilder sb, String format) throws VoidValidatorException  {   
+        if (format == null || format.isEmpty()){
+            return true;
+        }
+        for (RDFFormat check:RDFFormat.values()){
+            if (check.getName().equals(format)){
+                return true;
             }
-             
-            RdfReader reader = RdfFactory.getMemory();
-            Resource context = reader.loadString(text, rdfFormat);
-            String results = RdfValidator.validate(reader, context, specifications, includeWarnings);
-            showValidationResult(sb, results);
+        }
+        sb.append(WsValidationConstants.RDF_FORMAT);
+        sb.append(" ");
+        sb.append(format);
+        sb.append(" is not known. Please select one from the dropdown list.<br>");
+        return false;
+    }       
+
+    private boolean checkSpecification(StringBuilder sb, String specification) throws VoidValidatorException  {   
+        if (specification != null && !specification.isEmpty()){
             return true;
+        }
+        try {
+            MetaDataSpecification specs = MetaDataSpecification.specificationByName(specification);
+            if (specs == null){
+                sb.append("Sorry no ");
+                sb.append(WsValidationConstants.SPECIFICATION);
+                sb.append(" with name ");
+                sb.append(specification);
+                sb.append(" known!<br>");  
+                return false;
+            } else {
+                return true;
+            }
         } catch (Exception ex){
-            showException(sb, ex);
+            sb.append("Error getting  ");
+            sb.append(WsValidationConstants.SPECIFICATION);
+            sb.append(" with name ");
+            sb.append(specification);
+            sb.append("<br>");            
+            sb.append(ex.getMessage());
             return false;
-        }     
-     }
-    
-     private boolean getAndShowValidationResult(StringBuilder sb, RDFFormat rdfFormat, URI URI, 
-             MetaDataSpecification specifications, Boolean includeWarnings) throws VoidValidatorException {
-         try {
-            RdfReader reader = RdfFactory.getMemory();
-            Resource context = reader.loadURI(URI.stringValue(), rdfFormat);
-            String results = RdfValidator.validate(reader, context, specifications, includeWarnings);
-            showValidationResult(sb, results);
-            return true;
-        } catch (Exception ex){
-            showException(sb, ex);
-            return false;
-        }     
-     }
-     
-     private void showValidationResult(StringBuilder sb, String results) {
+        }
+    }
+
+    private void showValidationResult(StringBuilder sb, String results) {
         String[] lines = results.split("\\r?\\n");
         int maxWidth = 0;
         for (String line:lines){

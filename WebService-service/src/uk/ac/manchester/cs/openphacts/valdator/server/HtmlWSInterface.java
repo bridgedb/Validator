@@ -26,6 +26,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WSRdfInterface;
+import uk.ac.manchester.cs.openphacts.valdator.ws.WSValidatorInterface;
 import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
 
     
@@ -33,7 +34,7 @@ import uk.ac.manchester.cs.openphacts.valdator.ws.WsValidationConstants;
  *
  * @author Christian
  */
-public interface ValidatorWSInterface extends WSRdfInterface{
+public interface HtmlWSInterface extends WSRdfInterface, WSValidatorInterface{
            
     public Response validateHome(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException;
     
@@ -54,9 +55,9 @@ public interface ValidatorWSInterface extends WSRdfInterface{
             @QueryParam(WsValidationConstants.FORMAT)String formatName,
             @Context HttpServletRequest httpServletRequest)throws VoidValidatorException;
     
-    public Response validate(@QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
-            @QueryParam(WsValidationConstants.TEXT) String text, 
-            @QueryParam(WsValidationConstants.URI) String uri, 
+    public Response validate(@QueryParam(WsValidationConstants.TEXT) String text, 
+            @QueryParam(WsValidationConstants.URI) String uri,
+            @QueryParam(WsValidationConstants.RDF_FORMAT) String rdfFormat, 
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException;

@@ -66,6 +66,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>uk.ac.manchester.cs.openphacts</groupId>
+            <artifactId>MetaData</artifactId>
+			<version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>

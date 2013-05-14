@@ -17,17 +17,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package uk.ac.manchester.cs.openphacts.validator;
+package uk.ac.manchester.cs.openphacts.valdator.server;
 
+import org.junit.BeforeClass;
+import uk.ac.manchester.cs.openphacts.valdator.metadata.ValidatorTest;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.openphacts.valdator.ws.ValidatorInterfaceToWS;
 
 /**
  *
  * @author Christian
  */
-public interface Validator {
-    String validateText(String text, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException;
+public class ValidatorServerTest extends ValidatorTest{
     
-    String validateUri(String uri, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException;
+    @BeforeClass
+    public static void setUpValidator() throws VoidValidatorException {
+        WsValidatorServer ws = new WsFrame(RdfFactory.getMemory());
+        validator = new ValidatorInterfaceToWS(ws);
+    }
 
 }

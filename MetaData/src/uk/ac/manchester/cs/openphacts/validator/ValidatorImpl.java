@@ -36,10 +36,23 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
  */
 public class ValidatorImpl implements Validator{
 
+    private final RdfInterface parent;
+    
+    public ValidatorImpl(){
+        parent = null;
+    }
+    
+    public ValidatorImpl(RdfInterface parent){
+        this.parent = parent;
+    }
+    
     @Override
     public String validateText(String text, String formatName, String specificationName, Boolean includeWarning) 
             throws VoidValidatorException {
         RdfReader rdf = RdfFactory.getMemory();
+        if (parent != null){
+            rdf.addOtherSource(parent);
+        }
         RDFFormat rdfFormat = RDFFormat.valueOf(formatName);
         Resource context = rdf.loadString(text, rdfFormat);
         MetaDataSpecification specifications = MetaDataSpecification.specificationByName(specificationName);
@@ -49,6 +62,9 @@ public class ValidatorImpl implements Validator{
     @Override
     public String validateUri(String Uri, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException {
         RdfReader rdf = RdfFactory.getMemory();
+        if (parent != null){
+            rdf.addOtherSource(parent);
+        }
         Resource context;
         if (formatName != null){
             RDFFormat rdfFormat = RDFFormat.valueOf(formatName);

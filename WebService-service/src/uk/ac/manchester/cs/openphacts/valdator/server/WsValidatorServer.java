@@ -749,17 +749,21 @@ public class WsValidatorServer implements HtmlWSInterface{
                 //both empty is ok nothing to show
                 return false;
             } else {
+                //no text but uri supplied format may be null
+            }
+        } else {
+            if (uri == null || uri.isEmpty()){
+                //text but no uri  so must check rdf format
                 if (format == null || format.isEmpty()){
                     sb.append("You must supply an ");
                     sb.append(WsValidationConstants.RDF_FORMAT);
                     sb.append(" parameter when using a ");
                     sb.append(WsValidationConstants.TEXT);
-                    sb.append("parameter.<br>\n");
+                    sb.append(" parameter.<br>\n");
                     return false; 
                 }
-            }
-        } else {
-            if (uri != null || !uri.isEmpty()){
+            } else {
+                //both oops
                 sb.append("Please clear either the ");
                 sb.append(WsValidationConstants.TEXT);
                 sb.append(" or the ");

@@ -48,9 +48,17 @@ public class WSRdfClient implements WSRdfInterface, WSValidatorInterface {
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         webResource = client.resource(serviceAddress);        
-
     }
 
+    public String homePage(){
+        //Make service call
+        String result = 
+                webResource.path(WsValidationConstants.VALIDATE_HOME)
+                .accept(MediaType.TEXT_HTML)
+                .get(new GenericType<String>() {});
+         return result;
+    }
+    
     @Override
     public List<StatementBean> getStatementList(String subjectString, String predicateString, String objectString,
             List<String> contextStrings) throws VoidValidatorException {        

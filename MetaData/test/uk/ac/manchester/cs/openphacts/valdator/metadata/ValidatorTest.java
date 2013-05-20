@@ -45,7 +45,7 @@ public abstract class ValidatorTest {
     protected static Validator validator;
     
     @BeforeClass
-    public static void setUpMetaDataSpecification() throws VoidValidatorException {
+    public static void setUpClass() throws VoidValidatorException {
        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
     }

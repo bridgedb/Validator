@@ -34,6 +34,7 @@ import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
  */
 public class RdfFactory {
    
+    public static RdfReader testFileReader = null;
     public static RdfReader validatorFileReader = null;
     public static final String VALIDATOR_RDF_DIRECTORY = "validatorRdfStore";
     public static final String DEFAULT_VALIDATOR_DIRECTORY = "../../rdf/validator";
@@ -68,7 +69,7 @@ public class RdfFactory {
     }
 
    public static RdfReader getImsFilebase() throws VoidValidatorException{
-        if (imsFileReader == null) {
+         if (imsFileReader == null) {
             ConfigReader.configureLogger();
             Properties properties = ConfigReader.getProperties();
             String directoryName = properties.getProperty(IMS_RDF_DIRECTORY);
@@ -80,20 +81,20 @@ public class RdfFactory {
         return imsFileReader;        
     }
 
-   public static RdfReader getTestFilebase() throws VoidValidatorException{
-        if (validatorFileReader == null) {
+    public static RdfReader getTestFilebase() throws VoidValidatorException{
+        if (testFileReader == null) {
             Properties properties = ConfigReader.getProperties();
             String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
-            validatorFileReader = getReader(directoryName, TEST);
+            testFileReader = getReader(directoryName, TEST);
         }
-        return validatorFileReader;        
+        return testFileReader;        
     }
 
     public static RdfReader getReader(String directoryName, boolean test) throws VoidValidatorException{
-        File directory = getDirectory(directoryName);
+         File directory = getDirectory(directoryName);
         if (test){
             directory = new File(directory, "test");
             directory.deleteOnExit();

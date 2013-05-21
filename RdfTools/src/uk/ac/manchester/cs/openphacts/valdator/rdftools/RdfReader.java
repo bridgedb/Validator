@@ -176,9 +176,12 @@ public class RdfReader implements RdfInterface{
     }
 
     private List<Statement> getLocalStatementList(Resource subjectResource, URI predicate, Value object, 
-            Resource... contexts) throws VoidValidatorException {
+           Resource... contexts) throws VoidValidatorException {
         List<Statement> results = this.getDirectOnlyStatementList(subjectResource, predicate, object, contexts);
         if (!results.isEmpty()){
+            return results;
+        }
+        if (subjectResource == null && predicate == null && object == null){
             return results;
         }
         results = this.getDirectOnlyStatementList(subjectResource, predicate, object);

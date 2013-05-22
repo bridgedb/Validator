@@ -21,11 +21,8 @@ package uk.ac.manchester.cs.openphacts.valdator.client;
 
 import org.junit.BeforeClass;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.ValidatorTest;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
 import uk.ac.manchester.cs.openphacts.valdator.ws.ValidatorInterfaceToWS;
 
 /**

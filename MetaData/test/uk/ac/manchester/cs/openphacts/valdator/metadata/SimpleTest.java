@@ -71,7 +71,7 @@ public class SimpleTest {
         File file = new File ("test-data/testSimple.ttl");
         minReader = RdfFactory.getMemory();
         minContext = minReader.loadFile(file);
-       MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
+        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
        specifications = MetaDataSpecification.specificationByName(ValidatorExampleConstants.SIMPLE_NAME);
     }

@@ -204,7 +204,6 @@ public class RdfReader implements RdfInterface{
         return fromOthers;
    }
      
-    @Override
     public void runSparqlQuery(String queryString, TupleQueryResultHandler handler) throws VoidValidatorException {
         runSparqlQuery(queryString, handler, true);
     }
@@ -488,6 +487,30 @@ public class RdfReader implements RdfInterface{
         List<Statement> results = this.getLocalStatementList(resource, null, null);
         results.addAll(this.getLocalStatementList(null, null, resource));
         return results;
+    }
+
+    @Override
+    public void add(Statement st, Resource... contexts) throws VoidValidatorException {
+        try {
+            RepositoryConnection connection = getConnection();
+            connection.setAutoCommit(false);
+            connection.add(st, contexts);
+        } catch (Exception ex) {
+            closeOnError();
+            throw new VoidValidatorException ("Error adding statement " + st, ex);
+        }
+   }
+
+    @Override
+    public void commit() throws VoidValidatorException {
+        try {
+            RepositoryConnection connection = getConnection();
+            connection.commit();
+            close();
+        } catch (Exception ex) {
+            closeOnError();
+            throw new VoidValidatorException ("Error committing ", ex);
+        }
     }
 
  

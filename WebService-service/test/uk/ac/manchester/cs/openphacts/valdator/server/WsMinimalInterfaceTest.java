@@ -23,7 +23,7 @@ package uk.ac.manchester.cs.openphacts.valdator.server;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfFactory;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfMinimalInterfaceTest;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
 
@@ -31,13 +31,12 @@ import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
  *
  * @author Christian
  */
-@Ignore
-public class WsInterfaceTest extends RdfInterfaceTest{
+public class WsMinimalInterfaceTest extends RdfMinimalInterfaceTest{
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
         WsValidatorServer ws = new WsFrame(RdfFactory.getMemory());
         instance  = new RdfInterfaceToWS(ws);
-        RdfInterfaceTest.setUpClass();
+        RdfMinimalInterfaceTest.setUpClass();
     }
     
 }

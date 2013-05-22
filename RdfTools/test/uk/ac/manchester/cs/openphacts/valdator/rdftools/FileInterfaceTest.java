@@ -25,11 +25,11 @@ import org.junit.BeforeClass;
  *
  * @author Christian
  */
-public class FileInterfaceTest extends RdfInterfaceTest{
+public class FileInterfaceTest extends RdfMinimalInterfaceTest{
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
         instance = RdfFactory.getTestFilebase();
-        RdfInterfaceTest.setUpClass();
+        RdfMinimalInterfaceTest.setUpClass();
     }
     
 }

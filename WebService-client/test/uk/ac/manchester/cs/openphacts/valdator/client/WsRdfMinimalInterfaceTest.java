@@ -21,7 +21,8 @@ package uk.ac.manchester.cs.openphacts.valdator.client;
 
 
 import org.junit.BeforeClass;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterfaceTest;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfMinimalInterface;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfMinimalInterfaceTest;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
@@ -30,13 +31,13 @@ import uk.ac.manchester.cs.openphacts.valdator.ws.RdfInterfaceToWS;
  *
  * @author Christian
  */
-public class WsInterfaceTest extends RdfInterfaceTest{
+public class WsRdfMinimalInterfaceTest extends RdfMinimalInterfaceTest{
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
         WSRdfClient client = new WSRdfClient("http://localhost:8080/Validator");
         instance  = new RdfInterfaceToWS(client);
         try {
-            RdfInterfaceTest.setUpClass();
+            RdfMinimalInterfaceTest.setUpClass();
         } catch (Exception ex){
             Reporter.println("********************************************************************************");
             Reporter.println("Unable to connect to server.");

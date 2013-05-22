@@ -46,6 +46,7 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.TupleQueryResultHandler;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
+import org.openrdf.repository.RepositoryException;
 import org.openrdf.rio.RDFFormat;
 
 /**
@@ -139,7 +140,7 @@ public class RdfHolder implements RdfInterface, Cloneable{
     }
 
     @Override
-    public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException {
+    public String runSparqlQuery(String query, TupleQueryResultFormat format) throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -149,12 +150,17 @@ public class RdfHolder implements RdfInterface, Cloneable{
     }
 
     @Override
-    public String runSparqlQuery(String query, TupleQueryResultFormat format) throws VoidValidatorException {
+    public void close() throws VoidValidatorException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void close() throws VoidValidatorException {
+    public void add(Statement st, Resource... contexts) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void commit() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

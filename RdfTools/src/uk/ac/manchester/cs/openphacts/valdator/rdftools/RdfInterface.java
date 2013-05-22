@@ -25,6 +25,7 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.TupleQueryResultHandler;
+import org.openrdf.repository.RepositoryException;
 
 /**
  *
@@ -35,8 +36,9 @@ public interface RdfInterface extends RdfMinimalInterface{
     public List<Statement> getDirectOnlyStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource...contexts) throws VoidValidatorException;
     
-    public void runSparqlQuery(String query, TupleQueryResultHandler handler) throws VoidValidatorException;
-
     public void close() throws VoidValidatorException;
+    
+    void add(Statement st, Resource... contexts) throws VoidValidatorException;
 
+    void commit() throws VoidValidatorException;
  }

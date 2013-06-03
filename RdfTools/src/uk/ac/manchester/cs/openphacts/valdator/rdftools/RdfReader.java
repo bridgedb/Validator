@@ -513,5 +513,16 @@ public class RdfReader implements RdfInterface{
         }
     }
 
- 
+    public void clear() throws VoidValidatorException{
+        try {
+            RepositoryConnection connection = getConnection();
+            connection.clear();
+            close();
+        } catch (Exception ex) {
+            closeOnError();
+            throw new VoidValidatorException ("Error clearing. ", ex);
+        }    
+    }
+    
+
 }

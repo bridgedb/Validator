@@ -13,7 +13,7 @@
         <jersey.version>1.10</jersey.version>
         <mysql.version>5.1.20</mysql.version>
         <junit.version>4.4</junit.version>
-        <sesame.version>2.6.4</sesame.version>
+        <sesame.version>2.7.1</sesame.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
         <owlapi-api.version>3.4</owlapi-api.version>
         <slf4j.version>1.6.4</slf4j.version>

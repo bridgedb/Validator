@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
   <name>OpenPHACTS Validator</name>
   
-  <properties>
+  <properties> <!-- It is highly recommended to keep these the same as BridgeDB -->
         <cxf.version>2.4.3</cxf.version>
         <hamcrest.version>1.2</hamcrest.version>
         <jersey.version>1.10</jersey.version>

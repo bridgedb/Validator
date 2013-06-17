@@ -333,6 +333,9 @@ public class RdfReader implements RdfInterface{
             if (!newSubjectContext.equals(subjectContext)){
                 throw new VoidValidatorException(newSubjectContext + " != " + subjectContext);
             }
+            if (!repositoryConnection.isOpen()){
+                repositoryConnection = getConnection();
+            }
             RepositoryResult<Statement> results = 
                     repositoryConnection.getStatements(subjectResource, predicate, object, EXCLUDE_INFERRED, subjectContext);
             return results.asList();

@@ -183,9 +183,9 @@ public class WsValidatorServer implements HtmlWSInterface{
                 (contextStrings != null && !contextStrings.isEmpty())){
             List<Statement> statements = getStatementListImplementation(subjectString, predicateString, objectString, contextStrings);
             appendStatements(sb, statements, httpServletRequest);
-        } else {
-            appendExampleButton(sb, WsValidationConstants.STATEMENT_LIST, httpServletRequest, 
-                    WsValidationConstants.SUBJECT, frame.getExampleResource());
+//        } else {
+//            appendExampleButton(sb, WsValidationConstants.STATEMENT_LIST, httpServletRequest, 
+//                    WsValidationConstants.SUBJECT, frame.getExampleResource());
         }
         frame.footerAndEnd(sb);
         if (logger.isDebugEnabled()){
@@ -228,9 +228,9 @@ public class WsValidatorServer implements HtmlWSInterface{
         if (resourceString!= null && !resourceString.isEmpty()){
             List<Statement> statements = this.getByResourceImplmentation(resourceString);
             appendStatements(sb, statements, httpServletRequest);
-        } else {
-            appendExampleButton(sb, WsValidationConstants.BY_RESOURCE, httpServletRequest, 
-                    WsValidationConstants.RESOURCE, frame.getExampleResource());
+//        } else {
+//            appendExampleButton(sb, WsValidationConstants.BY_RESOURCE, httpServletRequest, 
+//                    WsValidationConstants.RESOURCE, frame.getExampleResource());
         }
         frame.footerAndEnd(sb);
         if (logger.isDebugEnabled()){
@@ -280,9 +280,9 @@ public class WsValidatorServer implements HtmlWSInterface{
             contexts.add(context.stringValue());
             List<Statement> statements = getStatementListImplementation(null, null, null, contexts);
             appendStatements(sb, statements, httpServletRequest);
-        } else {
-            appendExampleButton(sb, WsValidationConstants.LOAD_URI, httpServletRequest, 
-                   WsValidationConstants.URI, frame.getExampleURI());
+//        } else {
+//            appendExampleButton(sb, WsValidationConstants.LOAD_URI, httpServletRequest, 
+//                   WsValidationConstants.URI, frame.getExampleURI());
         }
         frame.footerAndEnd(sb);
         if (logger.isDebugEnabled()){
@@ -330,10 +330,10 @@ public class WsValidatorServer implements HtmlWSInterface{
             logger.info("run Sparql Query");
             this.generateTextarea(sb, "Query Result", result);
             logger.info("generated text area");
-         } else {
-            appendExampleButton(sb, WsValidationConstants.SPARQL, httpServletRequest, 
-                    WsValidationConstants.FORMAT, ExampleConstants.EXAMPLE_OUTPUT_FORMAT,
-                    WsValidationConstants.QUERY, frame.getExampleQuery());
+//         } else {
+//            appendExampleButton(sb, WsValidationConstants.SPARQL, httpServletRequest, 
+//                    WsValidationConstants.FORMAT, ExampleConstants.EXAMPLE_OUTPUT_FORMAT,
+//                    WsValidationConstants.QUERY, frame.getExampleQuery());
          }
         frame.footerAndEnd(sb);
         logger.info("returning");
@@ -378,7 +378,7 @@ public class WsValidatorServer implements HtmlWSInterface{
         StringBuilder sb = frame.topAndSide("Validation Service", httpServletRequest);
         boolean validated = getAndShowValidationResult(sb, text, uri, rdfFormat, specification, includeWarning);
         formValidation(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest); 
-        if (!validated){
+/*        if (!validated){
             appendButton(sb, "URI example!", WsValidationConstants.VALIDATE, httpServletRequest, 
                     WsValidationConstants.URI, frame.getExampleURI(),
                     WsValidationConstants.SPECIFICATION, frame.getExampleSpecificationName());          
@@ -387,7 +387,7 @@ public class WsValidatorServer implements HtmlWSInterface{
                     WsValidationConstants.RDF_FORMAT,  RDFFormat.TURTLE.getName(), 
                     WsValidationConstants.SPECIFICATION, frame.getExampleSpecificationName());          
         }
-        frame.footerAndEnd(sb);
+ */       frame.footerAndEnd(sb);
         if (logger.isDebugEnabled()){
             logger.debug("validate returning");
         }

@@ -57,9 +57,6 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
             rdfInterface.close();
             Validator validator = new ValidatorImpl(rdfInterface);
             super.setUp(rdfInterface, validator, this);
-            MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
-                    ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
-             logger.info("Test Data added");  
         } catch (VoidValidatorException ex) {
             logger.error("Initisation of Validation Service failed!", ex);
         }
@@ -74,9 +71,6 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
     public WsFrame(RdfInterface rdfInterface) {
         super();
         try {
-            MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
-                   ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
-            logger.info("Test Data added");  
             Validator validator = new ValidatorImpl(rdfInterface);
             super.setUp(rdfInterface, validator, this);
         } catch (VoidValidatorException ex) {
@@ -258,7 +252,7 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
         sb.append("\n<div></body></html>");
     }
 
-    @Override
+/*    @Override
     public String getExampleResource() {
         return ExampleConstants.EXAMPLE_RESOURCE;
     }
@@ -297,6 +291,8 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
         + "    ops:hasHouseNumber \"23\";\n"
         + "    ops:hasWebsite <http://bbc.co.uk>.\n";
     }
+*/
+
 }
 
 

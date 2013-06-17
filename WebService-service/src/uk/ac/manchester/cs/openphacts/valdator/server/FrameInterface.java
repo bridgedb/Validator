@@ -37,15 +37,15 @@ public interface FrameInterface{
      */
     void addSideBarItem(StringBuilder sb, String page, String name, HttpServletRequest httpServletRequest);
 
-    String getExampleResource();
+    //String getExampleResource();
     
-    String getExampleURI();
+    //String getExampleURI();
     
-    String getExampleSpecificationName();
+    //String getExampleSpecificationName();
     
-    String getExampleQuery();
+    //String getExampleQuery();
 
-    String getExampleText();
+    //String getExampleText();
 }
 
 

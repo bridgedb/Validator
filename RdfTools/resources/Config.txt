@@ -117,3 +117,8 @@ opsgithub.password       askChrisian
 chemspiderftp.uri        ftp://ftp.rsc-us.org
 chemspiderftp.login      askRSC
 chemspiderftp.password   askRSC
+
+#MetaDataSpecification
+specification.simpleTest.file           simpleOntology.owl
+specification.simpleTest.description    A small sample ontology also used for Unit Test.
+specification.default                   simpleTest

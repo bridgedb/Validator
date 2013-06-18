@@ -19,7 +19,6 @@
 //
 package uk.ac.manchester.cs.openphacts.valdator.metadata;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -29,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
@@ -78,14 +75,16 @@ public class MetaDataSpecification {
 
     private static HashMap<String,MetaDataSpecification> register = null;
     private static HashMap<String,String> descriptions = null;
+    private static String defaultName; 
     
+    private static final String DEFAULT = "default";
     private static final String DESCRIPTION = "description";
     private static final String FILE = "file";
     private static final String SPECIFICATIONS_PREFIX = "specification.";
 
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(MetaDataSpecification.class);
     
-    private MetaDataSpecification(String fileName) throws VoidValidatorException{
+    /*private MetaDataSpecification(String fileName) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         File file = new File(fileName);
         try {
@@ -95,7 +94,7 @@ public class MetaDataSpecification {
         }
         init();
         description = "Read from " + fileName;
-    }
+    }*/
     
     private MetaDataSpecification(InputStream stream, String source) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
@@ -326,6 +325,9 @@ public class MetaDataSpecification {
     //Regitry methods
     private static void setUpRegistry() throws VoidValidatorException{
         if (register != null){
+            if (register.isEmpty()){
+                throw new VoidValidatorException("No specifiations loaded!");
+            }
             return;
         }
         Properties properties = ConfigReader.getProperties();
@@ -335,7 +337,13 @@ public class MetaDataSpecification {
         for (String key:keys){
             if (key.startsWith(SPECIFICATIONS_PREFIX)){
                 String[] parts = key.split("\\.");
-                if (parts.length == 3){
+                if (parts.length == 2){
+                    if (parts[1].equals(DEFAULT)){
+                        defaultName = properties.getProperty(key);
+                    } else {
+                        throw new VoidValidatorException ("Unexpected  " + SPECIFICATIONS_PREFIX +  " property." + key );                    
+                    }
+                } else if (parts.length == 3){
                     if (parts[2].equals(FILE)){
                         String fileName = properties.getProperty(key);
                         InputStream stream = ConfigReader.getInputStream(fileName);
@@ -345,6 +353,9 @@ public class MetaDataSpecification {
                             descriptions.remove(parts[1]);
                         }
                         register.put(parts[1], specification);
+                        if (defaultName == null){
+                           defaultName = parts[1];
+                        }
                     } else if (parts[2].equals(DESCRIPTION)){
                         if (register.containsKey(parts[1])){
                             MetaDataSpecification specification = register.get(parts[1]);
@@ -356,13 +367,21 @@ public class MetaDataSpecification {
                         throw new VoidValidatorException ("Unexpected  " + SPECIFICATIONS_PREFIX +  " property." + key );                    
                     }
                 } else {
-                    throw new VoidValidatorException ("Unexpected " + SPECIFICATIONS_PREFIX +  " property. It should be three dot seperated parts." + key );
+                    throw new VoidValidatorException ("Unexpected " + SPECIFICATIONS_PREFIX 
+                            +  " property. It should be two or three dot seperated parts. " + key );
                 }
             }
         }
         if (!descriptions.isEmpty()){
             throw new VoidValidatorException ("Found " + SPECIFICATIONS_PREFIX + "*." + DESCRIPTION + 
                     " property(ies). " + descriptions + " But no loading instruction.");
+        }
+        if (register.isEmpty()){
+            throw new VoidValidatorException("No specifiations loaded!");
+        }
+        MetaDataSpecification defaultSpecs = specificationByName(null);
+        if (defaultSpecs == null){
+            throw new VoidValidatorException("Default specifiation " + defaultName + " not found.");                        
         }
     }
     
@@ -375,14 +394,23 @@ public class MetaDataSpecification {
         register.put(specificationName, specification);
     } 
     
+    public static String getDefaultName() throws VoidValidatorException{
+        setUpRegistry();
+        return defaultName;
+    }
+    
     public static MetaDataSpecification specificationByName(String name) throws VoidValidatorException{
-       setUpRegistry();
-       MetaDataSpecification result = register.get(name);
-       if (result == null){
-           throw new VoidValidatorException("No specifications known for " + name);
-       }
-       return result;
-       
+        setUpRegistry();
+        MetaDataSpecification result;
+        if (name == null || name.isEmpty()){
+            result = register.get(defaultName);
+        } else {
+            result = register.get(name);
+        }
+        if (result == null){
+            throw new VoidValidatorException("No specifications known for " + name);
+        }
+        return result;
    }
     
    public static Set<String> getSpecificationNames() throws VoidValidatorException{

@@ -570,6 +570,12 @@ public class WsValidatorServer implements HtmlWSInterface{
     
 //Form parts    
     private void generateSpecificationsSelector(StringBuilder sb, String specification) throws VoidValidatorException {
+        String selected;
+        if (specification != null){
+            selected = specification;
+        } else {
+            selected = MetaDataSpecification.getDefaultName();
+        }
 		Set<String> names = MetaDataSpecification.getSpecificationNames();
         sb.append("<p>");
     	sb.append(WsValidationConstants.SPECIFICATION);
@@ -577,13 +583,10 @@ public class WsValidatorServer implements HtmlWSInterface{
     	sb.append(WsValidationConstants.SPECIFICATION);
     	sb.append("\" onchange=\"populateData(this)\">");
         int maxDescription = 0;
-        if (!names.contains(specification)){
-            sb.append("<option SELECTED value=\"\">Please Select</option>");
-        }
 		for (String name : names) {
 			sb.append("<option value=\"");
 			sb.append(name);
-            if (name.equals(specification)){
+            if (name.equals(selected)){
                 sb.append("\" SELECTED >");                
             } else {
                 sb.append("\">");
@@ -606,8 +609,8 @@ public class WsValidatorServer implements HtmlWSInterface{
         sb.append("\" cols=\"");
         sb.append(DESCRIPTION_WIDTH);      
         sb.append("\" disabled=\"disabled\"/>");
-        if (names.contains(specification)){
-           MetaDataSpecification specs = MetaDataSpecification.specificationByName(specification); 
+        if (names.contains(selected)){
+           MetaDataSpecification specs = MetaDataSpecification.specificationByName(selected); 
             sb.append(specs.getDescription());
         }
         sb.append("</textarea>\n");
@@ -772,17 +775,12 @@ public class WsValidatorServer implements HtmlWSInterface{
                 return false;
             }
         }
-        if (specification == null || specification.isEmpty()){
-            sb.append(WsValidationConstants.SPECIFICATION);
-            sb.append(" parameter missing!<br> Please select one from the dropdown list.<br>");
-            return false;
-        }
         if (!ok){
             return false;
         }
         String results;
         if (text == null || text.isEmpty()){
-           results =  validator.validateUri(uri, format, specification, includeWarnings);
+            results =  validator.validateUri(uri, format, specification, includeWarnings);
         } else {
             results =  validator.validateText(text, format, specification, includeWarnings);
         }

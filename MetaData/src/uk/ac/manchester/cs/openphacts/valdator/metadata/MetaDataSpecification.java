@@ -96,6 +96,7 @@ public class MetaDataSpecification {
         description = "Read from " + fileName;
     }*/
     
+    
     private MetaDataSpecification(InputStream stream, String source) throws VoidValidatorException{
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         try {
@@ -118,6 +119,7 @@ public class MetaDataSpecification {
  //       linkingPredicates = new HashSet<URI>();
         loadSpecification(requirements);        
     }
+    
     //private Set<URI>
     public ResourceMetaData getResourceMetaData(Resource type){
         return resourcesByType.get(type);
@@ -388,10 +390,15 @@ public class MetaDataSpecification {
     public static void LoadSpecification (String fileName, String specificationName, String description) 
             throws VoidValidatorException{
         setUpRegistry();
-        InputStream stream = ConfigReader.getInputStream(fileName);
-        MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
-        specification.setDescription(description);
-        register.put(specificationName, specification);
+        MetaDataSpecification existing = register.get(specificationName);
+        if (existing == null){
+            InputStream stream = ConfigReader.getInputStream(fileName);
+            MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
+            specification.setDescription(description);
+            register.put(specificationName, specification);
+        } else if (existing.description == null){
+            existing.setDescription(description);
+        }
     } 
     
     public static String getDefaultName() throws VoidValidatorException{

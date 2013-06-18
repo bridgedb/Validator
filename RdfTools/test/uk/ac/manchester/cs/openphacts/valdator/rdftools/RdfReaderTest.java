@@ -21,6 +21,8 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 import org.apache.log4j.ConsoleAppender;
@@ -33,6 +35,7 @@ import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
+import org.openrdf.rio.RDFFormat;
 
 /**
  *
@@ -52,6 +55,23 @@ public class RdfReaderTest {
         RdfReader instance = RdfFactory.getMemory();
         Resource expectedContext = new URIImpl(inputFile.toURI().toString());
         Resource context = instance.loadFile(inputFile);
+        assertEquals(expectedContext, context);
+        List<Statement> statements = instance.getStatementList(null, null, null, context);
+        assertEquals(10, statements.size());
+        URI person = new URIImpl(ExampleConstants.EXAMPLE_RESOURCE);
+        statements = instance.getStatementList(person);
+        //7 statements as subject + one as object
+        assertEquals(8, statements.size());
+    }
+
+    @Test
+    public void testLoadInputStream() throws Exception {
+        Reporter.println("loadInputStrea,");
+        File aFile = new File("test-data/test.ttl");
+        RdfReader instance = RdfFactory.getMemory();
+        Resource expectedContext = new URIImpl(RdfReader.DEFAULT_BASE_URI);
+        InputStream stream = new FileInputStream(aFile);
+        Resource context = instance.loadInputStream(stream, RDFFormat.TURTLE);
         assertEquals(expectedContext, context);
         List<Statement> statements = instance.getStatementList(null, null, null, context);
         assertEquals(10, statements.size());
@@ -208,4 +228,5 @@ public class RdfReaderTest {
         assertEquals(7, statements.size()); 
     }
 
+    
 }

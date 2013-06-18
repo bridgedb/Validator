@@ -32,11 +32,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.log4j.Level;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
+import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -127,6 +127,10 @@ public class RdfReader implements RdfInterface{
         return loadInputStream(stream, address, format);
     }
    
+    public URI loadInputStream(InputStream stream, RDFFormat rdfFormat) throws VoidValidatorException {
+        return loadInputStream(stream, DEFAULT_BASE_URI, rdfFormat);
+    }
+    
     public void addOtherSource(RdfInterface other){
         others.add(other);
     }
@@ -526,6 +530,7 @@ public class RdfReader implements RdfInterface{
             throw new VoidValidatorException ("Error clearing. ", ex);
         }    
     }
-    
+
+   
 
 }

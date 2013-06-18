@@ -20,6 +20,8 @@
 package uk.ac.manchester.cs.openphacts.valdator.metadata;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -79,7 +81,16 @@ public abstract class ValidatorTest {
         TestUtils.checkURI(uri);
         String result = validator.validateUri(uri, RDFFormat.TURTLE.getName(), 
                 ValidatorExampleConstants.SIMPLE_NAME, Boolean.TRUE);
-        assertThat(result,  endsWith(RdfValidator.SUCCESS)); 
-        
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));    
     }
+    
+    @Test
+    public void testInputStreamValidate() throws VoidValidatorException, FileNotFoundException, IOException, URISyntaxException {
+        Reporter.println("InputStreamValidate");
+        File file = new File("test-data/remoteTest.ttl");
+        FileInputStream stream = new FileInputStream(file); 
+        String result = validator.validateInputStream(stream, RDFFormat.TURTLE.getName(), 
+                ValidatorExampleConstants.SIMPLE_NAME, Boolean.TRUE);
+        assertThat(result,  endsWith(RdfValidator.SUCCESS));    
+    }    
 }

@@ -19,6 +19,7 @@
 //
 package uk.ac.manchester.cs.openphacts.validator;
 
+import java.io.InputStream;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 
 /**
@@ -30,4 +31,5 @@ public interface Validator {
     
     String validateUri(String uri, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException;
 
+    String validateInputStream(InputStream stream, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException;
 }

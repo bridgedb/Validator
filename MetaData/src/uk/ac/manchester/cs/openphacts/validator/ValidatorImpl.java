@@ -19,6 +19,7 @@
 //
 package uk.ac.manchester.cs.openphacts.validator;
 
+import java.io.InputStream;
 import org.openrdf.model.Resource;
 import org.openrdf.rio.RDFFormat;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
@@ -71,6 +72,21 @@ public class ValidatorImpl implements Validator{
         }
         MetaDataSpecification specifications = MetaDataSpecification.specificationByName(specificationName);
         return RdfValidator.validate(rdf, context, specifications, includeWarning);
+    }
+
+    @Override
+    public String validateInputStream(InputStream stream, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException {
+        RdfReader rdf = RdfFactory.getMemory();
+        if (parent != null){
+            rdf.addOtherSource(parent);
+        }
+        Resource context;
+        RDFFormat rdfFormat = RDFFormat.valueOf(formatName);
+        context = rdf.loadInputStream(stream, rdfFormat);
+        MetaDataSpecification specifications = MetaDataSpecification.specificationByName(specificationName);
+        String rawValidation = RdfValidator.validate(rdf, context, specifications, includeWarning);
+        rawValidation = rawValidation.replaceAll(RdfReader.DEFAULT_BASE_URI, "");
+        return rawValidation;
     }
 
      

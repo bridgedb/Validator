@@ -19,9 +19,6 @@
 //
 package uk.ac.manchester.cs.openphacts.validator;
 
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openrdf.model.Resource;
 import org.openrdf.rio.RDFFormat;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;

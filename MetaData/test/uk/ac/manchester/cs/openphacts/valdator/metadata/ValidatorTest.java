@@ -87,7 +87,7 @@ public abstract class ValidatorTest {
     @Test
     public void testInputStreamValidate() throws VoidValidatorException, FileNotFoundException, IOException, URISyntaxException {
         Reporter.println("InputStreamValidate");
-        File file = new File("test-data/remoteTest.ttl");
+        File file = new File("../MetaData/test-data/remoteTest.ttl");
         FileInputStream stream = new FileInputStream(file); 
         String result = validator.validateInputStream(stream, RDFFormat.TURTLE.getName(), 
                 ValidatorExampleConstants.SIMPLE_NAME, Boolean.TRUE);

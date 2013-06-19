@@ -4,6 +4,7 @@
  */
 package uk.ac.manchester.cs.openphacts.valdator.ws;
 
+import java.io.InputStream;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.Validator;
 
@@ -30,6 +31,11 @@ public class ValidatorInterfaceToWS implements Validator{
     @Override
     public String validateUri(String uri, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException {
         return wsInterface.validate(NO_TEXT, uri, formatName, specificationName, includeWarning);
+    }
+
+    @Override
+    public String validateInputStream(InputStream stream, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException {
+        return wsInterface.validate(stream, formatName, specificationName, includeWarning);
     }
     
 }

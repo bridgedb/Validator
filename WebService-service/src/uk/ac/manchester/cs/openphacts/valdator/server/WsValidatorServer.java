@@ -19,13 +19,20 @@
 //
 package uk.ac.manchester.cs.openphacts.valdator.server;
 
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
+import java.io.File;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -359,6 +366,16 @@ public class WsValidatorServer implements HtmlWSInterface{
         return this.validateImplmentation(text, uri, rdfFormat, specification, includeWarning);
     }
 
+    @POST
+	@Path("/validateTurtle")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public String validateTurtle(
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail) throws VoidValidatorException {  //ToDo work out while this paramters is always null
+		return this.validate(uploadedInputStream, RDFFormat.TURTLE.getName(), null, Boolean.TRUE);
+	}  
+     
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)
@@ -412,6 +429,7 @@ public class WsValidatorServer implements HtmlWSInterface{
         return this.validate(text, uri, rdfFormat, specification, includeWarning, httpServletRequest);
     }
     
+ 
 // Implementations
     private List<Statement> getStatementListImplementation(String subjectString, String predicateString, String objectString, 
             List<String> contextStrings) throws VoidValidatorException {
@@ -472,6 +490,14 @@ public class WsValidatorServer implements HtmlWSInterface{
         return result;
     }
     
+    
+    @Override
+    public String validate(InputStream stream, String rdfFormat, String specification, Boolean includeWarning) 
+            throws VoidValidatorException {
+        checkErrorState();
+        return validator.validateInputStream(stream, rdfFormat, specification, includeWarning);
+    }
+
     private String validateImplmentation(String text, String uri, String rdfFormat, String specification, 
             Boolean includeWarning) throws VoidValidatorException{
         if (text == null || text.isEmpty()){

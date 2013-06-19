@@ -4,6 +4,7 @@
  */
 package uk.ac.manchester.cs.openphacts.valdator.ws;
 
+import java.io.InputStream;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 
 /**
@@ -13,6 +14,10 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 public interface WSValidatorInterface {
     
     public String validate(String text, String uri, String rdfFormat, String specification, Boolean includeWarning)
-            throws VoidValidatorException;       
+            throws VoidValidatorException;      
+    
+    public String validate(InputStream stream, String rdfFormat, String specification, Boolean includeWarning)
+            throws VoidValidatorException;   
+    
 
 }

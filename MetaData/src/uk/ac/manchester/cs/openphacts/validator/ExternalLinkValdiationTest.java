@@ -96,16 +96,24 @@ public class ExternalLinkValdiationTest {
     public static void main(String[] args) throws VoidValidatorException{
        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
-       validateURISimple("https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl", true);
-       validateFileSimple("test-data/remoteTest2.ttl", true);
-    //   validateURIOps("https://github.com/openphacts/ops-platform-setup/blob/master/void/chebi/chebi93_void.ttl");
-       //validateURI("ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBL-RDF/15.5/void.ttl.gz");
-       //validateURIOps("ftp://ftp.rsc-us.org/OPS/20130314/void_2013-03-14.ttl");
-       // validateURIOps("ftp://ftp.rsc-us.org/OPS/20130314/CHEMBL/LINKSET_EXACT_CHEMBL20130314.ttl.gz");
-      //  checkLinkset("ftp://ftp.rsc-us.org/OPS/20130314/DRUGBANK/LINKSET_EXACT_DRUGBANK20130314.ttl.gz");
-      //  checkLinkset("ftp://ftp.rsc-us.org/OPS/20130314/MESH/LINKSET_EXACT_MESH20130314.ttl.gz");
-      //  checkLinkset("ftp://ftp.rsc-us.org/OPS/20130314/PDB/LINKSET_EXACT_PDB20130314.ttl.gz");
-      //  checkLinkset("ftp://ftp.rsc-us.org/OPS/20130314/PDB/LINKSET_RELATED_PDB20130314.ttl.gz");
-   }
+       //validateURISimple("https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl", true);
+       //validateFileSimple("test-data/remoteTest2.ttl", true);
+ /*      validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_ensembl.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_flybase.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_geneid.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_ipi.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_mgi.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_omim.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_pdb.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_refseq.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_rgd.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_sgd.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_unigene.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_wormbase.ttl.gz", true);
+       validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_zfin.ttl.gz", true);
+       validateURIOps("", true);
+*/    
+    
+    }
 
 }

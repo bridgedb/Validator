@@ -27,6 +27,7 @@ public class WsValidationConstants {
     
     public static final String BY_RESOURCE = "byResource";    
     public static final String CONTEXT = "context";
+    public static final String FILE = "File";
     public static final String FORMAT = "format";
     public static final String INCLUDE_WARNINGS = "includeWarnings";
     public static final String LOAD_URI = "loadUri";
@@ -40,6 +41,7 @@ public class WsValidationConstants {
     public static final String STATEMENT_LIST = "statementList";
     public static final String SUBJECT = "subject";
     public static final String SPARQL = "sparql";    
+    public static final String TURTLE = "Turtle";
     public static final String URI = "uri";
     public static final String VALIDATE = "validate";
     public static final String VALIDATE_HOME = "validate-home";

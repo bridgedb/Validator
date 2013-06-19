@@ -104,6 +104,8 @@ public class WsValidatorServer implements HtmlWSInterface{
         sb.append("<div class=\"menugroup\">OPS Validation Service</div>");
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE_HOME, "Home", httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE,WsValidationConstants.VALIDATE, httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.VALIDATE + WsValidationConstants.FILE, 
+                WsValidationConstants.VALIDATE + WsValidationConstants.FILE, httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.SPARQL, WsValidationConstants.SPARQL, httpServletRequest);
@@ -367,7 +369,8 @@ public class WsValidatorServer implements HtmlWSInterface{
     }
 
     @POST
-	@Path("/validateTurtle")
+	@Path(WsValidationConstants.VALIDATE + WsValidationConstants.TURTLE)
+    @Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public String validateTurtle(
 			@FormDataParam("file") InputStream uploadedInputStream,
@@ -375,7 +378,57 @@ public class WsValidatorServer implements HtmlWSInterface{
 		return this.validate(uploadedInputStream, RDFFormat.TURTLE.getName(), null, Boolean.TRUE);
 	}  
      
+    @POST
+	@Path(WsValidationConstants.VALIDATE + WsValidationConstants.TURTLE)
+    @Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response validateTurtleHtml(
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail, //ToDo work out while this paramters is always null
+            @Context HttpServletRequest httpServletRequest) throws VoidValidatorException {  
+        String validationResult = validate(uploadedInputStream, RDFFormat.TURTLE.getName(), null, Boolean.TRUE);
+        return validateFile(validationResult, httpServletRequest);
+ 	}  
+ 
+    @GET
+	@Path(WsValidationConstants.VALIDATE + WsValidationConstants.TURTLE)
+    @Produces(MediaType.TEXT_HTML)
+	public Response validateTurtleHtml(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException {  
+         return validateFile(null, httpServletRequest);
+ 	}  
 
+    @GET
+	@Path(WsValidationConstants.VALIDATE + WsValidationConstants.FILE)
+    @Produces(MediaType.TEXT_HTML)
+	public Response validateFile(String validationResult, @Context HttpServletRequest httpServletRequest) 
+            throws VoidValidatorException {  
+        StringBuilder sb = frame.topAndSide("Validation Service", httpServletRequest);
+        if (validationResult == null || validationResult.isEmpty()){
+           sb.append("<h1>Validate A Turtle File</h1>\n");
+           sb.append("<h4>Sorry other file formats currently not available. Ask if required.</h4>\n");
+        } else {
+            if (validationResult.endsWith(RdfValidator.SUCCESS)){
+                sb.append("<h1>Turtle file Validation successfull!</h1>\n");
+            } else {
+                sb.append("<h1>Errors found during Turtle file Validation</h1>\n");
+            }
+    		this.generateTextarea(sb, "validation result", validationResult);
+            sb.append("<h1>Validate another Turtle File</h1>\n");
+        }
+        sb.append("<form action=\"");
+            sb.append(httpServletRequest.getContextPath());
+            sb.append("/");
+            sb.append(WsValidationConstants.VALIDATE);
+            sb.append(WsValidationConstants.TURTLE);
+            sb.append("\" method=\"post\" enctype=\"multipart/form-data\">\n");
+        sb.append("<p>Select a file : <input type=\"file\" name=\"file\" size=\"45\" /></p>\n");
+        sb.append("<input type=\"submit\" value=\"Validate\" />");
+        sb.append("</form>");
+
+        frame.footerAndEnd(sb);        
+        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
+	}  
+    
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path(WsValidationConstants.VALIDATE)

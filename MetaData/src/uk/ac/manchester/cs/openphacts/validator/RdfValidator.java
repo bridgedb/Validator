@@ -124,7 +124,7 @@ public class RdfValidator {
             builder.append("Unable to validate ");
             builder.append(resource);
             builder.append(" as has no known type. \n");
-            error = true;
+            error = false;
         }
         return error;
     }

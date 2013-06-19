@@ -25,6 +25,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
+import java.io.InputStream;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -156,6 +157,11 @@ public class WSRdfClient implements WSRdfInterface, WSValidatorInterface {
                 .accept(MediaType.APPLICATION_XML_TYPE)
                 .get(new GenericType<String>() {});
          return result;
+    }
+
+    @Override
+    public String validate(InputStream stream, String rdfFormat, String specification, Boolean includeWarning) throws VoidValidatorException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

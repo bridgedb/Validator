@@ -25,7 +25,9 @@ import java.util.Set;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
+import org.openrdf.model.Value;
 import uk.ac.manchester.cs.openphacts.valdator.constants.RdfConstants;
+import uk.ac.manchester.cs.openphacts.valdator.constants.VoidConstants;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.ResourceMetaData;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfInterface;
@@ -93,6 +95,18 @@ public class RdfValidator {
             includeWarning = true;
         }
         boolean error = false;
+        List<Statement> inDataSetStatements = reader.getDirectOnlyStatementList(null, VoidConstants.IN_DATASET, null, context);
+        for (Statement inDataSetStatement:inDataSetStatements){
+            Value object = inDataSetStatement.getObject();
+            if (object instanceof Resource){
+                resourcesToCheck.add((Resource) object);
+            } else {
+                builder.append("ERROR none resource obkect for predicate ");
+                builder.append(VoidConstants.IN_DATASET);
+                builder.append("\n\tIN: ");
+                builder.append(inDataSetStatement);
+            }
+        }
         while (!resourcesToCheck.isEmpty()){
             for (Resource resource:resourcesToCheck){
                  if (appendValidate(resource, includeWarning)){
@@ -113,7 +127,7 @@ public class RdfValidator {
 
     private boolean appendValidate(Resource resource, boolean includeWarning) throws VoidValidatorException{
         this.resourcesChecked.add(resource);
-        List<Statement> typeStatements = reader.getDirectOnlyStatementList(resource, RdfConstants.TYPE_URI, null, context);
+        List<Statement> typeStatements = reader.getStatementList(resource, RdfConstants.TYPE_URI, null, context);
         boolean error = false;
         boolean unknownType = true;
         for (Statement typeStatement:typeStatements){

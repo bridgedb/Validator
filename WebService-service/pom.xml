@@ -10,7 +10,7 @@
   <groupId>uk.ac.manchester.cs.openphacts</groupId>
   <artifactId>WebService-service</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>OpenPHACTS WebService Service</name>
+  <name>OpenPHACTS Validator WebService Service</name>
   <packaging>jar</packaging>
    <!--url>http://maven.apache.org</ur-->
   <properties>

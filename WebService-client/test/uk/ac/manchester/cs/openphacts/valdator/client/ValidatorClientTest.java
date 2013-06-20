@@ -19,7 +19,11 @@
 //
 package uk.ac.manchester.cs.openphacts.valdator.client;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import uk.ac.manchester.cs.openphacts.valdator.metadata.ValidatorTest;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
@@ -48,4 +52,9 @@ public class ValidatorClientTest extends ValidatorTest{
         validator  = new ValidatorInterfaceToWS(client);
     }
 
+    @Test
+    @Override
+    public void testInputStreamValidate() throws VoidValidatorException, FileNotFoundException, IOException, URISyntaxException {
+        //not supported in client.
+    }
 }

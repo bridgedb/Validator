@@ -537,7 +537,6 @@ public class WsValidatorServer implements HtmlWSInterface{
     }
     
     
-    @Override
     public String validate(InputStream stream, String rdfFormat, String specification, Boolean includeWarning) 
             throws VoidValidatorException {
         checkErrorState();

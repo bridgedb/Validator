@@ -159,9 +159,4 @@ public class WSRdfClient implements WSRdfInterface, WSValidatorInterface {
          return result;
     }
 
-    @Override
-    public String validate(InputStream stream, String rdfFormat, String specification, Boolean includeWarning) throws VoidValidatorException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
 }

@@ -16,8 +16,4 @@ public interface WSValidatorInterface {
     public String validate(String text, String uri, String rdfFormat, String specification, Boolean includeWarning)
             throws VoidValidatorException;      
     
-    public String validate(InputStream stream, String rdfFormat, String specification, Boolean includeWarning)
-            throws VoidValidatorException;   
-    
-
 }

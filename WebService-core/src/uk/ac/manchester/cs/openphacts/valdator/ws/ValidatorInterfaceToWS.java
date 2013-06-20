@@ -35,7 +35,7 @@ public class ValidatorInterfaceToWS implements Validator{
 
     @Override
     public String validateInputStream(InputStream stream, String formatName, String specificationName, Boolean includeWarning) throws VoidValidatorException {
-        return wsInterface.validate(stream, formatName, specificationName, includeWarning);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

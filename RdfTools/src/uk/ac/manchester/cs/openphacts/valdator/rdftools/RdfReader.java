@@ -36,7 +36,6 @@ import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
-import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
@@ -70,20 +69,16 @@ public class RdfReader implements RdfInterface{
     private static final boolean EXCLUDE_INFERRED =false;
     
     private final Repository repository;
-    private final boolean fileBased;
+    public final boolean fileBased;
     private RepositoryConnection connection = null;
     private final Set<URI> parentPredicates; //currently 1 hard coded value.
     private final Set<Resource> loadedContexts;
     private final Set<RdfInterface> others; 
+    private final boolean EXPECT_CORRECT = true;
     
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(RdfReader.class);
 
-    public static RdfReader factory(Repository repository, boolean fileBased) throws VoidValidatorException{
-        RdfReader instance = new RdfReader(repository, fileBased);
-        return instance;
-    } 
-   
-    private RdfReader(Repository repository, boolean fileBased) throws VoidValidatorException{
+    public RdfReader(Repository repository, boolean fileBased) throws VoidValidatorException{
         this.repository = repository; 
         this.fileBased = fileBased;
         if (!fileBased){
@@ -106,38 +101,50 @@ public class RdfReader implements RdfInterface{
     public URI loadFile(File inputFile, RDFFormat format) throws VoidValidatorException{
         try {
             InputStream stream = new FileInputStream(inputFile);
-            return loadInputStream(stream, inputFile.toURI().toString(), format);
+            return loadInputStream(stream, inputFile.toURI().toString(), format, EXPECT_CORRECT);
         } catch (FileNotFoundException ex) {
             throw new VoidValidatorException("Unable to find file. " + inputFile.getAbsolutePath(), ex);
         }
     }
    
     public Resource loadURI(String address) throws VoidValidatorException {
-        return loadURI(address, null);
+        return loadURI(address, null, EXPECT_CORRECT);        
+    }
+    
+    private Resource loadURI(String address, boolean expectCorrect) throws VoidValidatorException {
+        return loadURI(address, null, expectCorrect);
     }
     
     @Override
     public URI loadURI(String address, RDFFormat format) throws VoidValidatorException {
+        return loadURI(address, format, EXPECT_CORRECT);
+    }
+    
+    public URI loadURI(String address, RDFFormat format, boolean expectCorrect) throws VoidValidatorException {
         if (address.startsWith("file")){
             File file = new File(address);
             return loadFile(file);
         }
         UrlReader urlReader = new UrlReader(address);
         InputStream stream = urlReader.getInputStream();
-        return loadInputStream(stream, address, format);
+        return loadInputStream(stream, address, format, expectCorrect);
     }
    
     public URI loadInputStream(InputStream stream, RDFFormat rdfFormat) throws VoidValidatorException {
-        return loadInputStream(stream, DEFAULT_BASE_URI, rdfFormat);
+        return loadInputStream(stream, rdfFormat,  EXPECT_CORRECT);
+    }
+    
+    private URI loadInputStream(InputStream stream, RDFFormat rdfFormat, boolean expectCorrect) throws VoidValidatorException {
+        return loadInputStream(stream, DEFAULT_BASE_URI, rdfFormat, expectCorrect);
     }
     
     public void addOtherSource(RdfInterface other){
         others.add(other);
     }
     
-    private URI loadInputStream(InputStream stream, String address, RDFFormat format) throws VoidValidatorException{
+    private URI loadInputStream(InputStream stream, String address, RDFFormat format, boolean expectCorrect) throws VoidValidatorException{
+        URI context = new URIImpl(address);
         try {
-            URI context = new URIImpl(address);
             loadedContexts.add(context);
             RepositoryConnection connection = getConnection();
             connection.setAutoCommit(false);
@@ -150,7 +157,11 @@ public class RdfReader implements RdfInterface{
             return context;
         } catch (Exception ex) {
             closeOnError();
-            throw new VoidValidatorException ("Error parsing RDf file ", ex);
+            if (expectCorrect){
+                throw new VoidValidatorException ("Error parsing RDf file ", ex);
+            } else {
+                return context;
+            }
         }
     }
 
@@ -159,7 +170,7 @@ public class RdfReader implements RdfInterface{
         if (rdfFormat == null){
             throw new VoidValidatorException("You must supply an rdfFormat");
         }
-        return loadInputStream(is, DEFAULT_BASE_URI, rdfFormat);
+        return loadInputStream(is, DEFAULT_BASE_URI, rdfFormat, EXPECT_CORRECT);
     }
     
     @Override
@@ -326,12 +337,14 @@ public class RdfReader implements RdfInterface{
             } catch (RepositoryException ex) {
                 throw new VoidValidatorException("Unable to check source " + subjectContext + " is loaded. ", ex);
             }
+            
             Resource newSubjectContext;
             try{
-                newSubjectContext = loadURI(subjectContext.toString());
+                newSubjectContext = loadURI(subjectContext.toString(), false);
                 //ystem.out.println("Loaded " + subjectContext);                
             } catch (Exception ex){
-                //ystem.out.println("External load of " + subjectContext + " failed. quess it wasn't a URL (locator) after all");
+                loadedContexts.add(subjectContext);
+                logger.info("External load of " + subjectContext + " failed. quess it wasn't a URL (locator) after all");
                 return new ArrayList<Statement>();
             }
             if (!newSubjectContext.equals(subjectContext)){
@@ -373,6 +386,11 @@ public class RdfReader implements RdfInterface{
             if (fileBased){
                 try {
                     repository.initialize();
+                    try{
+                        int here = 1/0;
+                    } catch (Exception ex){
+                        new VoidValidatorException("Here!", ex);
+                    }
                 } catch (Exception ex) {
                     throw new VoidValidatorException ("Error parsing RDf file ", ex);
                 }       
@@ -403,20 +421,23 @@ public class RdfReader implements RdfInterface{
             if (connection != null){
                 if (connection.isOpen()){
                     connection.close();
-                    if (fileBased){
-                        try {
-                            repository.shutDown();
-                        } catch (Exception ex) {
-                            throw new VoidValidatorException ("Error parsing RDf file ", ex);
-                        }       
-                    }
                     connection = null;
                  }
             }
         } catch (Exception ex) {
             throw new VoidValidatorException ("Error shutting down connection", ex);
         }        
-    }
+        if (fileBased){
+            try {
+                repository.shutDown();
+            } catch (Exception ex) {
+                throw new VoidValidatorException ("Error shutting down repository ", ex);
+            }       
+        }
+        for (RdfInterface other:others){
+            other.close();
+        }
+   }
 
     private void closeOnError() {
         try {

@@ -51,7 +51,7 @@ public class RdfFactory {
     
     public static RdfReader getMemory() throws VoidValidatorException{
         Repository repository = new SailRepository(new MemoryStore());
-        RdfReader rdfReader = RdfReader.factory(repository, MEMORY_BASED);
+        RdfReader rdfReader = new RdfReader(repository, MEMORY_BASED);
         return rdfReader;
     } 
     
@@ -93,7 +93,7 @@ public class RdfFactory {
         return testFileReader;        
     }
 
-    public static RdfReader getReader(String directoryName, boolean test) throws VoidValidatorException{
+    private static RdfReader getReader(String directoryName, boolean test) throws VoidValidatorException{
          File directory = getDirectory(directoryName);
         if (test){
             directory = new File(directory, "test");
@@ -113,7 +113,7 @@ public class RdfFactory {
             ex.printStackTrace();
             int error = 1/0;
       }*/
-        RdfReader reader = RdfReader.factory(repository, FILE_BASED);
+        RdfReader reader = new RdfReader(repository, FILE_BASED);
         logger.info("RDF store setup at: " + directory);
         return reader;        
     }

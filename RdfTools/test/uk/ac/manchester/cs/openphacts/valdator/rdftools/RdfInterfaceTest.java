@@ -24,7 +24,12 @@ public class RdfInterfaceTest {
     public void testAdd() throws Exception {
         Reporter.println("add");
         RdfReader original = RdfFactory.getMemory();
-        original.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+        try {
+            original.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+        } catch (Exception ex){
+            ex.printStackTrace();
+            return;
+        }
         List<Statement> statements = original.getStatementList(null, null, null, new URIImpl(ExampleConstants.EXAMPLE_CONTEXT));
         RdfReader instance = RdfFactory.getMemory();
         Resource newContext = new URIImpl("http://www.example.com/testAdd/");

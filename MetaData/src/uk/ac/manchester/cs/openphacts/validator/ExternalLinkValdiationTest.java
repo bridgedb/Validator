@@ -71,6 +71,7 @@ public class ExternalLinkValdiationTest {
         //for (Statement statement:statements){
             //ystem.out.println(statement);
         //}
+        reader.close();
    }
     
     private static void validateFile(String fileName, MetaDataSpecification specifications, boolean includeWarning) throws VoidValidatorException{
@@ -91,6 +92,7 @@ public class ExternalLinkValdiationTest {
         //if (!results.endsWith(Validator.SUCCESS)){
         //    throw new VoidValidatorException("Validation failed");
        // }
+        reader.close();
     }
 
     public static void main(String[] args) throws VoidValidatorException{

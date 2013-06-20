@@ -48,13 +48,17 @@ public class RdfValidator {
     public static String FAILED = "Validation Failed!";
     public static String SUCCESS = "Validation Successfull!";
     
+    static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(RdfValidator.class);
+    
     public static String validate(RdfInterface reader, Resource context, MetaDataSpecification specifications, 
             Boolean includeWarning) throws VoidValidatorException{
         RdfValidator validator = new RdfValidator(reader, context, specifications);
         validator.validate(includeWarning);
-        return validator.builder.toString();
+        String result = validator.builder.toString();
+        reader.close();
+        return result;
     }
-
+    
     public void addResourceToValidate(Resource resource){
         if (resourcesToCheck.contains(resource)){
             return;
@@ -105,6 +109,7 @@ public class RdfValidator {
             builder.append(SUCCESS);            
         }
     }
+    
 
     private boolean appendValidate(Resource resource, boolean includeWarning) throws VoidValidatorException{
         this.resourcesChecked.add(resource);

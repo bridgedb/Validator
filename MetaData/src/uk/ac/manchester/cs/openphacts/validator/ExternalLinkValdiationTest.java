@@ -64,6 +64,7 @@ public class ExternalLinkValdiationTest {
             throw new VoidValidatorException("No statements read from: " + address);
         }
         String results = RdfValidator.validate(reader, context, specifications, includeWarning);
+        Reporter.println(results);
         if (!results.endsWith(RdfValidator.SUCCESS)){
             throw new VoidValidatorException("Validation failed");
         }
@@ -98,6 +99,11 @@ public class ExternalLinkValdiationTest {
     public static void main(String[] args) throws VoidValidatorException{
        MetaDataSpecification.LoadSpecification(ValidatorExampleConstants.SIMPLE_FILE, 
                ValidatorExampleConstants.SIMPLE_NAME, ValidatorExampleConstants.SIMPLE_DESCRIPTION);
+       validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_cas.ttl", true);
+       validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_chemspider.ttl", true);
+       validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_kegg.ttl", true);
+       validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_pubchem.ttl", true);
+       validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_wp.void.ttl", true);
        //validateURISimple("https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl", true);
        //validateFileSimple("test-data/remoteTest2.ttl", true);
  /*      validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_ensembl.ttl.gz", true);

@@ -386,11 +386,6 @@ public class RdfReader implements RdfInterface{
             if (fileBased){
                 try {
                     repository.initialize();
-                    try{
-                        int here = 1/0;
-                    } catch (Exception ex){
-                        new VoidValidatorException("Here!", ex);
-                    }
                 } catch (Exception ex) {
                     throw new VoidValidatorException ("Error parsing RDf file ", ex);
                 }       

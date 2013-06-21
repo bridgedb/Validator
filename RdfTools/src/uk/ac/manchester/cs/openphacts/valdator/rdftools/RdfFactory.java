@@ -105,14 +105,6 @@ public class RdfFactory {
         }
         NativeStore store = new NativeStore(directory);
         Repository repository = new SailRepository(store);
-        /*try {
-            repository.shutDown();
-            repository.initialize();
-            repository.shutDown();
-        } catch (RepositoryException ex) {
-            ex.printStackTrace();
-            int error = 1/0;
-      }*/
         RdfReader reader = new RdfReader(repository, FILE_BASED);
         logger.info("RDF store setup at: " + directory);
         return reader;        

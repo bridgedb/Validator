@@ -53,7 +53,12 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
         RdfInterface rdfInterface;
         try {
             rdfInterface = RdfFactory.getValidatorFilebase();
-            rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+            try {
+                rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
+            } catch (Exception ex){
+                logger.error(ex);
+                //could be of line so just go on without example data.
+            }
             rdfInterface.close();
             Validator validator = new ValidatorImpl(rdfInterface);
             super.setUp(rdfInterface, validator, this);

@@ -31,6 +31,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.zip.GZIPInputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -102,13 +103,24 @@ public class UrlReader {
 
     public InputStream getInputStream() throws VoidValidatorException{
         String schema = uri.getScheme().toLowerCase();
+        InputStream raw;
         if (schema.equals("https") || schema.equals("http")){
-            return getHttpsInputStream();
+            raw = getHttpsInputStream();
         } else if (schema.equals("ftp")){
-            return getFtpInputStream();
+            raw = getFtpInputStream();
         } else {
             throw new VoidValidatorException ("Unexpected schema " + schema + " in " + uri);
         }
+        String path = uri.getPath().toLowerCase();
+        if (path.endsWith("gz")){
+            try {
+                return new GZIPInputStream(raw);
+            } catch (IOException ex) {
+                throw new VoidValidatorException("Unable to get gzip input stream ", ex);
+            }
+        }
+        return raw;
+        
     }
     
     private  static String scrub(String address){

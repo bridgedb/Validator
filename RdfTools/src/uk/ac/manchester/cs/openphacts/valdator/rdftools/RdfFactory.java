@@ -26,7 +26,7 @@ import org.openrdf.repository.Repository;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.nativerdf.NativeStore;
-import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
+import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigFinder;
 
 /**
  *
@@ -57,8 +57,8 @@ public class RdfFactory {
     
     public static RdfReader getValidatorFilebase() throws VoidValidatorException{
         if (validatorFileReader == null) {
-            ConfigReader.configureLogger();
-            Properties properties = ConfigReader.getProperties();
+            ConfigFinder.configureLogger();
+            Properties properties = ConfigFinder.getProperties();
             String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
@@ -70,8 +70,8 @@ public class RdfFactory {
 
    public static RdfReader getImsFilebase() throws VoidValidatorException{
          if (imsFileReader == null) {
-            ConfigReader.configureLogger();
-            Properties properties = ConfigReader.getProperties();
+            ConfigFinder.configureLogger();
+            Properties properties = ConfigFinder.getProperties();
             String directoryName = properties.getProperty(IMS_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_IMS_DIRECTORY;
@@ -83,7 +83,7 @@ public class RdfFactory {
 
     public static RdfReader getTestFilebase() throws VoidValidatorException{
         if (testFileReader == null) {
-            Properties properties = ConfigReader.getProperties();
+            Properties properties = ConfigFinder.getProperties();
             String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;

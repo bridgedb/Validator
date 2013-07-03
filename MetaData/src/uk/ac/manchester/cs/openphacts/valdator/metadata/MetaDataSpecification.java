@@ -56,7 +56,7 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
-import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigReader;
+import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigFinder;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
 
 /**
@@ -332,7 +332,7 @@ public class MetaDataSpecification {
             }
             return;
         }
-        Properties properties = ConfigReader.getProperties();
+        Properties properties = ConfigFinder.getProperties();
         register = new HashMap<String,MetaDataSpecification>();
         descriptions = new HashMap<String,String>();
         Set<String> keys = properties.stringPropertyNames();
@@ -348,7 +348,7 @@ public class MetaDataSpecification {
                 } else if (parts.length == 3){
                     if (parts[2].equals(FILE)){
                         String fileName = properties.getProperty(key);
-                        InputStream stream = ConfigReader.getInputStream(fileName);
+                        InputStream stream = ConfigFinder.getInputStream(fileName);
                         MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
                         if (descriptions.containsKey(parts[1])){
                             specification.setDescription(descriptions.get(parts[1]));
@@ -392,7 +392,7 @@ public class MetaDataSpecification {
         setUpRegistry();
         MetaDataSpecification existing = register.get(specificationName);
         if (existing == null){
-            InputStream stream = ConfigReader.getInputStream(fileName);
+            InputStream stream = ConfigFinder.getInputStream(fileName);
             MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
             specification.setDescription(description);
             register.put(specificationName, specification);

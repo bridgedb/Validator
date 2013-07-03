@@ -43,7 +43,7 @@ public class AccountsReader {
         if (infos != null){
             return;
         }
-        Properties properties = ConfigReader.getProperties();
+        Properties properties = ConfigFinder.getProperties();
         infos = new HashSet<AccountInfo>();
         Set<String> keys = properties.stringPropertyNames();
         for (String key:keys){

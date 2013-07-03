@@ -43,22 +43,13 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-public class ConfigReader {
+public class ConfigFinder {
     
-    /** 
-     * Sets the build into sandbox mode.
-     * Warning in SANDBOX mode the system will not build without builder provided config files.
-     * If SANDBOX is true in the MASTER branch this is an ERROR. Please fix and contact developer team ASAP!
-     */
     public static final String CONFIG_FILE_NAME = "Config.txt";
 
-    public static final String VOID_OWL_FILE = "VoidInfo.owl";
-    
     public static final String CONFIG_FILE_PATH_PROPERTY = "ConfigPath";
     public static final String CONFIG_FILE_PATH_SOURCE_PROPERTY = "ConfigPathSource";
     public static final String LOG_PROPERTIES_FILE = "log4j.properties";
-    public static final String[] CONFIG_PROPERTIES_ARRAY = new String[] {CONFIG_FILE_PATH_PROPERTY, CONFIG_FILE_PATH_SOURCE_PROPERTY};
-    public static final Set<String> CONFIG_PROPERTIES = new HashSet<String>(Arrays.asList(CONFIG_PROPERTIES_ARRAY));
     
     private InputStream inputStream;
     private String findMethod;
@@ -66,28 +57,28 @@ public class ConfigReader {
     private String error = null;
     private Properties properties = null;
     private static boolean loggerSetup = false;
-    private static ConfigReader propertyReader = null;
+    private static ConfigFinder propertyReader = null;
     
-    static final Logger logger = Logger.getLogger(ConfigReader.class);
+    static final Logger logger = Logger.getLogger(ConfigFinder.class);
     
     public static Properties getProperties() throws VoidValidatorException{
         if (propertyReader == null){
             configureLogger();
-            propertyReader = new ConfigReader(CONFIG_FILE_NAME);            
+            propertyReader = new ConfigFinder(CONFIG_FILE_NAME);            
         }
         return propertyReader.readProperties();
     }
   
     public static InputStream getInputStream(String fileName) throws VoidValidatorException{
-        ConfigReader finder = new ConfigReader(fileName);
+        ConfigFinder finder = new ConfigFinder(fileName);
         configureLogger();
         return finder.getInputStream();
     }
         
     public static synchronized void configureLogger() throws VoidValidatorException{
         if (!loggerSetup){
-            ConfigReader finder;
-            finder = new ConfigReader(LOG_PROPERTIES_FILE);
+            ConfigFinder finder;
+            finder = new ConfigFinder(LOG_PROPERTIES_FILE);
             Properties props = finder.readProperties();
             PropertyConfigurator.configure(props);
             logger.info("Logger configured from " + finder.foundAt + " by " + finder.findMethod);
@@ -100,7 +91,7 @@ public class ConfigReader {
         Logger.getRootLogger().addAppender(new ConsoleAppender(new SimpleLayout(), ConsoleAppender.SYSTEM_OUT));
     }
     
-    private ConfigReader(String fileName) throws VoidValidatorException{
+    private ConfigFinder(String fileName) throws VoidValidatorException{
         logger.info("Looking for file " + fileName);
         try {
             if (loadDirectly(fileName)) {

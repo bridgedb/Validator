@@ -25,16 +25,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.security.CodeSource;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.SimpleLayout;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
@@ -69,12 +62,12 @@ public class ConfigFinder {
         return propertyReader.readProperties();
     }
   
-    public static InputStream getInputStream(String fileName) throws VoidValidatorException{
-        ConfigFinder finder = new ConfigFinder(fileName);
+    public static InputStream getInputStream(String fileName) throws VoidValidatorException {
         configureLogger();
+        ConfigFinder finder = new ConfigFinder(fileName);
         return finder.getInputStream();
     }
-        
+
     public static synchronized void configureLogger() throws VoidValidatorException{
         if (!loggerSetup){
             ConfigFinder finder;
@@ -94,33 +87,11 @@ public class ConfigFinder {
     private ConfigFinder(String fileName) throws VoidValidatorException{
         logger.info("Looking for file " + fileName);
         try {
-            if (loadDirectly(fileName)) {
-                return;
-            }
-            if (loadByEnviromentVariable(fileName)) {
-                return;
-            }
-            if (loadByCatalinaHomeConfigs(fileName)) {
-                return;
-            }
-            if (loadFromDirectory(fileName, "../rdfTools/resources")) {
-                return;
-            }
-            if (loadFromDirectory(fileName, "../conf/OPS-IMS")) {
-                return;
-            }
-            if (loadFromDirectory(fileName, "conf/OPS-IMS")) {
-                return;
-            }
-            if (loadFromDirectory(fileName, "resources")) {
-                return;
-            }
-            if (getInputStreamFromResource(fileName)) {
-                return;
-            }
-            if (getInputStreamFromJar(fileName)) {
-                return;
-            }
+            if (loadDirectly(fileName)) return;
+            if (loadByEnviromentVariable(fileName)) return;
+            if (loadByCatalinaHomeConfigs(fileName)) return;
+            if (loadFromDirectory(fileName, "../conf/OPS-IMS")) return;
+            if (getInputStreamWithClassLoader(fileName)) return;
             throw new VoidValidatorException("Unable to find " + fileName);
         } catch (IOException ex) {
             error = "Unexpected IOEXception after doing checks.";
@@ -279,53 +250,29 @@ public class ConfigFinder {
             return true;
     }
 
-    private boolean getInputStreamFromResource(String name) throws FileNotFoundException{
-        java.net.URL url = this.getClass().getResource(name);
+    private boolean getInputStreamWithClassLoader(String fileName) throws FileNotFoundException{
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        URL url = classLoader.getResource(fileName);
         if (url != null){
-            String fileName = url.getFile();
-            File file = new File(fileName);
-            if (!file.exists()){
-                return false;
+            try {
+                inputStream =  url.openStream();
+            } catch (IOException ex) {
+                if (loggerSetup){
+                    logger.info("Error opeing url " + url , ex);
+                    return false;
+                }
             }
-            inputStream = new FileInputStream(file);
-            findMethod = "Loaded from Resource URI";
-            foundAt = file.getAbsolutePath();
+            findMethod = "Loaded with class loader";
+            foundAt = url.getPath();
             if (loggerSetup){
-                logger.info("Loaded file " + fileName + " from Jar ");    
+                logger.info("Loaded " + url + " with class loader. ");    
             }
             return true;
         }
         if (loggerSetup){
-            logger.info("Not found from resource");
+            logger.info("Not found by class loader. ");    
         }
         return false;
     }
 
-    private boolean getInputStreamFromJar(String name) throws IOException{
-        ZipInputStream zip = null;
-        CodeSource src = this.getClass().getProtectionDomain().getCodeSource();
-        URL jar = src.getLocation();
-        zip = new ZipInputStream( jar.openStream());
-        ZipEntry ze = null;
-        while( ( ze = zip.getNextEntry() ) != null ) {
-            if (name.equals(ze.getName())){
-                inputStream = zip;
-                findMethod = "Loaded by unzipping jar";
-                foundAt = "Inside jar file";
-                if (loggerSetup){
-                    logger.info("Loaded file " + name + " by unziping the Jar ");    
-                }
-                return true;
-            }
-        }
-        zip.close();
-        if (loggerSetup){
-            zip = new ZipInputStream( jar.openStream());
-            while( ( ze = zip.getNextEntry() ) != null ) {
-                logger.info(ze.getName());
-            }
-        }
-        zip.close();
-        return false;
-    }
 }

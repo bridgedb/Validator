@@ -73,6 +73,7 @@ public class MetaDataSpecification {
 //    private final Set<URI> linkingPredicates;    
     private String description;
 
+    private static final String PROPRTIES_FILE = "MetaDataSpecifications.properties";
     private static HashMap<String,MetaDataSpecification> register = null;
     private static HashMap<String,String> descriptions = null;
     private static String defaultName; 
@@ -332,7 +333,7 @@ public class MetaDataSpecification {
             }
             return;
         }
-        Properties properties = ConfigFinder.getProperties();
+        Properties properties = ConfigFinder.getProperties(PROPRTIES_FILE);
         register = new HashMap<String,MetaDataSpecification>();
         descriptions = new HashMap<String,String>();
         Set<String> keys = properties.stringPropertyNames();

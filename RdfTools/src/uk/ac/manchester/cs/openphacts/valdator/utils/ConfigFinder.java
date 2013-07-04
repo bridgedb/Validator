@@ -62,6 +62,12 @@ public class ConfigFinder {
         return propertyReader.readProperties();
     }
   
+    public static Properties getProperties(String fileName) throws VoidValidatorException{
+        configureLogger();
+        ConfigFinder configfinder = new ConfigFinder(fileName);            
+        return configfinder.readProperties();
+    }
+
     public static InputStream getInputStream(String fileName) throws VoidValidatorException {
         configureLogger();
         ConfigFinder finder = new ConfigFinder(fileName);

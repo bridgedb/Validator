@@ -47,7 +47,7 @@ public abstract class RdfMinimalInterfaceTest {
 
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException{
-        TestUtils.checkURI(ExampleConstants.EXAMPLE_CONTEXT);
+        RdfUtils.checkURI(ExampleConstants.EXAMPLE_CONTEXT);
         instance.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
         Reporter.println("Loaded " + ExampleConstants.EXAMPLE_CONTEXT);
     }

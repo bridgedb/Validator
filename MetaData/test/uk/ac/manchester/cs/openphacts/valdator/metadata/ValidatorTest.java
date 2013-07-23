@@ -31,8 +31,8 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openrdf.rio.RDFFormat;
+import uk.ac.manchester.cs.openphacts.valdator.rdftools.RdfUtils;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.Reporter;
-import uk.ac.manchester.cs.openphacts.valdator.rdftools.TestUtils;
 import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.openphacts.validator.RdfValidator;
 import uk.ac.manchester.cs.openphacts.validator.Validator;
@@ -78,7 +78,7 @@ public abstract class ValidatorTest {
     public void testURIValidate() throws VoidValidatorException, FileNotFoundException, IOException, URISyntaxException {
         Reporter.println("URIValidate");
         String uri = "https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl";
-        TestUtils.checkURI(uri);
+        RdfUtils.checkURI(uri);
         String result = validator.validateUri(uri, RDFFormat.TURTLE.getName(), 
                 ValidatorExampleConstants.SIMPLE_NAME, Boolean.TRUE);
         assertThat(result,  endsWith(RdfValidator.SUCCESS));    

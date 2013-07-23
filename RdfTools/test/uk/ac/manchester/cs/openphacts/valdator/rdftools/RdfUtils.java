@@ -6,14 +6,12 @@ package uk.ac.manchester.cs.openphacts.valdator.rdftools;
 
 import java.io.InputStream;
 import java.net.URL;
-import org.junit.Ignore;
 
 /**
  *
  * @author Christian
  */
-@Ignore
-public class TestUtils {
+public class RdfUtils {
     
     public static void checkURI(String uri){
         try{

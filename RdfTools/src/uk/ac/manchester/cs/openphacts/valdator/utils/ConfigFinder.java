@@ -146,20 +146,20 @@ public class ConfigFinder {
     }
 
     /**
-     * Looks for the config file in the directory set up the environment variable "OPS-IMS-CONFIG"
-     * @return True if the config files was found. False if the environment variable "OPS-IMS-CONFIG" was unset.
+     * Looks for the config file in the directory set up the environment variable "OPS_IMS_CONFIG"
+     * @return True if the config files was found. False if the environment variable "OPS_IMS_CONFIG" was unset.
      * @throws IOException Thrown if the environment variable is not null, 
      *    and the config file is not found as indicated, or could not be read.
      */
     private boolean loadByEnviromentVariable(String fileName) throws VoidValidatorException, FileNotFoundException{
-        String envPath = System.getenv().get("OPS-IMS-CONFIG");
+        String envPath = System.getenv().get("OPS_IMS_CONFIG");
         if (envPath == null || envPath.isEmpty()) {
-            logger.warn("No environment variable OPS-IMS-CONFIG found");
+            logger.warn("No environment variable OPS_IMS_CONFIG found");
             return false;
         }
         File envDir = new File(envPath);
         if (!envDir.exists()){
-            error = "Environment Variable OPS-IMS-CONFIG points to " + envPath + 
+            error = "Environment Variable OPS_IMS_CONFIG points to " + envPath + 
                     " but no directory found there";
             throw new VoidValidatorException (error);
         }
@@ -172,19 +172,19 @@ public class ConfigFinder {
             findMethod = "Loaded from Environment Variable.";
             foundAt = file.getAbsolutePath();
             if (loggerSetup){
-                logger.info("Loaded file " + fileName + " using OPS-IMS-CONFIG from " + foundAt);    
+                logger.info("Loaded file " + fileName + " using OPS_IMS_CONFIG from " + foundAt);    
             }
             return true;
         } else {
-            String error = "Environment Variable OPS-IMS-CONFIG points to " + envPath + 
+            String error = "Environment Variable OPS_IMS_CONFIG points to " + envPath + 
                     " but is not a directory";
             throw new VoidValidatorException (error);
         }
     }
   
     /**
-     * Looks for the config file in the directory set up the environment variable "OPS-IMS-CONFIG"
-     * @return True if the config files was found. False if the environment variable "OPS-IMS-CONFIG" was unset.
+     * Looks for the config file in the directory set up the environment variable "OPS_IMS_CONFIG"
+     * @return True if the config files was found. False if the environment variable "OPS_IMS_CONFIG" was unset.
      * @throws IOException Thrown if the environment variable is not null, 
      *    and the config file is not found as indicated, or could not be read.
      */

@@ -95,13 +95,17 @@ public class RdfReader implements RdfInterface{
    }
    
     public URI loadFile(File inputFile) throws VoidValidatorException{
-        return loadFile(inputFile, null);
+        return loadFile(inputFile, inputFile.toURI().toString(), null);
     }
     
-    public URI loadFile(File inputFile, RDFFormat format) throws VoidValidatorException{
+    public URI loadFile(File inputFile, String address) throws VoidValidatorException{
+        return loadFile(inputFile, address, null);
+    }
+
+    public URI loadFile(File inputFile, String address, RDFFormat format) throws VoidValidatorException{
         try {
             InputStream stream = new FileInputStream(inputFile);
-            return loadInputStream(stream, inputFile.toURI().toString(), format, EXPECT_CORRECT);
+            return loadInputStream(stream, address, format, EXPECT_CORRECT);
         } catch (FileNotFoundException ex) {
             throw new VoidValidatorException("Unable to find file. " + inputFile.getAbsolutePath(), ex);
         }
@@ -123,7 +127,7 @@ public class RdfReader implements RdfInterface{
     public URI loadURI(String address, RDFFormat format, boolean expectCorrect) throws VoidValidatorException {
         if (address.startsWith("file")){
             File file = new File(address);
-            return loadFile(file);
+            return loadFile(file, address);
         }
         UrlReader urlReader = new UrlReader(address);
         InputStream stream = urlReader.getInputStream();
@@ -152,6 +156,10 @@ public class RdfReader implements RdfInterface{
                 format = getFormat(address);
             }
             connection.add(stream, address, format, context);
+            //RepositoryResult<Statement> statements  = connection.getStatements(null, null, null, false, context);
+            //while (statements.hasNext()){
+            //    System.out.println(statements.next());
+            //}
             connection.commit();
             close();
             return context;

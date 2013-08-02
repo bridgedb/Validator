@@ -10,7 +10,7 @@
   <groupId>uk.ac.manchester.cs.openphacts</groupId>
   <artifactId>RdfTools</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>OpenPHACTS RdfTools</name>
+  <name>OpenPHACTS Validator RdfTools</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

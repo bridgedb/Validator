@@ -39,7 +39,7 @@ public class RdfFactory {
     public static final String VALIDATOR_RDF_DIRECTORY = "validatorRdfStore";
     public static final String DEFAULT_VALIDATOR_DIRECTORY = "../../rdf/validator";
     public static RdfReader imsFileReader = null;
-    public static final String IMS_RDF_DIRECTORY = "imsRdfStore ";
+    public static final String IMS_RDF_DIRECTORY = "imsRdfStore";
     public static final String DEFAULT_IMS_DIRECTORY = "../../rdf/ims";
     private static final boolean TEST = true;
     private static final boolean LIVE = false;

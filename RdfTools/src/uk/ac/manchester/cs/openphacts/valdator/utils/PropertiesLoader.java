@@ -36,12 +36,13 @@ import uk.ac.manchester.cs.openphacts.valdator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-public class ConfigFinder {
+public class PropertiesLoader {
     
-    public static final String CONFIG_FILE_NAME = "Config.txt";
+    public static final String PROPERTIES_FILE_NAME = "validator.properties";
+    public static final String LOCAL_FILE_NAME = "local.properties";
 
-    public static final String CONFIG_FILE_PATH_PROPERTY = "ConfigPath";
-    public static final String CONFIG_FILE_PATH_SOURCE_PROPERTY = "ConfigPathSource";
+    public static final String VALIDATOR_PROPERTIES_FILE_PATH_PROPERTY = "ValidatorPropertiesPath";
+    public static final String VALIDATOR_PROPERTIES_FILE_PATH_SOURCE_PROPERTY = "ValidatorPropertiesPathSource";
     public static final String LOG_PROPERTIES_FILE = "log4j.properties";
     
     private InputStream inputStream;
@@ -50,34 +51,50 @@ public class ConfigFinder {
     private String error = null;
     private Properties properties = null;
     private static boolean loggerSetup = false;
-    private static ConfigFinder propertyReader = null;
+    private static PropertiesLoader propertyReader = null;
     
-    static final Logger logger = Logger.getLogger(ConfigFinder.class);
+    static final Logger logger = Logger.getLogger(PropertiesLoader.class);
     
     public static Properties getProperties() throws VoidValidatorException{
         if (propertyReader == null){
             configureLogger();
-            propertyReader = new ConfigFinder(CONFIG_FILE_NAME);            
+            propertyReader = new PropertiesLoader(PROPERTIES_FILE_NAME);            
         }
         return propertyReader.readProperties();
     }
   
     public static Properties getProperties(String fileName) throws VoidValidatorException{
         configureLogger();
-        ConfigFinder configfinder = new ConfigFinder(fileName);            
-        return configfinder.readProperties();
+        PropertiesLoader propertiesLoader = new PropertiesLoader(fileName);            
+        Properties original = propertiesLoader.readProperties();
+        return addLocalProperties(original);
+    }
+
+     private static Properties addLocalProperties(Properties original) throws VoidValidatorException{
+        //Logger already configured
+        logger.info("Adding local properties");
+        PropertiesLoader localReader = new PropertiesLoader(LOCAL_FILE_NAME); 
+        localReader.properties = new Properties();           
+        try {
+            localReader.properties.load(localReader.getInputStream());
+            localReader.inputStream.close();
+        } catch (IOException ex) {
+            throw new VoidValidatorException("Unexpected file not fond exception after file.exists returns true.", ex);
+        }
+        original.putAll(localReader.properties);
+        return original;
     }
 
     public static InputStream getInputStream(String fileName) throws VoidValidatorException {
         configureLogger();
-        ConfigFinder finder = new ConfigFinder(fileName);
+        PropertiesLoader finder = new PropertiesLoader(fileName);
         return finder.getInputStream();
     }
 
     public static synchronized void configureLogger() throws VoidValidatorException{
         if (!loggerSetup){
-            ConfigFinder finder;
-            finder = new ConfigFinder(LOG_PROPERTIES_FILE);
+            PropertiesLoader finder;
+            finder = new PropertiesLoader(LOG_PROPERTIES_FILE);
             Properties props = finder.readProperties();
             PropertyConfigurator.configure(props);
             logger.info("Logger configured from " + finder.foundAt + " by " + finder.findMethod);
@@ -90,7 +107,7 @@ public class ConfigFinder {
         Logger.getRootLogger().addAppender(new ConsoleAppender(new SimpleLayout(), ConsoleAppender.SYSTEM_OUT));
     }
     
-    private ConfigFinder(String fileName) throws VoidValidatorException{
+    private PropertiesLoader(String fileName) throws VoidValidatorException{
         logger.info("Looking for file " + fileName);
         try {
             if (loadDirectly(fileName)) return;
@@ -121,8 +138,8 @@ public class ConfigFinder {
             properties = new Properties();           
             try {
                 properties.load(getInputStream());
-                properties.put(CONFIG_FILE_PATH_PROPERTY, foundAt);
-                properties.put(CONFIG_FILE_PATH_SOURCE_PROPERTY, findMethod);
+                properties.put(VALIDATOR_PROPERTIES_FILE_PATH_PROPERTY, foundAt);
+                properties.put(VALIDATOR_PROPERTIES_FILE_PATH_SOURCE_PROPERTY, findMethod);
                 inputStream.close();
                 inputStream = null;
             } catch (IOException ex) {

@@ -26,7 +26,7 @@ import org.openrdf.repository.Repository;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.nativerdf.NativeStore;
-import uk.ac.manchester.cs.openphacts.valdator.utils.ConfigFinder;
+import uk.ac.manchester.cs.openphacts.valdator.utils.PropertiesLoader;
 
 /**
  *
@@ -41,8 +41,8 @@ public class RdfFactory {
     public static RdfReader imsFileReader = null;
     public static final String IMS_RDF_DIRECTORY = "imsRdfStore";
     public static final String DEFAULT_IMS_DIRECTORY = "../../rdf/ims";
-    private static final boolean TEST = true;
-    private static final boolean LIVE = false;
+    public static final String TEST_RDF_DIRECTORY = "testRdfStore";
+    public static final String DEFAULT_TEST_DIRECTORY = "../../rdf/test";
     private static final boolean FILE_BASED = true;
     private static final boolean MEMORY_BASED = false;;
     
@@ -57,48 +57,44 @@ public class RdfFactory {
     
     public static RdfReader getValidatorFilebase() throws VoidValidatorException{
         if (validatorFileReader == null) {
-            ConfigFinder.configureLogger();
-            Properties properties = ConfigFinder.getProperties();
+            PropertiesLoader.configureLogger();
+            Properties properties = PropertiesLoader.getProperties();
             String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
-            validatorFileReader = getReader(directoryName, LIVE);
+            validatorFileReader = getReader(directoryName);
         }
         return validatorFileReader;        
     }
 
    public static RdfReader getImsFilebase() throws VoidValidatorException{
          if (imsFileReader == null) {
-            ConfigFinder.configureLogger();
-            Properties properties = ConfigFinder.getProperties();
+            PropertiesLoader.configureLogger();
+            Properties properties = PropertiesLoader.getProperties();
             String directoryName = properties.getProperty(IMS_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_IMS_DIRECTORY;
             }
-            imsFileReader = getReader(directoryName, LIVE);
+            imsFileReader = getReader(directoryName);
         }
         return imsFileReader;        
     }
 
     public static RdfReader getTestFilebase() throws VoidValidatorException{
         if (testFileReader == null) {
-            Properties properties = ConfigFinder.getProperties();
-            String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
+            Properties properties = PropertiesLoader.getProperties();
+            String directoryName = properties.getProperty(TEST_RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
-            testFileReader = getReader(directoryName, TEST);
+            testFileReader = getReader(directoryName);
         }
         return testFileReader;        
     }
 
-    private static RdfReader getReader(String directoryName, boolean test) throws VoidValidatorException{
-         File directory = getDirectory(directoryName);
-        if (test){
-            directory = new File(directory, "test");
-            directory.deleteOnExit();
-        }
+    private static RdfReader getReader(String directoryName) throws VoidValidatorException{
+        File directory = getDirectory(directoryName);
         File lockDirectory = new File(directory, "lock");
         if (lockDirectory.exists()){
            delete(lockDirectory);

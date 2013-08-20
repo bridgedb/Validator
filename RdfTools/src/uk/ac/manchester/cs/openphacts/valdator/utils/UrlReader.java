@@ -20,6 +20,9 @@
 package uk.ac.manchester.cs.openphacts.valdator.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.net.ftp.FTP;
@@ -60,6 +64,13 @@ public class UrlReader {
     private static String method = "GET";
     private static final boolean useEpsvWithIPv4 = false; //keep
   
+    private static File tempDirectory = null;
+    private static boolean useDefaultTempDirectory = false;
+    
+    private static final String TEMP_DIRECTORY = "TempDirectory";
+    private static final String USE_DEFAULT = "useDefault";
+    
+    
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(UrlReader.class);
      
     public UrlReader(String address) throws VoidValidatorException{
@@ -276,6 +287,29 @@ public class UrlReader {
             throw new VoidValidatorException("IOEXception with Server ", ex);
         }
     } 
+    
+    public File getTempTextFile() throws VoidValidatorException{
+        try {
+            InputStream inputStream = this.getInputStream();
+            InputStreamReader inputReader = new InputStreamReader(inputStream);
+            BufferedReader inputBuffer = new BufferedReader(inputReader);
+            String suffix = uri.getPath().substring(uri.getPath().lastIndexOf("."));
+            File outputFile = File.createTempFile("CopiedFromUri", suffix, getTempDirectory());
+            FileWriter outputWriter = new FileWriter(outputFile);
+            outputFile.deleteOnExit();
+            BufferedWriter outputBuffer = new BufferedWriter(outputWriter);
+            String line;
+            while ((line = inputBuffer.readLine()) != null) {
+                outputBuffer.write(line + "\n");
+            }
+            inputBuffer.close();
+            outputBuffer.flush();
+            outputBuffer.close();
+            return outputFile;
+        } catch (IOException ex) {
+            throw new VoidValidatorException("Error convert " + uri + " to file ", ex);
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         UrlReader reader = new UrlReader("https://github.com/openphacts/ops-platform-setup/blob/master/void/drugbank_void.ttl");
@@ -288,4 +322,26 @@ public class UrlReader {
         in.close();   
     }
 
+    private File getTempDirectory() throws VoidValidatorException {
+        if (useDefaultTempDirectory){
+            return null;
+        }
+        if (tempDirectory == null){
+            Properties properties = PropertiesLoader.getProperties();
+            String fileName = properties.getProperty(TEMP_DIRECTORY);
+            if (fileName == null || fileName.equals(USE_DEFAULT)){
+                useDefaultTempDirectory = true;
+                return null;
+            }
+            tempDirectory = new File(fileName);
+            if (!tempDirectory.isDirectory()){
+                throw new VoidValidatorException("Property " + TEMP_DIRECTORY + " points to " + fileName + " which to a directory.");
+            }
+            if (!tempDirectory.canWrite()){
+                throw new VoidValidatorException("Property " + TEMP_DIRECTORY + " points to " + fileName + " which does not provide write access.");
+            }
+        }
+        return tempDirectory;
+    }
+ 
 }

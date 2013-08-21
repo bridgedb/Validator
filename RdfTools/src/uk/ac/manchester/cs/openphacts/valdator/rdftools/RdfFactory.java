@@ -64,6 +64,7 @@ public class RdfFactory {
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
             validatorFileReader = getReader(directoryName);
+            Reporter.println("Using Validator RDF store " + directoryName);
         }
         return validatorFileReader;        
     }
@@ -76,6 +77,7 @@ public class RdfFactory {
             if (directoryName == null){
                 directoryName = DEFAULT_IMS_DIRECTORY;
             }
+            Reporter.println("Using IMS RDF store " + directoryName);
             imsFileReader = getReader(directoryName);
         }
         return imsFileReader;        

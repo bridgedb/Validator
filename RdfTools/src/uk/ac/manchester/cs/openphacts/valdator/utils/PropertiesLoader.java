@@ -58,9 +58,11 @@ public class PropertiesLoader {
     public static Properties getProperties() throws VoidValidatorException{
         if (propertyReader == null){
             configureLogger();
-            propertyReader = new PropertiesLoader(PROPERTIES_FILE_NAME);            
+            propertyReader = new PropertiesLoader(PROPERTIES_FILE_NAME); 
+            propertyReader.readProperties();
         }
-        return propertyReader.readProperties();
+        Properties original = propertyReader.readProperties();
+        return addLocalProperties(original);
     }
   
     public static Properties getProperties(String fileName) throws VoidValidatorException{
@@ -74,7 +76,7 @@ public class PropertiesLoader {
         //Logger already configured
         logger.info("Adding local properties");
         PropertiesLoader localReader = new PropertiesLoader(LOCAL_FILE_NAME); 
-        localReader.properties = new Properties();           
+        localReader.properties = new Properties();        
         try {
             localReader.properties.load(localReader.getInputStream());
             localReader.inputStream.close();

@@ -3,14 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>uk.ac.manchester.cs.void.validator</groupId>
+    <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
     <artifactId>validator-bundle</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>uk.ac.manchester.cs.void.validator</groupId>
+  <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
   <artifactId>ws-client</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Void Validator WebService Client</name>
+  <name>DataDesc Validator WebService Client</name>
   <packaging>jar</packaging>
    <!--url>http://maven.apache.org</ur-->
   <properties>
@@ -18,13 +18,13 @@
   </properties>
   <dependencies>
         <dependency>
-            <groupId>uk.ac.manchester.cs.void.validator</groupId>
+            <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
             <artifactId>metadata</artifactId>
 			<version>${project.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>uk.ac.manchester.cs.void.validator</groupId>
+            <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
             <artifactId>ws-core</artifactId>
 			<version>${project.version}</version>
             <type>jar</type>
@@ -46,14 +46,14 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>uk.ac.manchester.cs.void.validator</groupId>
+            <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
             <artifactId>rdf-tools</artifactId>
 			<version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>uk.ac.manchester.cs.void.validator</groupId>
+            <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
             <artifactId>metadata</artifactId>
 			<version>${project.version}</version>
             <type>test-jar</type>

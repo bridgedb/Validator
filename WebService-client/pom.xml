@@ -3,11 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>uk.ac.manchester.cs.openphacts</groupId>
+    <groupId>uk.ac.manchester.cs.void.validator</groupId>
     <artifactId>Validator</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>uk.ac.manchester.cs.openphacts</groupId>
+  <groupId>uk.ac.manchester.cs.void.validator</groupId>
   <artifactId>WebService-client</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>OpenPHACTS Validator WebService Client</name>
@@ -18,13 +18,13 @@
   </properties>
   <dependencies>
         <dependency>
-            <groupId>uk.ac.manchester.cs.openphacts</groupId>
+            <groupId>uk.ac.manchester.cs.void.validator</groupId>
             <artifactId>MetaData</artifactId>
 			<version>${project.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>uk.ac.manchester.cs.openphacts</groupId>
+            <groupId>uk.ac.manchester.cs.void.validator</groupId>
             <artifactId>WebService-core</artifactId>
 			<version>${project.version}</version>
             <type>jar</type>
@@ -46,14 +46,14 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>uk.ac.manchester.cs.openphacts</groupId>
+            <groupId>uk.ac.manchester.cs.void.validator</groupId>
             <artifactId>RdfTools</artifactId>
 			<version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>uk.ac.manchester.cs.openphacts</groupId>
+            <groupId>uk.ac.manchester.cs.void.validator</groupId>
             <artifactId>MetaData</artifactId>
 			<version>${project.version}</version>
             <type>test-jar</type>

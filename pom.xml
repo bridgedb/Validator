@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.ac.manchester.cs.void.validator</groupId>
-  <artifactId>Validator</artifactId>
+  <artifactId>validator</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>OpenPHACTS Validator Bundle</name>
@@ -21,11 +21,11 @@
     </properties>
 
   <modules>
-    <module>RdfTools</module>
-    <module>MetaData</module>
-    <module>WebService-core</module>
-    <module>WebService-service</module>
-    <module>WebService-client</module>
+    <module>rdf-tools</module>
+    <module>metadata</module>
+    <module>ws-core</module>
+    <module>ws-service</module>
+    <module>ws-client</module>
   </modules>
   
    	<build>

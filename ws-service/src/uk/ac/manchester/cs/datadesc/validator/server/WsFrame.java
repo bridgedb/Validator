@@ -50,7 +50,7 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
         super();
         RdfInterface rdfInterface;
         try {
-            rdfInterface = RdfFactory.getValidatorFilebase();
+            rdfInterface = RdfFactory.getFilebase();
             try {
                 rdfInterface.loadURI(ExampleConstants.EXAMPLE_CONTEXT, null);
             } catch (Exception ex){

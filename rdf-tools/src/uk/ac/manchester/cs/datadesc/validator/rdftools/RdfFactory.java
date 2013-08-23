@@ -35,17 +35,16 @@ import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
 public class RdfFactory {
    
     public static RdfReader testFileReader = null;
-    public static RdfReader validatorFileReader = null;
+    public static RdfReader fileReader = null;
     public static final String VALIDATOR_RDF_DIRECTORY = "validatorRdfStore";
     public static final String DEFAULT_VALIDATOR_DIRECTORY = "../../rdf/validator";
-    public static RdfReader imsFileReader = null;
-    public static final String IMS_RDF_DIRECTORY = "imsRdfStore";
-    public static final String DEFAULT_IMS_DIRECTORY = "../../rdf/ims";
+    public static final String RDF_DIRECTORY = "rdfStore";
+    public static final String DEFAULT_DIRECTORY = "../../rdf";
     public static final String TEST_RDF_DIRECTORY = "testRdfStore";
     public static final String DEFAULT_TEST_DIRECTORY = "../../rdf/test";
     private static final boolean FILE_BASED = true;
     private static final boolean MEMORY_BASED = false;;
-    
+    private static boolean standAloneValidator = true;
     
     static final Logger logger = Logger.getLogger(RdfFactory.class);
     
@@ -55,33 +54,27 @@ public class RdfFactory {
         return rdfReader;
     } 
     
-    public static RdfReader getValidatorFilebase() throws VoidValidatorException{
-        if (validatorFileReader == null) {
+    public static RdfReader getFilebase() throws VoidValidatorException{
+        if (fileReader == null) {
             PropertiesLoader.configureLogger();
             Properties properties = PropertiesLoader.getProperties();
-            String directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
-            if (directoryName == null){
-                directoryName = DEFAULT_VALIDATOR_DIRECTORY;
+            String directoryName;
+            if (isStandAloneValidator()){
+                directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
+                if (directoryName == null){
+                    directoryName = DEFAULT_VALIDATOR_DIRECTORY;
+                }
+            } else {
+                directoryName = properties.getProperty(RDF_DIRECTORY);
+                if (directoryName == null){
+                    directoryName = DEFAULT_DIRECTORY;
+                }
             }
-            validatorFileReader = getReader(directoryName);
+            fileReader = getReader(directoryName);
             Reporter.println("Using Validator RDF store " + directoryName);
         }
-        return validatorFileReader;        
-    }
-
-   public static RdfReader getImsFilebase() throws VoidValidatorException{
-         if (imsFileReader == null) {
-            PropertiesLoader.configureLogger();
-            Properties properties = PropertiesLoader.getProperties();
-            String directoryName = properties.getProperty(IMS_RDF_DIRECTORY);
-            if (directoryName == null){
-                directoryName = DEFAULT_IMS_DIRECTORY;
-            }
-            Reporter.println("Using IMS RDF store " + directoryName);
-            imsFileReader = getReader(directoryName);
-        }
-        return imsFileReader;        
-    }
+        return fileReader;        
+   }
 
     public static RdfReader getTestFilebase() throws VoidValidatorException{
         if (testFileReader == null) {
@@ -141,6 +134,23 @@ public class RdfFactory {
         if (file.exists()){
             throw new VoidValidatorException("Unable to delete " + file.getAbsolutePath());        
         }
+    }
+
+    /**
+     * @return the standAloneValidator
+     */
+    public static boolean isStandAloneValidator() {
+        return standAloneValidator;
+    }
+
+    /**
+     * @param aStandAloneValidator the standAloneValidator to set
+     */
+    public static void setStandAloneValidator(boolean aStandAloneValidator) throws VoidValidatorException {
+        if (fileReader != null && aStandAloneValidator != standAloneValidator){
+            throw new VoidValidatorException ("Illegal attempt to change the stand alone setting after a reader has been created.");
+        }
+        standAloneValidator = aStandAloneValidator;
     }
 
  }

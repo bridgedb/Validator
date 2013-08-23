@@ -11,7 +11,7 @@ import java.net.URL;
  *
  * @author Christian
  */
-public class TestUtils {
+public class RdfUtils {
     
     public static void checkURI(String uri){
         try{

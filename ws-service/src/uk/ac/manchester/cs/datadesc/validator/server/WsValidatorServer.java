@@ -55,6 +55,7 @@ import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.datadesc.validator.ws.WsValidationConstants;
 import uk.ac.manchester.cs.datadesc.validator.RdfValidator;
 import uk.ac.manchester.cs.datadesc.validator.Validator;
+import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfFactory;
 
     
 /**
@@ -102,7 +103,9 @@ public class WsValidatorServer implements HtmlWSInterface{
         frame.addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.SPARQL, WsValidationConstants.SPARQL, httpServletRequest);
-        frame.addSideBarItem(sb, WsValidationConstants.LOAD_URI, WsValidationConstants.LOAD_URI, httpServletRequest);
+        if (RdfFactory.isStandAloneValidator()){
+            frame.addSideBarItem(sb, WsValidationConstants.LOAD_URI, WsValidationConstants.LOAD_URI, httpServletRequest);
+        }
     }
     
 //Public calls 

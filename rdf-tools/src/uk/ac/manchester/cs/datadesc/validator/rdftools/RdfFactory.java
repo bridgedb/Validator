@@ -36,16 +36,13 @@ public class RdfFactory {
    
     public static RdfReader testFileReader = null;
     public static RdfReader fileReader = null;
-    public static final String VALIDATOR_RDF_DIRECTORY = "validatorRdfStore";
-    public static final String DEFAULT_VALIDATOR_DIRECTORY = "../../rdf/validator";
     public static final String RDF_DIRECTORY = "rdfStore";
     public static final String DEFAULT_DIRECTORY = "../../rdf";
     public static final String TEST_RDF_DIRECTORY = "testRdfStore";
     public static final String DEFAULT_TEST_DIRECTORY = "../../rdf/test";
     private static final boolean FILE_BASED = true;
     private static final boolean MEMORY_BASED = false;;
-    private static boolean standAloneValidator = true;
-    
+   
     static final Logger logger = Logger.getLogger(RdfFactory.class);
     
     public static RdfReader getMemory() throws VoidValidatorException{
@@ -58,17 +55,10 @@ public class RdfFactory {
         if (fileReader == null) {
             PropertiesLoader.configureLogger();
             Properties properties = PropertiesLoader.getProperties();
-            String directoryName;
-            if (isStandAloneValidator()){
-                directoryName = properties.getProperty(VALIDATOR_RDF_DIRECTORY);
-                if (directoryName == null){
-                    directoryName = DEFAULT_VALIDATOR_DIRECTORY;
-                }
-            } else {
-                directoryName = properties.getProperty(RDF_DIRECTORY);
-                if (directoryName == null){
-                    directoryName = DEFAULT_DIRECTORY;
-                }
+            String directoryName = null;
+            directoryName = properties.getProperty(RDF_DIRECTORY);
+            if (directoryName == null){
+                directoryName = DEFAULT_DIRECTORY;
             }
             fileReader = getReader(directoryName);
             Reporter.println("Using Validator RDF store " + directoryName);
@@ -81,7 +71,7 @@ public class RdfFactory {
             Properties properties = PropertiesLoader.getProperties();
             String directoryName = properties.getProperty(TEST_RDF_DIRECTORY);
             if (directoryName == null){
-                directoryName = DEFAULT_VALIDATOR_DIRECTORY;
+                directoryName = DEFAULT_TEST_DIRECTORY;
             }
             testFileReader = getReader(directoryName);
         }
@@ -134,23 +124,6 @@ public class RdfFactory {
         if (file.exists()){
             throw new VoidValidatorException("Unable to delete " + file.getAbsolutePath());        
         }
-    }
-
-    /**
-     * @return the standAloneValidator
-     */
-    public static boolean isStandAloneValidator() {
-        return standAloneValidator;
-    }
-
-    /**
-     * @param aStandAloneValidator the standAloneValidator to set
-     */
-    public static void setStandAloneValidator(boolean aStandAloneValidator) throws VoidValidatorException {
-        if (fileReader != null && aStandAloneValidator != standAloneValidator){
-            throw new VoidValidatorException ("Illegal attempt to change the stand alone setting after a reader has been created.");
-        }
-        standAloneValidator = aStandAloneValidator;
     }
 
  }

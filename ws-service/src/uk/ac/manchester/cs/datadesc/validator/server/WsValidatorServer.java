@@ -124,9 +124,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
         frame.addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.SPARQL, WsValidationConstants.SPARQL, httpServletRequest);
-        if (RdfFactory.isStandAloneValidator()){
-            frame.addSideBarItem(sb, WsValidationConstants.LOAD_URI, WsValidationConstants.LOAD_URI, httpServletRequest);
-        }
+        //frame.addSideBarItem(sb, WsValidationConstants.LOAD_URI, WsValidationConstants.LOAD_URI, httpServletRequest);
     }
     
 //Public calls 
@@ -252,6 +250,8 @@ public class WsValidatorServer implements ValidatorWSInterface{
             return errorReport();
         }
         StringBuilder sb = frame.topAndSide(serviceName + "by Resource",  httpServletRequest);
+        sb.append("<p>Find all stored instances of this Resource in any context.");
+        sb.append("This includes all statements where this resource is the Subject or the Object.</p>");
         formByResource(sb, resourceString, httpServletRequest); 
         if (resourceString!= null && !resourceString.isEmpty()){
             List<Statement> statements = this.getByResourceImplmentation(resourceString);
@@ -602,7 +602,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
     
    private void formByResource(StringBuilder sb, String resourceString, HttpServletRequest httpServletRequest) {
         String scriptName = insertCheckByResourceScript(sb);
-      	generateFormStart(sb, WsValidationConstants.STATEMENT_LIST,  scriptName, httpServletRequest);
+      	generateFormStart(sb, WsValidationConstants.BY_RESOURCE,  scriptName, httpServletRequest);
         generateInput(sb, WsValidationConstants.RESOURCE, resourceString);
      	generateFormEnd(sb, httpServletRequest);
    }

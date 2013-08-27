@@ -9,8 +9,7 @@
   </parent>
   <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
   <artifactId>ws-service</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>DataDesc Validator WebService Service</name>
+   <name>DataDesc Validator WebService Service</name>
   <packaging>jar</packaging>
    <!--url>http://maven.apache.org</ur-->
   <properties>

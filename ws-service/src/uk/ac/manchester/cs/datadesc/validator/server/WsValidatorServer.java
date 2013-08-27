@@ -27,7 +27,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -56,6 +58,7 @@ import uk.ac.manchester.cs.datadesc.validator.ws.WsValidationConstants;
 import uk.ac.manchester.cs.datadesc.validator.RdfValidator;
 import uk.ac.manchester.cs.datadesc.validator.Validator;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfFactory;
+import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
 
     
 /**
@@ -68,14 +71,30 @@ public class WsValidatorServer implements HtmlWSInterface{
     private static final int DESCRIPTION_WIDTH = 100;
     private static final String DESCRIPTION_FIELD = "Description";
     private static final String NO_ON_SUBMIT = null;
+    private static final String SERVICE_NAME = "serviceName";
     
     private RdfInterface rdfInterface;
     private FrameInterface frame;
     private Validator validator;
-   
+    private String serviceName = "Validation Service ";
+    
     public WsValidatorServer() {
         logger.info("Validator created but not yet setup");
-     }
+        Properties properties;
+        try {
+            properties = PropertiesLoader.getProperties();
+            serviceName = properties.getProperty(SERVICE_NAME);
+            if (serviceName == null){
+               serviceName =  "Validation Service ";
+            }
+        } catch (VoidValidatorException ex) {
+            serviceName = "Validation Service ";
+            logger.error(ex);
+        }
+        if (!serviceName.endsWith(" ")){
+            serviceName+= " ";
+        }
+    }
 
     public void setUp(RdfInterface rdfInterface, Validator validator, FrameInterface frame) throws VoidValidatorException{
         this.frame = frame;
@@ -95,7 +114,9 @@ public class WsValidatorServer implements HtmlWSInterface{
     
 //Super class calls    
     protected void addValidatorSideBar(StringBuilder sb, HttpServletRequest httpServletRequest) {
-        sb.append("<div class=\"menugroup\">OPS Validation Service</div>");
+        sb.append("<div class=\"menugroup\">");
+        sb.append(serviceName);
+        sb.append("</div>");
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE_HOME, "Home", httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE,WsValidationConstants.VALIDATE, httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE + WsValidationConstants.FILE, 
@@ -123,8 +144,10 @@ public class WsValidatorServer implements HtmlWSInterface{
         if (errorState()){
             return errorReport();
         }
-        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
-        sb.append("<h1> Welcome to the OpenPhacts Validation Service.</h1>");
+        StringBuilder sb = frame.topAndSide(serviceName + "home",  httpServletRequest);
+        sb.append("<h1> Welcome to the ");
+        sb.append(serviceName);
+        sb.append(".</h1>");
         sb.append("<p>The form below gives an example of how to use the Validation service.</p>");
         sb.append("<p>Select another service from the side.</p>");
         sb.append("<p>To Try a different ontology please contact Christian.</p>");
@@ -180,7 +203,7 @@ public class WsValidatorServer implements HtmlWSInterface{
                 }
             }
         }
-        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide(serviceName + "statement list",  httpServletRequest);
         formStatementList(sb, subjectString, predicateString, objectString, contextStrings, httpServletRequest); 
         if ((subjectString != null && !subjectString.isEmpty()) || 
                 (predicateString != null && !predicateString.isEmpty()) || 
@@ -228,7 +251,7 @@ public class WsValidatorServer implements HtmlWSInterface{
         if (errorState()){
             return errorReport();
         }
-        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide(serviceName + "by Resource",  httpServletRequest);
         formByResource(sb, resourceString, httpServletRequest); 
         if (resourceString!= null && !resourceString.isEmpty()){
             List<Statement> statements = this.getByResourceImplmentation(resourceString);
@@ -274,7 +297,7 @@ public class WsValidatorServer implements HtmlWSInterface{
         if (errorState()){
             return errorReport();
         }
-        StringBuilder sb = frame.topAndSide("Validation Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide(serviceName,  httpServletRequest);
         formLoadUri(sb, address, formatName, httpServletRequest); 
         if (address!= null && !address.isEmpty()){
             URI context = this.loadURIImplementation(address, formatName);
@@ -327,7 +350,7 @@ public class WsValidatorServer implements HtmlWSInterface{
             return errorReport();
         }
         logger.info("runSparqlQuery called query = " + query + " formatName = " + formatName);
-        StringBuilder sb = frame.topAndSide("SPARQL Service ",  httpServletRequest);
+        StringBuilder sb = frame.topAndSide(serviceName + "SPARQL Service ",  httpServletRequest);
         formSparql(sb, query, formatName, httpServletRequest); 
         if (query != null && !query.isEmpty() && formatName != null && !formatName.isEmpty()){
             logger.info("running Sparql Query");
@@ -398,7 +421,7 @@ public class WsValidatorServer implements HtmlWSInterface{
     @Produces(MediaType.TEXT_HTML)
 	public Response validateFile(String validationResult, @Context HttpServletRequest httpServletRequest) 
             throws VoidValidatorException {  
-        StringBuilder sb = frame.topAndSide("Validation Service", httpServletRequest);
+        StringBuilder sb = frame.topAndSide(serviceName + "validate turtle file", httpServletRequest);
         if (validationResult == null || validationResult.isEmpty()){
            sb.append("<h1>Validate A Turtle File</h1>\n");
            sb.append("<h4>Sorry other file formats currently not available. Ask if required.</h4>\n");

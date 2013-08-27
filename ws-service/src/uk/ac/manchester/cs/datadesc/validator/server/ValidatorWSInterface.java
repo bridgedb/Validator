@@ -34,7 +34,7 @@ import uk.ac.manchester.cs.datadesc.validator.ws.WsValidationConstants;
  *
  * @author Christian
  */
-public interface HtmlWSInterface extends WSRdfInterface, WSValidatorInterface{
+public interface ValidatorWSInterface extends WSRdfInterface, WSValidatorInterface{
            
     public Response validateHome(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException;
     

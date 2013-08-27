@@ -65,7 +65,7 @@ import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
  *
  * @author Christian
  */
-public class WsValidatorServer implements HtmlWSInterface{
+public class WsValidatorServer implements ValidatorWSInterface{
         
     static final Logger logger = Logger.getLogger(WsValidatorServer.class);
     private static final int DESCRIPTION_WIDTH = 100;

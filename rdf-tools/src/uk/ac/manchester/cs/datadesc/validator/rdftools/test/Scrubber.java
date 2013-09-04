@@ -91,7 +91,7 @@ public class Scrubber {
             Statement statement = statements.next();
             if (statement.getObject().toString().contains("-")){
                 if (statement.getPredicate().toString().equals("http://rdfs.org/ns/void#inDataset")){
-                    System.out.println("ignoring void:inDataset statement");
+                    //ystem.out.println("ignoring void:inDataset statement");
                 } else {
                     repositoryConnection.remove(statement, rsrc);
                     count++;

@@ -84,6 +84,7 @@ public class RdfFactory {
                 directoryName = DEFAULT_VALIDATOR_DIRECTORY;
             }
             testFileReader = getReader(directoryName);
+            testFileReader.clear();
         }
         return testFileReader;        
     }

@@ -158,7 +158,7 @@ public class RdfReader implements RdfInterface{
             connection.add(stream, address, format, context);
             //RepositoryResult<Statement> statements  = connection.getStatements(null, null, null, false, context);
             //while (statements.hasNext()){
-            //    System.out.println(statements.next());
+                //ystem.out.println(statements.next());
             //}
             connection.commit();
             close();

@@ -74,6 +74,7 @@ public class RdfFactory {
                 directoryName = DEFAULT_TEST_DIRECTORY;
             }
             testFileReader = getReader(directoryName);
+            testFileReader.clear();
         }
         return testFileReader;        
     }

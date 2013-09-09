@@ -35,6 +35,7 @@ public class WsValidationConstants {
     public static final String PREDICATE = "predicate";
     public static final String QUERY = "query";    
     public static final String RDF_FORMAT = "rdfFormat";
+    public static final String RDF_DUMP = "rdfDump";
     public static final String RESOURCE = "resource";    
     public static final String TEXT = "text";    
     public static final String SPECIFICATION = "specification";

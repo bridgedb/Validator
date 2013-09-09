@@ -22,7 +22,9 @@ package uk.ac.manchester.cs.datadesc.validator.server;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,6 +49,8 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
+import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.turtle.TurtleWriter;
 import uk.ac.manchester.cs.datadesc.validator.bean.ResourceBean;
 import uk.ac.manchester.cs.datadesc.validator.bean.StatementBean;
 import uk.ac.manchester.cs.datadesc.validator.bean.URIBean;
@@ -121,6 +125,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE,WsValidationConstants.VALIDATE, httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE + WsValidationConstants.FILE, 
                 WsValidationConstants.VALIDATE + WsValidationConstants.FILE, httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.RDF_DUMP, WsValidationConstants.RDF_DUMP,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.SPARQL, WsValidationConstants.SPARQL, httpServletRequest);
@@ -158,6 +163,29 @@ public class WsValidatorServer implements ValidatorWSInterface{
         return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();
     }
     
+    @GET
+    @Produces({MediaType.TEXT_PLAIN})
+    @Path(WsValidationConstants.RDF_DUMP)
+    @Override
+    public String getRdfDump() throws VoidValidatorException {
+        try {
+            checkErrorState();
+            List<Statement> statements = rdfInterface.getStatementList(null, null, null);
+            rdfInterface.close();
+            Writer writer = new StringWriter();
+            TurtleWriter turtleWriter = new TurtleWriter(writer);
+            turtleWriter.startRDF();
+            for (Statement statement:statements){
+                turtleWriter.handleStatement(statement);
+            }
+            turtleWriter.endRDF();
+            writer.flush();
+            return writer.toString();
+        } catch (Exception ex) {
+            throw new  VoidValidatorException("Exception to get rdfDump. ", ex);
+        }
+    }
+
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path(WsValidationConstants.STATEMENT_LIST)

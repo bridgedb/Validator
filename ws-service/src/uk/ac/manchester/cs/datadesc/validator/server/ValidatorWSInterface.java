@@ -38,6 +38,8 @@ public interface ValidatorWSInterface extends WSRdfInterface, WSValidatorInterfa
            
     public Response validateHome(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException;
     
+    public String getRdfDump() throws VoidValidatorException;
+    
     public Response getStatementList(@QueryParam(WsValidationConstants.SUBJECT) String subjectString, 
             @QueryParam(WsValidationConstants.PREDICATE) String predicateString, 
             @QueryParam(WsValidationConstants.OBJECT) String objectString, 

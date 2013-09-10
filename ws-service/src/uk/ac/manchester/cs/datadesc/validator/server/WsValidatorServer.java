@@ -117,7 +117,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
     }
     
 //Super class calls    
-    protected void addValidatorSideBar(StringBuilder sb, HttpServletRequest httpServletRequest) {
+    public final void addValidatorSideBar(StringBuilder sb, HttpServletRequest httpServletRequest) {
         sb.append("<div class=\"menugroup\">");
         sb.append(serviceName);
         sb.append("</div>");

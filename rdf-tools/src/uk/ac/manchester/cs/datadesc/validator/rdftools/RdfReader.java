@@ -185,18 +185,39 @@ public class RdfReader implements RdfInterface{
     public List<Statement> getStatementList(Resource subjectResource, URI predicate, Value object, 
             Resource... contexts) throws VoidValidatorException {
         List<Statement> results = getLocalStatementList(subjectResource, predicate, object, contexts);
-        if (!results.isEmpty()){
-            return results;
+        if (results.isEmpty()){
+            if (subjectResource == null){
+                return new ArrayList<Statement>();
+            }
+            results = loadExternalAndGetTheStatementList(subjectResource, predicate, object);
         }
-        if (subjectResource == null){
-            return new ArrayList<Statement>();
+        if (results.isEmpty()){
+            results = findByParentResouce(subjectResource, predicate, object);
         }
-        results = loadExternalAndGetTheStatementList(subjectResource, predicate, object);
-        if (!results.isEmpty()){
-            return results;
+        if (contexts == null || contexts.length == 0){
+            return ignoreContext(results);
         }
-         return findByParentResouce(subjectResource, predicate, object);
+        return results;
     }
+    
+    private List<Statement> ignoreContext(List<Statement> possibles) {
+        ArrayList<Statement> results = new ArrayList<Statement>();
+        for (Statement possible:possibles){
+            boolean found = false;
+            for (Statement existing:results){
+                if (possible.getSubject().equals(existing.getSubject()) && 
+                        possible.getPredicate().equals(existing.getPredicate()) &&
+                        possible.getObject().equals(existing.getObject())){
+                    found = true;
+                }
+            }
+            if (!found){
+                results.add(possible);
+            }
+        }
+        return results;
+    }
+
 
     private List<Statement> getLocalStatementList(Resource subjectResource, URI predicate, Value object, 
            Resource... contexts) throws VoidValidatorException {
@@ -554,6 +575,7 @@ public class RdfReader implements RdfInterface{
             throw new VoidValidatorException ("Error clearing. ", ex);
         }    
     }
+
 
    
 

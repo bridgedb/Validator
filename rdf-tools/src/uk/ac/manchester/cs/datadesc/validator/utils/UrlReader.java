@@ -344,4 +344,11 @@ public class UrlReader {
         return tempDirectory;
     }
  
+    public String toString(){
+        if (username == null){
+            return uri + " no user name or password"; 
+        } else {            
+            return uri + " username " + username; 
+        }
+    }
 }

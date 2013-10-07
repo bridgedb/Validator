@@ -58,6 +58,7 @@ To remove all properties from a properties file you will need to.
 ======================
 validator.properties 
 ------------
+(Included in the build and can be found at rdf-tools/resources)
 
 This file contain the local setup information which MUST be checked and ideally overwritten in local.properties to match the specific local setup.
 
@@ -72,6 +73,8 @@ The example values here are NOT correct for security reasons.
 
 MetaDataSpecifications.properties
 ---------------------------------
+(Included in the build and can be found at metadata/resources)
+
 This file list the specification that are loaded.
 
 The default file includes a test specification that us currently required for unit tests including the client tests.

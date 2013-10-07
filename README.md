@@ -33,7 +33,7 @@ validator.properties
 MetaDataSpecifications.properties
 log4j.properties (can be shared with other projects)
 local.properties (can be shared with other projects)
-VoidInfo.pwl
+VoidInfo.owl
 simpleOntology.owl
 
 ======================

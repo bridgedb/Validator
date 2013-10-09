@@ -22,6 +22,8 @@ package uk.ac.manchester.cs.datadesc.validator.utils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +37,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.net.ftp.FTP;
@@ -78,12 +82,17 @@ public class UrlReader {
             java.net.URI tempUri = new URI(address);
             String path = tempUri.getPath();
             String host = tempUri.getHost();
-            int hostEnd = address.indexOf(host) + host.length();
-            if (path.isEmpty()){
-                base = address.substring(0, hostEnd) + "#";
+            if (host == null){
+                File file = new File(address);
+                base = file.getParent() + "#";
             } else {
-                int pathEnd = address.indexOf(path, hostEnd) + path.length();
-                base = address.substring(0, pathEnd) + "#";
+                int hostEnd = address.indexOf(host) + host.length();
+                if (path.isEmpty()){
+                    base = address.substring(0, hostEnd) + "#";
+                } else {
+                    int pathEnd = address.indexOf(path, hostEnd) + path.length();
+                    base = address.substring(0, pathEnd) + "#";
+                }
             }
         } catch (URISyntaxException ex) {
            throw new VoidValidatorException("Unable to convert " + address + " to a URI");
@@ -117,6 +126,8 @@ public class UrlReader {
         InputStream raw;
         if (schema.equals("https") || schema.equals("http")){
             raw = getHttpsInputStream();
+        } else if (schema.equals("file")){
+            raw = getFileInpuStream();
         } else if (schema.equals("ftp")){
             raw = getFtpInputStream();
         } else {
@@ -148,6 +159,16 @@ public class UrlReader {
         return scrubbedAddress;
     }
     
+    private InputStream getFileInpuStream() throws VoidValidatorException {
+        File file = new File(uri);
+        try {
+            FileInputStream stream = new FileInputStream(file);
+            return stream;
+        } catch (FileNotFoundException ex) {
+            throw new VoidValidatorException ("Error getting inputstream " + uri, ex);
+        }
+    }
+
      private InputStream getHttpsInputStream() throws VoidValidatorException {
         String encodedAuthorization = null;
         if (username != null && password != null){
@@ -351,4 +372,5 @@ public class UrlReader {
             return uri + " username " + username; 
         }
     }
+
 }

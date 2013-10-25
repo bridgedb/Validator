@@ -1,0 +1,1881 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://vocabularies.bridgedb.org/ops#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://vocabularies.bridgedb.org/ops#">
+    <Prefix name="terms" IRI="http://purl.org/dc/terms/"/>
+    <Prefix name="DUL" IRI="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#"/>
+    <Prefix name="voag2" IRI="http://voag.linkedmodel.org/voag#"/>
+    <Prefix name="dcmitype" IRI="http://purl.org/dc/dcmitype/"/>
+    <Prefix name="pav" IRI="http://purl.org/pav/"/>
+    <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="voag" IRI="http://voag.linkedmodel.org/schema/voag#"/>
+    <Prefix name="void" IRI="http://rdfs.org/ns/void#"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="" IRI="http://openphacts.cs.man.ac.uk:9090/Void/ontology.owl#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="http://edamontology.org/data_1460"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://edamontology.org/data_2342"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo#has_part"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo#is_tautomer_of"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_6239"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9615"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9913"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/annual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/biennial"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/bimonthly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/biweekly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/continuous"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/daily"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/irregular"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/monthly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/quarterly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/semiannual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/semimonthly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/semiweekly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAMonth"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAWeek"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAYear"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/triennial"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.org/cld/freq/weekly"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="void:Dataset"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="void:Linkset"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000059"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000456"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000458"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000459"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000460"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000480"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000486"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_000985"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_000986"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_001107"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_001166"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_001171"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010004"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010009"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010035"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010038"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010043"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010099"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010299"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010423"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://semanticscience.org/resource/SIO_010432"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="1"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="2"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="3"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="4"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="5"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="6"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="7"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="8"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="9"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="DataSetType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="FrequencyOfChange"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="FunctionalmRNACodingGene"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="JustificationsForRelatingPathways"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="LinkJustification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="MiscellaneousJustifications"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="terms:accuralPeriodicity"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="terms:license"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="terms:publisher"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="terms:subject"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:authoredBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:createdBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:createdWith"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:derivedFrom"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:importedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:importedFrom"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:retrievedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="pav:retrievedFrom"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://purl.org/spar/cito/citesAsAuthority"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:dataDump"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:exampleResource"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:inDataset"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:linkPredicate"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:objectsTarget"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:sparqlEndpoint"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:subjectsTarget"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:subset"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:target"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="void:vocabulary"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="CitationTypingObjectProperty"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="DataCatalogObjectProperty"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="DublinCoreObjectProperty"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="FriendOfAFriendObjectProperty"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="assertionMethod"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="linksetJustification"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="objectsDatatype"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="objectsSpecies"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="subjectsDatatype"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="subjectsSpecies"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#downloadURL"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#landingPage"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#mediaType"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#theme"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="foaf:homepage"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="foaf:page"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="foaf:primaryTopic"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="foaf:topic"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="terms:description"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="terms:issued"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="terms:title"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:authoredOn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:createdOn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:importedOn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:lastRefreshedOn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:lastUpdateOn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:previousVersion"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:retrievedOn"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="pav:version"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="void:triples"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="void:uriRegexPattern"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="void:uriSpace"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="DataCatalogDataProperty"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="DublinCoreDataProperty"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="VocabularyOfInterlinkedDatasetsDataProperty"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.w3.org/ns/dcat#byteSize"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI=":May"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI=":Must"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI=":Should"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="http://semanticscience.org/resource/CHEMINF_000456"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_001166"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010004"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010035"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010038"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010299"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010432"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="http://edamontology.org/data_1460"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://edamontology.org/data_2342"/>
+        <Class IRI="JustificationsForRelatingPathways"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo#has_part"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo#is_tautomer_of"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_6239"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9615"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9913"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/annual"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/biennial"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/bimonthly"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/biweekly"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/continuous"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/daily"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/irregular"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/monthly"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/quarterly"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/semiannual"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/semimonthly"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/semiweekly"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAMonth"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAWeek"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAYear"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/triennial"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.org/cld/freq/weekly"/>
+        <Class IRI="FrequencyOfChange"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:license"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="foaf:homepage"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:description"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:title"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty abbreviatedIRI="void:uriSpace"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectUnionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="void:dataDump"/>
+                <Class abbreviatedIRI="owl:Thing"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
+                <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+            </ObjectSomeValuesFrom>
+        </ObjectUnionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:accuralPeriodicity"/>
+            <ObjectUnionOf>
+                <Class IRI="http://purl.org/cld/freq/annual"/>
+                <Class IRI="http://purl.org/cld/freq/biennial"/>
+                <Class IRI="http://purl.org/cld/freq/bimonthly"/>
+                <Class IRI="http://purl.org/cld/freq/biweekly"/>
+                <Class IRI="http://purl.org/cld/freq/continuous"/>
+                <Class IRI="http://purl.org/cld/freq/daily"/>
+                <Class IRI="http://purl.org/cld/freq/irregular"/>
+                <Class IRI="http://purl.org/cld/freq/monthly"/>
+                <Class IRI="http://purl.org/cld/freq/quarterly"/>
+                <Class IRI="http://purl.org/cld/freq/semiannual"/>
+                <Class IRI="http://purl.org/cld/freq/semimonthly"/>
+                <Class IRI="http://purl.org/cld/freq/semiweekly"/>
+                <Class IRI="http://purl.org/cld/freq/threeTimesAMonth"/>
+                <Class IRI="http://purl.org/cld/freq/threeTimesAWeek"/>
+                <Class IRI="http://purl.org/cld/freq/threeTimesAYear"/>
+                <Class IRI="http://purl.org/cld/freq/triennial"/>
+                <Class IRI="http://purl.org/cld/freq/weekly"/>
+            </ObjectUnionOf>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:license"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">MUST</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:publisher"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:subject"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:authoredBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdWith"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:derivedFrom"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:importedBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:importedFrom"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.org/spar/cito/citesAsAuthority"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="void:exampleResource"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="void:sparqlEndpoint"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="void:vocabulary"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
+            <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">MUST</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#landingPage"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#theme"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="foaf:homepage"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="foaf:page"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:description"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:issued"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:title"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:authoredOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:createdOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:importedOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:lastRefreshedOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:previousVersion"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:version"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="void:uriRegexPattern"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="void:uriSpace"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <ObjectUnionOf>
+            <DataSomeValuesFrom>
+                <DataProperty abbreviatedIRI="terms:issued"/>
+                <Datatype abbreviatedIRI="rdfs:Literal"/>
+            </DataSomeValuesFrom>
+            <DataSomeValuesFrom>
+                <DataProperty abbreviatedIRI="pav:createdOn"/>
+                <Datatype abbreviatedIRI="xsd:dateTime"/>
+            </DataSomeValuesFrom>
+            <DataSomeValuesFrom>
+                <DataProperty abbreviatedIRI="pav:lastUpdateOn"/>
+                <Datatype abbreviatedIRI="xsd:dateTime"/>
+            </DataSomeValuesFrom>
+        </ObjectUnionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="foaf:primaryTopic"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:description"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:title"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:license"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:publisher"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="void:dataDump"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty abbreviatedIRI="void:linkPredicate"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty abbreviatedIRI="void:objectsTarget"/>
+            <ObjectUnionOf>
+                <Class abbreviatedIRI="dcmitype:Dataset"/>
+                <Class abbreviatedIRI="void:Dataset"/>
+            </ObjectUnionOf>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty abbreviatedIRI="void:subjectsTarget"/>
+            <ObjectUnionOf>
+                <Class abbreviatedIRI="dcmitype:Dataset"/>
+                <Class abbreviatedIRI="void:Dataset"/>
+            </ObjectUnionOf>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">MUST</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="linksetJustification"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:description"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:issued"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:title"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:createdOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:version"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000059"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000456"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000458"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000459"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000460"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000480"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/CHEMINF_000486"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_000985"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_000986"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_001107"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_001107"/>
+        <Class IRI="JustificationsForRelatingPathways"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_001166"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_001166"/>
+        <Class IRI="MiscellaneousJustifications"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_001171"/>
+        <Class IRI="MiscellaneousJustifications"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010004"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010004"/>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010009"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010009"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010035"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010035"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010038"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010043"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010043"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010099"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010099"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010299"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010423"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010423"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://semanticscience.org/resource/SIO_010432"/>
+        <Class IRI="DataSetType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="1"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="2"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="3"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="4"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="5"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="6"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="7"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="8"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="9"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="DataSetType"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="FunctionalmRNACodingGene"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="JustificationsForRelatingChemicalEntities"/>
+        <Class IRI="LinkJustification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="JustificationsForRelatingPathways"/>
+        <Class IRI="LinkJustification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="JustificationsForRelatingTargets"/>
+        <Class IRI="LinkJustification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="MiscellaneousJustifications"/>
+        <Class IRI="LinkJustification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
+        <Class IRI="JustificationsForRelatingTargets"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#downloadURL"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#mediaType"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:issued"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:previousVersion"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:version"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="http://www.w3.org/ns/dcat#byteSize"/>
+            <Datatype abbreviatedIRI="xsd:integer"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <DisjointUnion>
+        <Class IRI="FrequencyOfChange"/>
+        <Class IRI="http://purl.org/cld/freq/annual"/>
+        <Class IRI="http://purl.org/cld/freq/biennial"/>
+        <Class IRI="http://purl.org/cld/freq/bimonthly"/>
+        <Class IRI="http://purl.org/cld/freq/biweekly"/>
+        <Class IRI="http://purl.org/cld/freq/continuous"/>
+        <Class IRI="http://purl.org/cld/freq/daily"/>
+        <Class IRI="http://purl.org/cld/freq/irregular"/>
+        <Class IRI="http://purl.org/cld/freq/monthly"/>
+        <Class IRI="http://purl.org/cld/freq/quarterly"/>
+        <Class IRI="http://purl.org/cld/freq/semiannual"/>
+        <Class IRI="http://purl.org/cld/freq/semimonthly"/>
+        <Class IRI="http://purl.org/cld/freq/semiweekly"/>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAMonth"/>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAWeek"/>
+        <Class IRI="http://purl.org/cld/freq/threeTimesAYear"/>
+        <Class IRI="http://purl.org/cld/freq/triennial"/>
+        <Class IRI="http://purl.org/cld/freq/weekly"/>
+    </DisjointUnion>
+    <ClassAssertion>
+        <Class IRI="DataSetType"/>
+        <NamedIndividual IRI="http://semanticscience.org/resource/CHEMINF_000456"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="DataSetType"/>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_001166"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="DataSetType"/>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010004"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="DataSetType"/>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010035"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="DataSetType"/>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010038"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="DataSetType"/>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010299"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="DataSetType"/>
+        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010432"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="terms:accuralPeriodicity"/>
+        <ObjectProperty IRI="DublinCoreObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="terms:license"/>
+        <ObjectProperty IRI="DublinCoreObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="terms:publisher"/>
+        <ObjectProperty IRI="DublinCoreObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="terms:subject"/>
+        <ObjectProperty IRI="DublinCoreObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:authoredBy"/>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:createdBy"/>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:createdWith"/>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:derivedFrom"/>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:importedBy"/>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:importedFrom"/>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:retrievedBy"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="pav:retrievedFrom"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://purl.org/spar/cito/citesAsAuthority"/>
+        <ObjectProperty IRI="CitationTypingObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:dataDump"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:exampleResource"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:inDataset"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:linkPredicate"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:objectsTarget"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:sparqlEndpoint"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:subjectsTarget"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:subset"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:target"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="void:vocabulary"/>
+        <ObjectProperty IRI="VocabularyOfInterlinkedDatasetsObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="assertionMethod"/>
+        <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="linksetJustification"/>
+        <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="objectsDatatype"/>
+        <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="objectsSpecies"/>
+        <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="subjectsDatatype"/>
+        <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="subjectsSpecies"/>
+        <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
+        <ObjectProperty IRI="DataCatalogObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#downloadURL"/>
+        <ObjectProperty IRI="DataCatalogObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#landingPage"/>
+        <ObjectProperty IRI="DataCatalogObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#mediaType"/>
+        <ObjectProperty IRI="DataCatalogObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://www.w3.org/ns/dcat#theme"/>
+        <ObjectProperty IRI="DataCatalogObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="foaf:homepage"/>
+        <ObjectProperty IRI="FriendOfAFriendObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="foaf:page"/>
+        <ObjectProperty IRI="FriendOfAFriendObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="foaf:primaryTopic"/>
+        <ObjectProperty IRI="FriendOfAFriendObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="foaf:topic"/>
+        <ObjectProperty IRI="FriendOfAFriendObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="terms:description"/>
+        <DataProperty IRI="DublinCoreDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="terms:issued"/>
+        <DataProperty IRI="DublinCoreDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="terms:title"/>
+        <DataProperty IRI="DublinCoreDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:authoredOn"/>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:createdOn"/>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:importedOn"/>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:lastRefreshedOn"/>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:lastUpdateOn"/>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:previousVersion"/>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:retrievedOn"/>
+        <DataProperty IRI="VocabularyOfInterlinkedDatasetsDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="pav:version"/>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="void:triples"/>
+        <DataProperty IRI="VocabularyOfInterlinkedDatasetsDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="void:uriRegexPattern"/>
+        <DataProperty IRI="VocabularyOfInterlinkedDatasetsDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="void:uriSpace"/>
+        <DataProperty IRI="VocabularyOfInterlinkedDatasetsDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.w3.org/ns/dcat#byteSize"/>
+        <DataProperty IRI="DataCatalogDataProperty"/>
+    </SubDataPropertyOf>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://edamontology.org/data_1460</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Protein structure</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://edamontology.org/data_2342</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Pathway Name</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo#has_part</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has part</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo#is_tautomer_of</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Is tautomer of</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_6239</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Caenorhabditis Elegans</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_9615</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Canis Familiaris</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_9913</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Bos Taurus</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <AbbreviatedIRI>dcmitype:Dataset</AbbreviatedIRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">http://purl.org/dc/dcmitype/Dataset</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <AbbreviatedIRI>void:Dataset</AbbreviatedIRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">http://rdfs.org/ns/void#Dataset</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/CHEMINF_000059</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">InChI Key</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/CHEMINF_000456</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has stereoundefined parent</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/CHEMINF_000458</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has OPS normalized counterpart</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/CHEMINF_000459</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has isotopically unspecified parent</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/CHEMINF_000460</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has uncharged counterpart</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/CHEMINF_000480</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has component with uncharged counterpart</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/CHEMINF_000486</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has major tautomer at pH 7.4</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_000985</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Protein coding gene</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_000986</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Functional RNA coding gene</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_001107</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Pathway</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_001166</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Annotation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_001171</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Database cross-reference</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010004</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Chemical Entity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010009</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">RNA</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010035</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Gene</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010038</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Drug</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010043</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Protein</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010099</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">mRNA</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010299</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Disease</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010423</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Target</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://semanticscience.org/resource/SIO_010432</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Ligand</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>DataSetType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Vocabulary Terms for Dataset Topics</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>FrequencyOfChange</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Frequency of Change Vocabulary</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>FunctionalmRNACodingGene</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Functional mRNA coding gene</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>JustificationsForRelatingChemicalEntities</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Justifications for Relating Chemical Entities</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>JustificationsForRelatingPathways</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Justifications for Relating Pathways</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>JustificationsForRelatingTargets</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Justifications for Relating Targets</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>LinkJustification</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Link Justification Vocabulary Terms</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>MiscellaneousJustifications</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Miscellaneous Justifications</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>SpeciesTermsUsedIinOPS</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Species Terms used in OPS</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://www.obofoundry.org/ro/ro.owl#has_part</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Has part</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+

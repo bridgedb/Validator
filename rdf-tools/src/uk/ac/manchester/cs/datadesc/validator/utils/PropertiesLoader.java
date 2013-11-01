@@ -30,6 +30,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.SimpleLayout;
+import uk.ac.manchester.cs.datadesc.validator.rdftools.Reporter;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 
 /**
@@ -46,8 +47,8 @@ public class PropertiesLoader {
     public static final String LOG_PROPERTIES_FILE = "log4j.properties";
     
     private InputStream inputStream;
-    private String findMethod;
-    private String foundAt;
+    private String findMethod = null;
+    private String foundAt = null;
     private String error = null;
     private Properties properties = null;
     private static boolean loggerSetup = false;
@@ -76,14 +77,16 @@ public class PropertiesLoader {
         //Logger already configured
         logger.info("Adding local properties");
         PropertiesLoader localReader = new PropertiesLoader(LOCAL_FILE_NAME); 
-        localReader.properties = new Properties();        
-        try {
-            localReader.properties.load(localReader.getInputStream());
-            localReader.inputStream.close();
-        } catch (IOException ex) {
-            throw new VoidValidatorException("Unexpected file not fond exception after file.exists returns true.", ex);
+        if (localReader.findMethod != null){
+            localReader.properties = new Properties();        
+            try {
+                localReader.properties.load(localReader.getInputStream());
+                localReader.inputStream.close();
+            } catch (IOException ex) {
+                throw new VoidValidatorException("Unexpected file not fond exception after file.exists returns true.", ex);
+            }
+            original.putAll(localReader.properties);
         }
-        original.putAll(localReader.properties);
         return original;
     }
 
@@ -117,7 +120,8 @@ public class PropertiesLoader {
             if (loadByCatalinaHomeConfigs(fileName)) return;
             if (loadFromDirectory(fileName, "../conf/OPS-IMS")) return;
             if (getInputStreamWithClassLoader(fileName)) return;
-            throw new VoidValidatorException("Unable to find " + fileName);
+            Reporter.error("No properties file " + fileName + " found.");
+            findMethod = null;
         } catch (IOException ex) {
             error = "Unexpected IOEXception after doing checks.";
             throw new VoidValidatorException(error, ex);

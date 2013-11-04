@@ -17,14 +17,14 @@ If you have specific requirements please contact Christian!
 
 Configuration 
 -------------
-Properties File Location:
+Properties File Location:   (Warning changed 1 November 2013!)
 ========================
 Both BridgeDB and the Validator look for the configuration files in the following locations. 
 Once it finds a configuration file the other locations are ignored. 
 * Directly in the run directory  (Mainly for java *.jar runs)
-* Environment Variable OPS_IMS_CONFIG: can be used to point to any location
-* Tomcat configuration folder: $CATALINA_HOME/conf/OPS-IMS
-* ../conf/OPS-IMS                  #Allows tomcat to pick up $CATALINA_HOME/conf/OPS-IMS even if it can not get $CATALINA_HOME
+* Environment Variable BRIDGEDB_CONFIG: can be used to point to any location
+* Tomcat configuration folder: $CATALINA_HOME/conf/BridgeDb
+* ../conf/BridgeDb                 #Allows tomcat to pick up $CATALINA_HOME/conf/BridgeDb even if it can not get $CATALINA_HOME
 * Using classLoader getResource. This will pick up the files included in Jars and Wars.
 
 ======================

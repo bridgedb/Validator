@@ -30,6 +30,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.SimpleLayout;
+import uk.ac.manchester.cs.datadesc.validator.rdftools.Reporter;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 
 /**
@@ -46,8 +47,8 @@ public class PropertiesLoader {
     public static final String LOG_PROPERTIES_FILE = "log4j.properties";
     
     private InputStream inputStream;
-    private String findMethod;
-    private String foundAt;
+    private String findMethod = null;
+    private String foundAt = null;
     private String error = null;
     private Properties properties = null;
     private static boolean loggerSetup = false;
@@ -76,14 +77,16 @@ public class PropertiesLoader {
         //Logger already configured
         logger.info("Adding local properties");
         PropertiesLoader localReader = new PropertiesLoader(LOCAL_FILE_NAME); 
-        localReader.properties = new Properties();        
-        try {
-            localReader.properties.load(localReader.getInputStream());
-            localReader.inputStream.close();
-        } catch (IOException ex) {
-            throw new VoidValidatorException("Unexpected file not fond exception after file.exists returns true.", ex);
+        if (localReader.findMethod != null){
+            localReader.properties = new Properties();        
+            try {
+                localReader.properties.load(localReader.getInputStream());
+                localReader.inputStream.close();
+            } catch (IOException ex) {
+                throw new VoidValidatorException("Unexpected file not fond exception after file.exists returns true.", ex);
+            }
+            original.putAll(localReader.properties);
         }
-        original.putAll(localReader.properties);
         return original;
     }
 
@@ -115,9 +118,10 @@ public class PropertiesLoader {
             if (loadDirectly(fileName)) return;
             if (loadByEnviromentVariable(fileName)) return;
             if (loadByCatalinaHomeConfigs(fileName)) return;
-            if (loadFromDirectory(fileName, "../conf/OPS-IMS")) return;
+            if (loadFromDirectory(fileName, "../conf/BridgeDb")) return;
             if (getInputStreamWithClassLoader(fileName)) return;
-            throw new VoidValidatorException("Unable to find " + fileName);
+            Reporter.error("No properties file " + fileName + " found.");
+            findMethod = null;
         } catch (IOException ex) {
             error = "Unexpected IOEXception after doing checks.";
             throw new VoidValidatorException(error, ex);
@@ -165,20 +169,20 @@ public class PropertiesLoader {
     }
 
     /**
-     * Looks for the config file in the directory set up the environment variable "OPS_IMS_CONFIG"
-     * @return True if the config files was found. False if the environment variable "OPS_IMS_CONFIG" was unset.
+     * Looks for the config file in the directory set up the environment variable "BRIDGEDB_CONFIG"
+     * @return True if the config files was found. False if the environment variable "BRIDGEDB_CONFIG" was unset.
      * @throws IOException Thrown if the environment variable is not null, 
      *    and the config file is not found as indicated, or could not be read.
      */
     private boolean loadByEnviromentVariable(String fileName) throws VoidValidatorException, FileNotFoundException{
-        String envPath = System.getenv().get("OPS_IMS_CONFIG");
+        String envPath = System.getenv().get("BRIDGEDB_CONFIG");
         if (envPath == null || envPath.isEmpty()) {
-            logger.warn("No environment variable OPS_IMS_CONFIG found");
+            logger.warn("No environment variable BRIDGEDB_CONFIG found");
             return false;
         }
         File envDir = new File(envPath);
         if (!envDir.exists()){
-            error = "Environment Variable OPS_IMS_CONFIG points to " + envPath + 
+            error = "Environment Variable BRIDGEDB_CONFIG points to " + envPath + 
                     " but no directory found there";
             throw new VoidValidatorException (error);
         }
@@ -191,11 +195,11 @@ public class PropertiesLoader {
             findMethod = "Loaded from Environment Variable.";
             foundAt = file.getAbsolutePath();
             if (loggerSetup){
-                logger.info("Loaded file " + fileName + " using OPS_IMS_CONFIG from " + foundAt);    
+                logger.info("Loaded file " + fileName + " using BRIDGEDB_CONFIG from " + foundAt);    
             }
             return true;
         } else {
-            String error = "Environment Variable OPS_IMS_CONFIG points to " + envPath + 
+            String error = "Environment Variable BRIDGEDB_CONFIG points to " + envPath + 
                     " but is not a directory";
             throw new VoidValidatorException (error);
         }
@@ -224,8 +228,8 @@ public class PropertiesLoader {
                     " but is not a directory";
             throw new VoidValidatorException(error);
         }
-        File envDir = new File (catalineHomeDir + "/conf/OPS-IMS");
-        if (!envDir.exists()) return false; //No hard requirements that catalineHome has a /conf/OPS-IMS
+        File envDir = new File (catalineHomeDir + "/conf/BridgeDb");
+        if (!envDir.exists()) return false; //No hard requirements that catalineHome has a /conf/BridgeDb
         if (envDir.isDirectory()){
             File file = new File(envDir, fileName);
             if (!file.exists()){
@@ -240,13 +244,13 @@ public class PropertiesLoader {
             return true;
         } else {
             error = "Environment Variable CATALINA_HOME points to " + catalinaHomePath  + 
-                    " but $CATALINA_HOME/conf/OPS-IMS is not a directory";
+                    " but $CATALINA_HOME/conf/BridgeDb is not a directory";
             throw new VoidValidatorException (error);
        }
     }
     
     /**
-     * Looks for the config file in the conf/OPS-IMS sub directories of the run directory.
+     * Looks for the config file in the conf/BridgeDb sub directories of the run directory.
      * <p>
      * For tomcat conf would then be a sister directory of webapps.
      * @return True if the file was found, False if it was not found.

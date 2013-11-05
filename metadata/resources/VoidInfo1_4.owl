@@ -42,10 +42,31 @@
         <Class IRI="http://purl.obolibrary.org/obo#is_tautomer_of"/>
     </Declaration>
     <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_10090"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_4932"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_6239"/>
     </Declaration>
     <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_7227"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_7955"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9031"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9606"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9615"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9796"/>
     </Declaration>
     <Declaration>
         <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9913"/>
@@ -177,31 +198,13 @@
         <Class IRI="http://semanticscience.org/resource/SIO_010432"/>
     </Declaration>
     <Declaration>
-        <Class IRI="1"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="2"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="3"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="4"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="5"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="6"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="7"/>
     </Declaration>
     <Declaration>
         <Class IRI="8"/>
     </Declaration>
     <Declaration>
-        <Class IRI="9"/>
+        <Class IRI="Assertion_Method"/>
     </Declaration>
     <Declaration>
         <Class IRI="DataSetType"/>
@@ -229,6 +232,12 @@
     </Declaration>
     <Declaration>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000203"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000218"/>
     </Declaration>
     <Declaration>
         <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
@@ -475,11 +484,39 @@
         <Class IRI="JustificationsForRelatingChemicalEntities"/>
     </SubClassOf>
     <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_10090"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_4932"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
         <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_6239"/>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
     </SubClassOf>
     <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_7227"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_7955"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9031"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9606"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
         <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9615"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_9796"/>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
     </SubClassOf>
     <SubClassOf>
@@ -634,25 +671,7 @@
         <Class abbreviatedIRI="void:Dataset"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="terms:accuralPeriodicity"/>
-            <ObjectUnionOf>
-                <Class IRI="http://purl.org/cld/freq/annual"/>
-                <Class IRI="http://purl.org/cld/freq/biennial"/>
-                <Class IRI="http://purl.org/cld/freq/bimonthly"/>
-                <Class IRI="http://purl.org/cld/freq/biweekly"/>
-                <Class IRI="http://purl.org/cld/freq/continuous"/>
-                <Class IRI="http://purl.org/cld/freq/daily"/>
-                <Class IRI="http://purl.org/cld/freq/irregular"/>
-                <Class IRI="http://purl.org/cld/freq/monthly"/>
-                <Class IRI="http://purl.org/cld/freq/quarterly"/>
-                <Class IRI="http://purl.org/cld/freq/semiannual"/>
-                <Class IRI="http://purl.org/cld/freq/semimonthly"/>
-                <Class IRI="http://purl.org/cld/freq/semiweekly"/>
-                <Class IRI="http://purl.org/cld/freq/threeTimesAMonth"/>
-                <Class IRI="http://purl.org/cld/freq/threeTimesAWeek"/>
-                <Class IRI="http://purl.org/cld/freq/threeTimesAYear"/>
-                <Class IRI="http://purl.org/cld/freq/triennial"/>
-                <Class IRI="http://purl.org/cld/freq/weekly"/>
-            </ObjectUnionOf>
+            <Class IRI="FrequencyOfChange"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -696,6 +715,17 @@
         <Class abbreviatedIRI="void:Dataset"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="pav:authoredBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdBy"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
@@ -813,7 +843,7 @@
         <Class abbreviatedIRI="void:Dataset"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty IRI="http://www.w3.org/ns/dcat#theme"/>
-            <Class abbreviatedIRI="owl:Thing"/>
+            <Class IRI="DataSetType"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -927,6 +957,10 @@
         </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
         <Class abbreviatedIRI="void:Dataset"/>
         <DataSomeValuesFrom>
             <DataProperty abbreviatedIRI="pav:version"/>
@@ -1284,39 +1318,11 @@
         <Class IRI="DataSetType"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="1"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="2"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="3"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="4"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="5"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="6"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="7"/>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="8"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="9"/>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
     </SubClassOf>
     <SubClassOf>
@@ -1342,6 +1348,14 @@
     <SubClassOf>
         <Class IRI="MiscellaneousJustifications"/>
         <Class IRI="LinkJustification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000203"/>
+        <Class IRI="Assertion_Method"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000218"/>
+        <Class IRI="Assertion_Method"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
@@ -1695,13 +1709,48 @@
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_10090</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Mus Musculus</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_4932</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Saccharomyces Cerevisiae</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/NCBITaxon_6239</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Caenorhabditis Elegans</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_7227</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Drosophila Melanogaster</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_7955</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Danio Rerio</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_9031</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Gallus Gallus</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_9606</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Homo Sapiens</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo/NCBITaxon_9615</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Canis Familiaris</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/NCBITaxon_9796</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Equus Caballus</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
@@ -1825,6 +1874,16 @@
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>7</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Pan Troglodytes</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>8</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Rattus Norvegicus</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>DataSetType</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Vocabulary Terms for Dataset Topics</Literal>
     </AnnotationAssertion>
@@ -1867,6 +1926,16 @@
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>SpeciesTermsUsedIinOPS</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Species Terms used in OPS</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/ECO_0000203</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Automatic assertion</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/ECO_0000218</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Manual assertion</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>

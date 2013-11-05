@@ -42,6 +42,12 @@
         <Class IRI="http://purl.obolibrary.org/obo#is_tautomer_of"/>
     </Declaration>
     <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000203"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000218"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_10090"/>
     </Declaration>
     <Declaration>
@@ -232,12 +238,6 @@
     </Declaration>
     <Declaration>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000203"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000218"/>
     </Declaration>
     <Declaration>
         <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
@@ -484,6 +484,14 @@
         <Class IRI="JustificationsForRelatingChemicalEntities"/>
     </SubClassOf>
     <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000203"/>
+        <Class IRI="Assertion_Method"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000218"/>
+        <Class IRI="Assertion_Method"/>
+    </SubClassOf>
+    <SubClassOf>
         <Class IRI="http://purl.obolibrary.org/obo/NCBITaxon_10090"/>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
     </SubClassOf>
@@ -598,7 +606,29 @@
         </Annotation>
         <Class abbreviatedIRI="dcmitype:Dataset"/>
         <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:accuralPeriodicity"/>
+            <Class IRI="FrequencyOfChange"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="terms:license"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">MUST</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:publisher"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
@@ -609,6 +639,145 @@
         </Annotation>
         <Class abbreviatedIRI="dcmitype:Dataset"/>
         <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="terms:subject"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:authoredBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdWith"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:derivedFrom"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:importedBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:importedFrom"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://purl.org/spar/cito/citesAsAuthority"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="void:vocabulary"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
+            <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
+            <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">MUST</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#landingPage"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="http://www.w3.org/ns/dcat#theme"/>
+            <Class IRI="DataSetType"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="foaf:homepage"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
@@ -616,12 +785,34 @@
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="foaf:page"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
         </Annotation>
         <Class abbreviatedIRI="dcmitype:Dataset"/>
         <DataSomeValuesFrom>
             <DataProperty abbreviatedIRI="terms:description"/>
             <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:issued"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
         </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -638,30 +829,68 @@
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
         </Annotation>
         <Class abbreviatedIRI="dcmitype:Dataset"/>
-        <DataExactCardinality cardinality="1">
-            <DataProperty abbreviatedIRI="void:uriSpace"/>
-            <Datatype abbreviatedIRI="xsd:string"/>
-        </DataExactCardinality>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:authoredOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
         </Annotation>
-        <Class abbreviatedIRI="void:Dataset"/>
-        <ObjectUnionOf>
-            <ObjectSomeValuesFrom>
-                <ObjectProperty abbreviatedIRI="void:dataDump"/>
-                <Class abbreviatedIRI="owl:Thing"/>
-            </ObjectSomeValuesFrom>
-            <ObjectSomeValuesFrom>
-                <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
-                <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
-            </ObjectSomeValuesFrom>
-        </ObjectUnionOf>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:createdOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:importedOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:lastRefreshedOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:previousVersion"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="dcmitype:Dataset"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:version"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Annotation>
@@ -781,6 +1010,17 @@
         <Class abbreviatedIRI="void:Dataset"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty IRI="http://purl.org/spar/cito/citesAsAuthority"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Dataset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="void:dataDump"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
@@ -992,28 +1232,7 @@
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
-        </Annotation>
-        <Class abbreviatedIRI="void:DatasetDescription"/>
-        <ObjectUnionOf>
-            <DataSomeValuesFrom>
-                <DataProperty abbreviatedIRI="terms:issued"/>
-                <Datatype abbreviatedIRI="rdfs:Literal"/>
-            </DataSomeValuesFrom>
-            <DataSomeValuesFrom>
-                <DataProperty abbreviatedIRI="pav:createdOn"/>
-                <Datatype abbreviatedIRI="xsd:dateTime"/>
-            </DataSomeValuesFrom>
-            <DataSomeValuesFrom>
-                <DataProperty abbreviatedIRI="pav:lastUpdateOn"/>
-                <Datatype abbreviatedIRI="xsd:dateTime"/>
-            </DataSomeValuesFrom>
-        </ObjectUnionOf>
-    </SubClassOf>
-    <SubClassOf>
-        <Annotation>
-            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
         </Annotation>
         <Class abbreviatedIRI="void:DatasetDescription"/>
         <ObjectSomeValuesFrom>
@@ -1024,7 +1243,18 @@
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdWith"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
         </Annotation>
         <Class abbreviatedIRI="void:DatasetDescription"/>
         <ObjectSomeValuesFrom>
@@ -1046,12 +1276,45 @@
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="terms:issued"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
         </Annotation>
         <Class abbreviatedIRI="void:DatasetDescription"/>
         <DataSomeValuesFrom>
             <DataProperty abbreviatedIRI="terms:title"/>
             <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:createdOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:DatasetDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty abbreviatedIRI="pav:lastUpdateOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
         </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -1083,7 +1346,29 @@
         </Annotation>
         <Class abbreviatedIRI="void:Linkset"/>
         <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:authoredBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="pav:createdBy"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty abbreviatedIRI="pav:createdWith"/>
             <Class abbreviatedIRI="owl:Thing"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
@@ -1116,10 +1401,7 @@
         <Class abbreviatedIRI="void:Linkset"/>
         <ObjectExactCardinality cardinality="1">
             <ObjectProperty abbreviatedIRI="void:objectsTarget"/>
-            <ObjectUnionOf>
-                <Class abbreviatedIRI="dcmitype:Dataset"/>
-                <Class abbreviatedIRI="void:Dataset"/>
-            </ObjectUnionOf>
+            <Class abbreviatedIRI="void:Dataset"/>
         </ObjectExactCardinality>
     </SubClassOf>
     <SubClassOf>
@@ -1130,10 +1412,7 @@
         <Class abbreviatedIRI="void:Linkset"/>
         <ObjectExactCardinality cardinality="1">
             <ObjectProperty abbreviatedIRI="void:subjectsTarget"/>
-            <ObjectUnionOf>
-                <Class abbreviatedIRI="dcmitype:Dataset"/>
-                <Class abbreviatedIRI="void:Dataset"/>
-            </ObjectUnionOf>
+            <Class abbreviatedIRI="void:Dataset"/>
         </ObjectExactCardinality>
     </SubClassOf>
     <SubClassOf>
@@ -1144,6 +1423,50 @@
         <Class abbreviatedIRI="void:Linkset"/>
         <ObjectExactCardinality cardinality="1">
             <ObjectProperty IRI="linksetJustification"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="objectsDatatype"/>
+            <Class IRI="DataSetType"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="objectsSpecies"/>
+            <Class IRI="SpeciesTermsUsedIinOPS"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="subjectsDatatype"/>
+            <Class IRI="DataSetType"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="subjectsSpecies"/>
+            <Class IRI="SpeciesTermsUsedIinOPS"/>
         </ObjectExactCardinality>
     </SubClassOf>
     <SubClassOf>
@@ -1186,7 +1509,7 @@
         </Annotation>
         <Class abbreviatedIRI="void:Linkset"/>
         <DataSomeValuesFrom>
-            <DataProperty abbreviatedIRI="pav:createdOn"/>
+            <DataProperty abbreviatedIRI="pav:authoredOn"/>
             <Datatype abbreviatedIRI="xsd:dateTime"/>
         </DataSomeValuesFrom>
     </SubClassOf>
@@ -1197,8 +1520,8 @@
         </Annotation>
         <Class abbreviatedIRI="void:Linkset"/>
         <DataSomeValuesFrom>
-            <DataProperty abbreviatedIRI="pav:version"/>
-            <Datatype abbreviatedIRI="xsd:string"/>
+            <DataProperty abbreviatedIRI="pav:createdOn"/>
+            <Datatype abbreviatedIRI="xsd:dateTime"/>
         </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -1348,14 +1671,6 @@
     <SubClassOf>
         <Class IRI="MiscellaneousJustifications"/>
         <Class IRI="LinkJustification"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000203"/>
-        <Class IRI="Assertion_Method"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="http://purl.obolibrary.org/obo/ECO_0000218"/>
-        <Class IRI="Assertion_Method"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
@@ -1684,6 +1999,10 @@
         <DataProperty IRI="VocabularyOfInterlinkedDatasetsDataProperty"/>
     </SubDataPropertyOf>
     <SubDataPropertyOf>
+        <DataProperty IRI="ProvenanceAuthoringAndVersioningDataProperty"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
         <DataProperty IRI="http://www.w3.org/ns/dcat#byteSize"/>
         <DataProperty IRI="DataCatalogDataProperty"/>
     </SubDataPropertyOf>
@@ -1706,6 +2025,16 @@
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://purl.obolibrary.org/obo#is_tautomer_of</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Is tautomer of</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/ECO_0000203</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Automatic assertion</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>http://purl.obolibrary.org/obo/ECO_0000218</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Manual assertion</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
@@ -1926,16 +2255,6 @@
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>SpeciesTermsUsedIinOPS</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Species Terms used in OPS</Literal>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
-        <IRI>http://purl.obolibrary.org/obo/ECO_0000203</IRI>
-        <Literal datatypeIRI="&rdf;PlainLiteral">Automatic assertion</Literal>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
-        <IRI>http://purl.obolibrary.org/obo/ECO_0000218</IRI>
-        <Literal datatypeIRI="&rdf;PlainLiteral">Manual assertion</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>

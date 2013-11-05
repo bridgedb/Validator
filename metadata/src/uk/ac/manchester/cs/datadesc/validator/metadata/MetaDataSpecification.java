@@ -58,6 +58,7 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLSubDataPropertyOfAxiomImpl;
 
 /**
  *
@@ -163,7 +164,10 @@ public class MetaDataSpecification {
             } else if (axiom instanceof OWLClassAssertionImpl){
                 //ok do nothing
             } else if (axiom instanceof OWLSubAnnotationPropertyOfAxiom){
-                //ok do nothing      
+                //ok do nothing  
+            } else if (axiom instanceof OWLSubDataPropertyOfAxiomImpl){
+                //ok do nothing  
+                
             } else {
                 throw new VoidValidatorException ("Unexpected axiom type " + axiom.getClass() + " in " + axiom);
             }
@@ -426,4 +430,9 @@ public class MetaDataSpecification {
        return register.keySet();
    }
 
+    public static void main(String[] args) throws Exception {
+        String fileName = "VoidInfo1_4.owl";
+        InputStream stream = PropertiesLoader.getInputStream(fileName);
+        MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
+   }
 }

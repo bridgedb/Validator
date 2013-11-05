@@ -743,13 +743,6 @@
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="dcmitype:Dataset"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
-            <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
             <Literal datatypeIRI="&rdf;PlainLiteral">MUST</Literal>
@@ -1055,13 +1048,6 @@
         <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="void:vocabulary"/>
             <Class abbreviatedIRI="owl:Thing"/>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class abbreviatedIRI="void:Dataset"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="http://www.w3.org/ns/dcat#distribution"/>
-            <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -1732,6 +1718,10 @@
         </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
+        </Annotation>
         <Class IRI="http://www.w3.org/ns/dcat#Distribution"/>
         <DataSomeValuesFrom>
             <DataProperty IRI="http://www.w3.org/ns/dcat#byteSize"/>

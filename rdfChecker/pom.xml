@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
+    <artifactId>validator-bundle</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
+  <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>
+  <artifactId>rdf-checker</artifactId>
+  <name>DataDesc Validator Rdf Checker</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.dstovall</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.4</version>
+                <configuration>
+                    <mainClass>uk.ac.manchester.cs.datadesc.validator.rdfchecker.RdfChecker</mainClass>
+                </configuration>
+               <executions>
+                    <execution>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+	</build>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-runtime</artifactId>
+            <version>${sesame.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-repository-sail</artifactId>
+            <version>${sesame.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-sail-memory</artifactId>
+            <version>${sesame.version}</version>
+			<scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-sail-nativerdf</artifactId>
+            <version>${sesame.version}</version>
+			<scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-rio-turtle</artifactId>
+            <version>${sesame.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    
+    <repositories>
+        <repository>
+            <id>aduna-repo</id>
+            <name>Aduna repository</name>
+            <url>http://repo.aduna-software.org/maven2/releases/</url>
+        </repository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+    </repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>onejar-maven-plugin.googlecode.com</id>
+			<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>

@@ -33,7 +33,7 @@ class MetaDataGroup extends HasChildrenMetaData {
 
     public static final String INCLUDE_ALL = "Please included all in the list below:\n";
     
-    public MetaDataGroup(String name, String type, RequirementLevel requirementLevel, 
+    public MetaDataGroup(String name, RequirementLevel requirementLevel, 
             ArrayList<MetaDataBase> childrenMetaData) {
         super(childrenMetaData);
     }

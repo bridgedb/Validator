@@ -57,6 +57,7 @@ import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import uk.ac.manchester.cs.datadesc.validator.rdftools.Reporter;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
 
@@ -191,17 +192,12 @@ public class MetaDataSpecification {
                 if (expression.isAnonymous()){
                     //Do nothing
                 } else {
-                    System.out.println(axiom);
                     subClassOfAxiom.getSubClass().equals(this);
                     URI parent = extractURI(subClassOfAxiom.getSuperClass());
                     URI child = extractURI(subClassOfAxiom.getSubClass());
                     if (parent.stringValue().equals(THING_ID)){
-                        System.out.println ("\t THING");
-                    } else if (parent.stringValue().equals(child.stringValue())){
-                        System.out.println("\t EQUALS");
+                        //Ignore;
                     } else {
-                        System.out.println(child.stringValue());
-                        System.out.println(parent.stringValue());
                         Set<URI> children = subSets.get(parent);
                         if (children == null){
                             children = new HashSet<URI>();
@@ -212,22 +208,20 @@ public class MetaDataSpecification {
                 }
              }
         }
-        System.out.println(subSets);
         for (URI key:subSets.keySet()){
             Set<URI> children = subSets.get(key);
             HashSet<URI> newChildren = new HashSet<URI>();
-            HashSet<URI> removeChildren = new HashSet<URI>();
-            for (URI child:children){
+            Iterator<URI> iterator = children.iterator();
+            while (iterator.hasNext()) {
+                URI child = iterator.next();
                 if (subSets.containsKey(child)) {
-                    removeChildren.add(child);
+                    iterator.remove();
                     newChildren.addAll(subSets.get(child));
                 }
             }
             children.addAll(newChildren);
-            children.removeAll(removeChildren);
             subSets.put(key, children);
         }
-        System.out.println(subSets);
         return subSets;
     }
     
@@ -270,7 +264,7 @@ public class MetaDataSpecification {
             List<MetaDataBase> childMetaData = new ArrayList<MetaDataBase>();
             Map<OWLClassExpression,RequirementLevel> inner = requirements.get(type);
             for (OWLClassExpression expr: inner.keySet()){
-                MetaDataBase child = parseExpression(expr, type.getLocalName(), inner.get(expr));
+                MetaDataBase child = parseExpression(expr, inner.get(expr));
                 childMetaData.add(child);
             }
             //ystem.out.println(theClass);
@@ -294,23 +288,23 @@ public class MetaDataSpecification {
         return new URIImpl(id);
     }
     
-   private MetaDataBase parseExpression(OWLClassExpression expr, String type, RequirementLevel requirementLevel) 
+   private MetaDataBase parseExpression(OWLClassExpression expr, RequirementLevel requirementLevel) 
             throws VoidValidatorException {
         if (expr instanceof OWLQuantifiedRestriction){
-            return parseOWLQuantifiedRestriction ((OWLQuantifiedRestriction) expr, type, requirementLevel);
+            return parseOWLQuantifiedRestriction ((OWLQuantifiedRestriction) expr, requirementLevel);
         }
         if (expr instanceof OWLNaryBooleanClassExpression){
-            return parseOWLNaryBooleanClassExpression ((OWLNaryBooleanClassExpression) expr, type, requirementLevel);
+            return parseOWLNaryBooleanClassExpression ((OWLNaryBooleanClassExpression) expr, requirementLevel);
         }
         throw new VoidValidatorException("Unexpected expression." + expr + " " + expr.getClass());
     }
         
-    private MetaDataBase parseOWLNaryBooleanClassExpression(OWLNaryBooleanClassExpression expression, String type, 
+    private MetaDataBase parseOWLNaryBooleanClassExpression(OWLNaryBooleanClassExpression expression, 
             RequirementLevel requirementLevel) throws VoidValidatorException{
         ArrayList<MetaDataBase> children = new ArrayList<MetaDataBase>();
         Set<OWLClassExpression> operands = expression.getOperands();
         for (OWLClassExpression expr:operands){
-            MetaDataBase child = parseExpression(expr, type, requirementLevel);
+            MetaDataBase child = parseExpression(expr, requirementLevel);
             children.add(child);
         }
         if (expression instanceof OWLObjectIntersectionOf){
@@ -318,19 +312,19 @@ public class MetaDataSpecification {
             for (int i = 1; i < children.size(); i++){
                 name = name + " and " + children.get(i).name;
             }
-            return new MetaDataGroup(name, type, requirementLevel, children);
+            return new MetaDataGroup(name, requirementLevel, children);
         } 
         if (expression instanceof OWLObjectUnionOf){
             String name = children.get(0).name;
             for (int i = 1; i < children.size(); i++){
                 name = name + " or " + children.get(i).name;
             }
-            return new MetaDataAlternatives(name, type, requirementLevel, children);
+            return new MetaDataAlternatives(name, requirementLevel, children);
         } 
         throw new VoidValidatorException("Unexpected expression." + expression);
     }
     
-    private MetaDataBase parseOWLQuantifiedRestriction(OWLQuantifiedRestriction restriction, String type, 
+    private MetaDataBase parseOWLQuantifiedRestriction(OWLQuantifiedRestriction restriction,
             RequirementLevel requirementLevel) throws VoidValidatorException{
         URI predicate;
         OWLPropertyRange range = restriction.getFiller();
@@ -340,14 +334,14 @@ public class MetaDataSpecification {
         if (range instanceof OWLClass){
             OWLClass owlClass = (OWLClass)range;
             if (owlClass.isOWLThing()){
-                return new PropertyMetaData(predicate, type, cardinality, requirementLevel, range.toString());
+                return new PropertyMetaData(predicate, cardinality, requirementLevel, range.toString());
             }
             IRI iri = owlClass.getIRI();
  //           ontology.containsClassInSignature(iri);
             //linkingPredicates.add(predicate);
             Set<URI> linkedTypes = new HashSet<URI>();
             linkedTypes.add(new URIImpl(iri.toString()));
-            return new LinkedResource(predicate, type, cardinality, requirementLevel, linkedTypes, this);
+            return new LinkedResource(predicate, cardinality, requirementLevel, linkedTypes, this);
         } else if (range instanceof OWLObjectUnionOf){
             Set<URI> linkedTypes = new HashSet<URI>();
             OWLObjectUnionOf objectUnionOf = (OWLObjectUnionOf)range;
@@ -361,9 +355,9 @@ public class MetaDataSpecification {
                 }
             }
             //.add(predicate);
-            return new LinkedResource(predicate, type, cardinality, requirementLevel, linkedTypes, this);
+            return new LinkedResource(predicate, cardinality, requirementLevel, linkedTypes, this);
         } else {
-            return new PropertyMetaData(predicate, type, cardinality, requirementLevel, range.toString());
+            return new PropertyMetaData(predicate, cardinality, requirementLevel, range.toString());
         }
     }
 
@@ -508,7 +502,7 @@ public class MetaDataSpecification {
         InputStream stream = PropertiesLoader.getInputStream(fileName);
         MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
         StringBuilder builder = new StringBuilder();
-        System.out.println(specification);
+        Reporter.println(specification.toString());
    }
 
 }

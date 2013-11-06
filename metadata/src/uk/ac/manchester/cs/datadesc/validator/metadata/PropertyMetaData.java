@@ -38,12 +38,18 @@ class PropertyMetaData extends CardinalityMetaData {
     private final MetaDataType metaDataType;
     public final static String EXPECTED_TYPE = "Expected type: ";
     
-    public PropertyMetaData(URI predicate, String type, int cardinality, RequirementLevel requirementLevel, String objectClass) 
+    public PropertyMetaData(URI predicate, int cardinality, RequirementLevel requirementLevel, String objectClass) 
             throws VoidValidatorException {
        super(predicate, cardinality, requirementLevel);
        metaDataType = MetaDataTypeFactory.factory(objectClass);
     }
     
+    public PropertyMetaData(URI predicate, int cardinality, RequirementLevel requirementLevel, MetaDataType metaDataType) 
+            throws VoidValidatorException {
+       super(predicate, cardinality, requirementLevel);
+       this.metaDataType = metaDataType;
+    }
+
     @Override
     protected boolean appendIncorrectReport(StringBuilder builder, RdfInterface rdf, List<Statement> statements, 
             Resource context, int tabLevel, RdfValidator validator) throws VoidValidatorException {

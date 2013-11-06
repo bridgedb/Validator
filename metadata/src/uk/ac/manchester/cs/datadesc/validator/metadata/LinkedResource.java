@@ -41,7 +41,7 @@ class LinkedResource extends CardinalityMetaData {
     public static final String ERROR_SEE_REPORT = " has errors! See report for that Resource! ";
     public static final String NO_KNOWN_TYPE = " has not been typed, and does not meet the requirements of any known type. ";
    
-    public LinkedResource(URI predicate, String type, int cardinality, RequirementLevel requirementLevel, 
+    public LinkedResource(URI predicate, int cardinality, RequirementLevel requirementLevel, 
             Set<URI> linkedTypes, MetaDataSpecification metaDataSpecification) {
        super(predicate, cardinality, requirementLevel);
        this.linkedTypes = linkedTypes;

@@ -34,7 +34,7 @@ class MetaDataAlternatives extends MetaDataBase {
     final ArrayList<MetaDataBase> children;
     public final static String INCLUDE_ALTERNATIVE = "Please included one of the alternative specified. For Example:\n";
     
-    public MetaDataAlternatives(String name, String type, RequirementLevel requirementLevel, ArrayList<MetaDataBase> children) {
+    public MetaDataAlternatives(String name, RequirementLevel requirementLevel, ArrayList<MetaDataBase> children) {
         this.children = children;
     }
     

@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -69,7 +70,8 @@ public class MetaDataSpecification {
     private Map<Resource, ResourceMetaData> resourcesByType = new HashMap<Resource, ResourceMetaData>();
    // Map<Resource, ResourceMetaData> resourcesById = new HashMap<Resource, ResourceMetaData>();
     //   static String documentationRoot = "";
-    private static String THING_ID = "http://www.w3.org/2002/07/owl#Thing";
+    private final static String THING_ID = "http://www.w3.org/2002/07/owl#Thing";
+    
 //    private final Set<URI> linkingPredicates;    
     private String description;
 
@@ -119,6 +121,7 @@ public class MetaDataSpecification {
     private void init() throws VoidValidatorException{
         Map<URI,Map<OWLClassExpression,RequirementLevel>> requirements = extractRequirements();
  //       linkingPredicates = new HashSet<URI>();
+        Map<URI, Set<URI>> subsets = extractSubSets();
         loadSpecification(requirements);        
     }
     
@@ -153,7 +156,6 @@ public class MetaDataSpecification {
                     inner.put(expression, requirementLevel);
                     requirements.put(type, inner);
                 } else {
-                    System.out.println(axiom);
                     //Class subclass class statement.
                 }
             } else if (axiom instanceof OWLDeclarationAxiom){
@@ -169,7 +171,6 @@ public class MetaDataSpecification {
             } else if (axiom instanceof OWLSubDataPropertyOfAxiom){
                 //ok do nothing shows which data propteries as subs of other, Done for readability only 
             } else if (axiom instanceof OWLDisjointUnionAxiom){
-                System.out.println(axiom);   
                 //ok do nothing                  
             } else {
                 throw new VoidValidatorException ("Unexpected axiom type " + axiom.getClass() + " in " + axiom);
@@ -179,6 +180,66 @@ public class MetaDataSpecification {
         return requirements;
     }
     
+    private Map<URI, Set<URI>> extractSubSets() throws VoidValidatorException{
+        Map<URI, Set<URI>> subSets = 
+                new HashMap<URI, Set<URI>>();
+        Set<OWLAxiom> axioms = ontology.getAxioms();
+        for (OWLAxiom axiom:axioms){
+            if (axiom instanceof OWLSubClassOfAxiom){
+                OWLSubClassOfAxiom subClassOfAxiom = (OWLSubClassOfAxiom)axiom;
+                OWLClassExpression expression = subClassOfAxiom.getSuperClass();
+                if (expression.isAnonymous()){
+                    //Do nothing
+                } else {
+                    System.out.println(axiom);
+                    subClassOfAxiom.getSubClass().equals(this);
+                    URI parent = extractURI(subClassOfAxiom.getSuperClass());
+                    URI child = extractURI(subClassOfAxiom.getSubClass());
+                    if (parent.stringValue().equals(THING_ID)){
+                        System.out.println ("\t THING");
+                    } else if (parent.stringValue().equals(child.stringValue())){
+                        System.out.println("\t EQUALS");
+                    } else {
+                        System.out.println(child.stringValue());
+                        System.out.println(parent.stringValue());
+                        Set<URI> children = subSets.get(parent);
+                        if (children == null){
+                            children = new HashSet<URI>();
+                        }
+                        children.add(child);
+                        subSets.put(parent, children);
+                    }
+                }
+             }
+        }
+        System.out.println(subSets);
+        for (URI key:subSets.keySet()){
+            Set<URI> children = subSets.get(key);
+            HashSet<URI> newChildren = new HashSet<URI>();
+            HashSet<URI> removeChildren = new HashSet<URI>();
+            for (URI child:children){
+                if (subSets.containsKey(child)) {
+                    removeChildren.add(child);
+                    newChildren.addAll(subSets.get(child));
+                }
+            }
+            children.addAll(newChildren);
+            children.removeAll(removeChildren);
+            subSets.put(key, children);
+        }
+        System.out.println(subSets);
+        return subSets;
+    }
+    
+    private URI extractURI(OWLClassExpression expression) throws VoidValidatorException {
+        if (expression instanceof OWLClass){
+            OWLClass owlClass = (OWLClass)expression;
+            return new URIImpl(owlClass.toStringID());
+        } else {
+            throw new VoidValidatorException ("Unexpected expression type " + expression.getClass() + " for " + expression);
+        }
+    }
+
     private RequirementLevel extractRequirementLevel(OWLAxiom axiom, URI type) throws VoidValidatorException{
         RequirementLevel requirementLevel = null;
         Set<OWLAnnotation> annotations = axiom.getAnnotations();
@@ -449,4 +510,5 @@ public class MetaDataSpecification {
         StringBuilder builder = new StringBuilder();
         System.out.println(specification);
    }
+
 }

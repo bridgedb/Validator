@@ -41,6 +41,7 @@ import org.semanticweb.owlapi.model.OWLCardinalityRestriction;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNaryBooleanClassExpression;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -52,13 +53,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyRange;
 import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
-import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
-import uk.ac.manchester.cs.owl.owlapi.OWLClassAssertionImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLSubDataPropertyOfAxiomImpl;
 
 /**
  *
@@ -77,6 +76,7 @@ public class MetaDataSpecification {
     private static final String PROPRTIES_FILE = "MetaDataSpecifications.properties";
     private static HashMap<String,MetaDataSpecification> register = null;
     private static HashMap<String,String> descriptions = null;
+    
     private static String defaultName; 
     
     private static final String DEFAULT = "default";
@@ -153,21 +153,24 @@ public class MetaDataSpecification {
                     inner.put(expression, requirementLevel);
                     requirements.put(type, inner);
                 } else {
+                    System.out.println(axiom);
                     //Class subclass class statement.
                 }
             } else if (axiom instanceof OWLDeclarationAxiom){
-                //ok do nothing
+                //ok do nothing as declares Named Individuals, Data and Object properties      
             } else if (axiom instanceof OWLAnnotationAssertionAxiom){
-                //ok do nothing                
+                //ok do nothing  as is things like comments              
             } else if (axiom instanceof OWLSubObjectPropertyOfAxiom){
-                //ok do nothing
-            } else if (axiom instanceof OWLClassAssertionImpl){
-                //ok do nothing
-            } else if (axiom instanceof OWLSubAnnotationPropertyOfAxiom){
+                //ok do nothing as just shows which object properties as subs of other, Done for readability only
+            //} else if (axiom instanceof OWLClassAssertionAxiom){
+            //    //Individuals
+ //           } else if (axiom instanceof OWLSubAnnotationPropertyOfAxiom){
                 //ok do nothing  
-            } else if (axiom instanceof OWLSubDataPropertyOfAxiomImpl){
-                //ok do nothing  
-                
+            } else if (axiom instanceof OWLSubDataPropertyOfAxiom){
+                //ok do nothing shows which data propteries as subs of other, Done for readability only 
+            } else if (axiom instanceof OWLDisjointUnionAxiom){
+                System.out.println(axiom);   
+                //ok do nothing                  
             } else {
                 throw new VoidValidatorException ("Unexpected axiom type " + axiom.getClass() + " in " + axiom);
             }
@@ -430,9 +433,20 @@ public class MetaDataSpecification {
        return register.keySet();
    }
 
-    public static void main(String[] args) throws Exception {
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        for (Resource key:resourcesByType.keySet()){
+            resourcesByType.get(key).describe(builder, 0);
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+   
+   public static void main(String[] args) throws Exception {
         String fileName = "VoidInfo1_4.owl";
         InputStream stream = PropertiesLoader.getInputStream(fileName);
         MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
+        StringBuilder builder = new StringBuilder();
+        System.out.println(specification);
    }
 }

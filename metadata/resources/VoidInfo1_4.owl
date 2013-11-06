@@ -446,27 +446,6 @@
     <Declaration>
         <NamedIndividual abbreviatedIRI=":Should"/>
     </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="http://semanticscience.org/resource/CHEMINF_000456"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_001166"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010004"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010035"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010038"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010299"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010432"/>
-    </Declaration>
     <SubClassOf>
         <Class IRI="http://edamontology.org/data_1460"/>
         <Class IRI="JustificationsForRelatingTargets"/>
@@ -1748,34 +1727,6 @@
         <Class IRI="http://purl.org/cld/freq/triennial"/>
         <Class IRI="http://purl.org/cld/freq/weekly"/>
     </DisjointUnion>
-    <ClassAssertion>
-        <Class IRI="DataSetType"/>
-        <NamedIndividual IRI="http://semanticscience.org/resource/CHEMINF_000456"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="DataSetType"/>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_001166"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="DataSetType"/>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010004"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="DataSetType"/>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010035"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="DataSetType"/>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010038"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="DataSetType"/>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010299"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="DataSetType"/>
-        <NamedIndividual IRI="http://semanticscience.org/resource/SIO_010432"/>
-    </ClassAssertion>
     <SubObjectPropertyOf>
         <ObjectProperty abbreviatedIRI="terms:accuralPeriodicity"/>
         <ObjectProperty IRI="DublinCoreObjectProperty"/>
@@ -2090,11 +2041,6 @@
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://semanticscience.org/resource/CHEMINF_000059</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">InChI Key</Literal>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
-        <IRI>http://semanticscience.org/resource/CHEMINF_000456</IRI>
-        <Literal datatypeIRI="&rdf;PlainLiteral">Has stereoundefined parent</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>

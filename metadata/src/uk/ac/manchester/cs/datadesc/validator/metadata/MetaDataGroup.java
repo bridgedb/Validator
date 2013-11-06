@@ -53,4 +53,12 @@ class MetaDataGroup extends HasChildrenMetaData {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    void describe(StringBuilder builder, int tabLevel) {
+        tab(builder, tabLevel);
+        builder.append("GROUP: ");
+        builder.append("\n");
+        describeChildren(builder, tabLevel + 1);
+    }
+
 }

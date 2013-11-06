@@ -69,5 +69,13 @@ public class ResourceMetaData extends HasChildrenMetaData {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-   
+    @Override
+    void describe(StringBuilder builder, int tabLevel) {
+        tab(builder, tabLevel);
+        builder.append(type);
+        builder.append("\n");
+        describeChildren(builder, tabLevel + 1);
+    }
+
+
 }

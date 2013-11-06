@@ -194,4 +194,14 @@ abstract class CardinalityMetaData extends MetaDataBase {
         }
     }
 
+    final void describeCardinality(StringBuilder builder, int tabLevel) {
+        tab(builder, tabLevel);
+        builder.append(requirementLevel);
+        if (cardinality == NO_CARDINALITY) {
+            builder.append(" Some ");
+        } else {
+            builder.append (" Exactly ").append(cardinality).append(" ");
+        }
+        builder.append(predicate).append(" ");
+    }       
 }

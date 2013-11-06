@@ -68,5 +68,20 @@ abstract class HasChildrenMetaData extends MetaDataBase {
         return true;
     }
 
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        for (MetaDataBase child: children){
+            builder.append(child);
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
+    final void describeChildren(StringBuilder builder, int tabLevel) {
+        for (MetaDataBase child: children){
+            child.describe(builder, tabLevel);
+            builder.append("\n");
+        }       
+    }
 
 }

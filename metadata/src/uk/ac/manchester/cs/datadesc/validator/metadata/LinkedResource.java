@@ -157,4 +157,14 @@ class LinkedResource extends CardinalityMetaData {
         builder.append("\n");    
     }
 
+    @Override
+    void describe(StringBuilder builder, int tabLevel) {
+        describeCardinality(builder, tabLevel);
+        for (URI linkedType:linkedTypes){
+            builder.append("\n");
+            tab(builder, tabLevel+1);
+            builder.append(linkedType);
+        }
+    }
+
  }

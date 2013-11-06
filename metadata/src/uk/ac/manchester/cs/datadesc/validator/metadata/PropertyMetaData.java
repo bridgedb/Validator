@@ -83,4 +83,10 @@ class PropertyMetaData extends CardinalityMetaData {
         return true;
     }
 
+    @Override
+    void describe(StringBuilder builder, int tabLevel) {
+        describeCardinality(builder, tabLevel);
+        builder.append(metaDataType.getCorrectType());
+    }
+
 }

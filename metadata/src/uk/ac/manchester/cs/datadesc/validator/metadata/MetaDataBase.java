@@ -77,5 +77,6 @@ abstract class MetaDataBase {
         }
     }
 
-
+    abstract void describe(StringBuilder builder, int tabLevel);
+    
 }

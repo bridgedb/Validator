@@ -93,5 +93,15 @@ class MetaDataAlternatives extends MetaDataBase {
         return false;
     }
 
+    @Override
+    void describe(StringBuilder builder, int tabLevel) {
+        tab(builder, tabLevel);
+        builder.append("ALTERNATIVES: ");
+        builder.append("\n");
+        for (MetaDataBase child: children){
+            child.describe(builder, tabLevel+1);
+            builder.append("\n");
+        }       
+    }
 
 }

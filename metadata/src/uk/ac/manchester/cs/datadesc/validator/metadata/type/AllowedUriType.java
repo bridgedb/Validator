@@ -20,6 +20,7 @@
 package uk.ac.manchester.cs.datadesc.validator.metadata.type;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
@@ -30,7 +31,13 @@ import org.openrdf.model.Value;
  */
 public class AllowedUriType implements MetaDataType{
 
-    List<URI> allowedValues = new ArrayList<URI>();
+    private final Collection<URI> allowedValues;
+    private final URI parent;
+    
+    public AllowedUriType(URI parent, Collection<URI> allowedValues){
+        this.parent = parent;
+        this.allowedValues = allowedValues;
+    }
     
     /*public AllowedUriType(Element element){
         NodeList list = element.getElementsByTagName(SchemaConstants.ALLOWED_VALUE);
@@ -48,7 +55,7 @@ public class AllowedUriType implements MetaDataType{
 
     @Override
     public String getCorrectType() {
-        return " URI in " + allowedValues;
+        return parent + " URI for example: " + allowedValues;
     }
 
   

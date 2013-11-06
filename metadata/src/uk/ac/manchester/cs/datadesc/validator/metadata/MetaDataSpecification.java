@@ -57,6 +57,7 @@ import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import uk.ac.manchester.cs.datadesc.validator.metadata.type.AllowedUriType;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.Reporter;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
@@ -122,8 +123,8 @@ public class MetaDataSpecification {
     private void init() throws VoidValidatorException{
         Map<URI,Map<OWLClassExpression,RequirementLevel>> requirements = extractRequirements();
  //       linkingPredicates = new HashSet<URI>();
-        Map<URI, Set<URI>> subsets = extractSubSets();
-        loadSpecification(requirements);        
+        Map<URI, Set<URI>> subClasses = extractSubClasses();
+        loadSpecification(requirements, subClasses);        
     }
     
     //private Set<URI>
@@ -181,8 +182,8 @@ public class MetaDataSpecification {
         return requirements;
     }
     
-    private Map<URI, Set<URI>> extractSubSets() throws VoidValidatorException{
-        Map<URI, Set<URI>> subSets = 
+    private Map<URI, Set<URI>> extractSubClasses() throws VoidValidatorException{
+        Map<URI, Set<URI>> subClasses = 
                 new HashMap<URI, Set<URI>>();
         Set<OWLAxiom> axioms = ontology.getAxioms();
         for (OWLAxiom axiom:axioms){
@@ -198,31 +199,31 @@ public class MetaDataSpecification {
                     if (parent.stringValue().equals(THING_ID)){
                         //Ignore;
                     } else {
-                        Set<URI> children = subSets.get(parent);
+                        Set<URI> children = subClasses.get(parent);
                         if (children == null){
                             children = new HashSet<URI>();
                         }
                         children.add(child);
-                        subSets.put(parent, children);
+                        subClasses.put(parent, children);
                     }
                 }
              }
         }
-        for (URI key:subSets.keySet()){
-            Set<URI> children = subSets.get(key);
+        for (URI key:subClasses.keySet()){
+            Set<URI> children = subClasses.get(key);
             HashSet<URI> newChildren = new HashSet<URI>();
             Iterator<URI> iterator = children.iterator();
             while (iterator.hasNext()) {
                 URI child = iterator.next();
-                if (subSets.containsKey(child)) {
+                if (subClasses.containsKey(child)) {
                     iterator.remove();
-                    newChildren.addAll(subSets.get(child));
+                    newChildren.addAll(subClasses.get(child));
                 }
             }
             children.addAll(newChildren);
-            subSets.put(key, children);
+            subClasses.put(key, children);
         }
-        return subSets;
+        return subClasses;
     }
     
     private URI extractURI(OWLClassExpression expression) throws VoidValidatorException {
@@ -258,13 +259,13 @@ public class MetaDataSpecification {
         return requirementLevel;
     }
     
-    private void loadSpecification(Map<URI,Map<OWLClassExpression,RequirementLevel>> requirements) throws VoidValidatorException{
+    private void loadSpecification(Map<URI,Map<OWLClassExpression,RequirementLevel>> requirements, Map<URI, Set<URI>> subClasses) throws VoidValidatorException{
         Set<URI> types = requirements.keySet();
         for (URI type:types){
             List<MetaDataBase> childMetaData = new ArrayList<MetaDataBase>();
             Map<OWLClassExpression,RequirementLevel> inner = requirements.get(type);
             for (OWLClassExpression expr: inner.keySet()){
-                MetaDataBase child = parseExpression(expr, inner.get(expr));
+                MetaDataBase child = parseExpression(expr, subClasses, inner.get(expr));
                 childMetaData.add(child);
             }
             //ystem.out.println(theClass);
@@ -288,23 +289,23 @@ public class MetaDataSpecification {
         return new URIImpl(id);
     }
     
-   private MetaDataBase parseExpression(OWLClassExpression expr, RequirementLevel requirementLevel) 
+   private MetaDataBase parseExpression(OWLClassExpression expr, Map<URI, Set<URI>> subClasses, RequirementLevel requirementLevel) 
             throws VoidValidatorException {
         if (expr instanceof OWLQuantifiedRestriction){
-            return parseOWLQuantifiedRestriction ((OWLQuantifiedRestriction) expr, requirementLevel);
+            return parseOWLQuantifiedRestriction ((OWLQuantifiedRestriction) expr, subClasses, requirementLevel);
         }
         if (expr instanceof OWLNaryBooleanClassExpression){
-            return parseOWLNaryBooleanClassExpression ((OWLNaryBooleanClassExpression) expr, requirementLevel);
+            return parseOWLNaryBooleanClassExpression ((OWLNaryBooleanClassExpression) expr, subClasses, requirementLevel);
         }
         throw new VoidValidatorException("Unexpected expression." + expr + " " + expr.getClass());
     }
         
-    private MetaDataBase parseOWLNaryBooleanClassExpression(OWLNaryBooleanClassExpression expression, 
+    private MetaDataBase parseOWLNaryBooleanClassExpression(OWLNaryBooleanClassExpression expression, Map<URI, Set<URI>> subClasses,
             RequirementLevel requirementLevel) throws VoidValidatorException{
         ArrayList<MetaDataBase> children = new ArrayList<MetaDataBase>();
         Set<OWLClassExpression> operands = expression.getOperands();
         for (OWLClassExpression expr:operands){
-            MetaDataBase child = parseExpression(expr, requirementLevel);
+            MetaDataBase child = parseExpression(expr, subClasses, requirementLevel);
             children.add(child);
         }
         if (expression instanceof OWLObjectIntersectionOf){
@@ -324,7 +325,7 @@ public class MetaDataSpecification {
         throw new VoidValidatorException("Unexpected expression." + expression);
     }
     
-    private MetaDataBase parseOWLQuantifiedRestriction(OWLQuantifiedRestriction restriction,
+    private MetaDataBase parseOWLQuantifiedRestriction(OWLQuantifiedRestriction restriction, Map<URI, Set<URI>> subClasses,
             RequirementLevel requirementLevel) throws VoidValidatorException{
         URI predicate;
         OWLPropertyRange range = restriction.getFiller();
@@ -339,9 +340,15 @@ public class MetaDataSpecification {
             IRI iri = owlClass.getIRI();
  //           ontology.containsClassInSignature(iri);
             //linkingPredicates.add(predicate);
-            Set<URI> linkedTypes = new HashSet<URI>();
-            linkedTypes.add(new URIImpl(iri.toString()));
-            return new LinkedResource(predicate, cardinality, requirementLevel, linkedTypes, this);
+            URI linkedType = new URIImpl(iri.toString());
+            if (subClasses.containsKey(linkedType)){
+                AllowedUriType allowedUriType = new AllowedUriType(linkedType, subClasses.get(linkedType));
+                return new PropertyMetaData(predicate, cardinality, requirementLevel, allowedUriType);
+            } else {
+                Set<URI> linkedTypes = new HashSet<URI>();
+                linkedTypes.add(linkedType);
+                return new LinkedResource(predicate, cardinality, requirementLevel, linkedTypes, this);
+            }
         } else if (range instanceof OWLObjectUnionOf){
             Set<URI> linkedTypes = new HashSet<URI>();
             OWLObjectUnionOf objectUnionOf = (OWLObjectUnionOf)range;

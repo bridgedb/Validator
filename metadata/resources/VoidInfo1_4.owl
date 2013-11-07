@@ -944,12 +944,12 @@
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
-            <Literal datatypeIRI="&rdf;PlainLiteral">May</Literal>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Should</Literal>
         </Annotation>
         <Class abbreviatedIRI="void:Dataset"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="pav:derivedFrom"/>
-            <Class abbreviatedIRI="owl:Thing"/>
+            <Class abbreviatedIRI="dcmitype:Dataset"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>

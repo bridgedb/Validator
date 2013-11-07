@@ -29,9 +29,9 @@ import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-class MetaDataAlternatives extends MetaDataBase {
+public class MetaDataAlternatives extends MetaDataBase {
 
-    final ArrayList<MetaDataBase> children;
+    private final ArrayList<MetaDataBase> children;
     public final static String INCLUDE_ALTERNATIVE = "Please included one of the alternative specified. For Example:\n";
     
     public MetaDataAlternatives(String name, RequirementLevel requirementLevel, ArrayList<MetaDataBase> children) {
@@ -58,7 +58,7 @@ class MetaDataAlternatives extends MetaDataBase {
     boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel,
             RdfValidator validator) throws VoidValidatorException {
         boolean result = false;
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             if (child.appendError(builder, rdf, resource, context, tabLevel,  validator)){
                 result = result = true;
             }
@@ -70,12 +70,12 @@ class MetaDataAlternatives extends MetaDataBase {
     void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         tab(builder, tabLevel);
         builder.append (INCLUDE_ALTERNATIVE);
-        children.get(0).appendRequirement(builder, rdf, resource, context, tabLevel + 1);
+        getChildren().get(0).appendRequirement(builder, rdf, resource, context, tabLevel + 1);
     }
 
     @Override
     boolean hasRequiredValues(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             if (child.hasRequiredValues(rdf, resource, context)){
                 return true;
             }
@@ -85,7 +85,7 @@ class MetaDataAlternatives extends MetaDataBase {
     
     @Override
     boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             if (child.isValid(rdf, resource, context)){
                 return true;
             }
@@ -98,10 +98,17 @@ class MetaDataAlternatives extends MetaDataBase {
         tab(builder, tabLevel);
         builder.append("ALTERNATIVES: ");
         builder.append("\n");
-        for (MetaDataBase child: children){
+        for (MetaDataBase child: getChildren()){
             child.describe(builder, tabLevel+1);
             builder.append("\n");
         }       
+    }
+
+    /**
+     * @return the children
+     */
+    public ArrayList<MetaDataBase> getChildren() {
+        return children;
     }
 
 }

@@ -29,7 +29,7 @@ import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-class MetaDataGroup extends HasChildrenMetaData {
+public class MetaDataGroup extends HasChildrenMetaData {
 
     public static final String INCLUDE_ALL = "Please included all in the list below:\n";
     
@@ -42,7 +42,7 @@ class MetaDataGroup extends HasChildrenMetaData {
     void appendRequirement(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel) throws VoidValidatorException {
         tab(builder,tabLevel);
         builder.append(INCLUDE_ALL);
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             child.appendRequirement(builder, rdf, resource, context, tabLevel + 1);
         }
     }

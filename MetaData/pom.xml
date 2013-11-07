@@ -32,10 +32,15 @@
             <artifactId>owlapi-apibinding</artifactId>
             <version>${owlapi-api.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.jettison</groupId>
-            <artifactId>jettison</artifactId>
-            <version>1.3.4</version>
+    	<dependency>
+        	<groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+   	<dependency>
+        	<groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-xc</artifactId>
+            <version>1.9.13</version>
         </dependency>
         <dependency>
             <groupId>uk.ac.manchester.cs.datadesc.validator</groupId>

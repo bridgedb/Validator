@@ -33,7 +33,7 @@ import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-class PropertyMetaData extends CardinalityMetaData {
+public class PropertyMetaData extends CardinalityMetaData {
 
     private final MetaDataType metaDataType;
     public final static String EXPECTED_TYPE = "Expected type: ";
@@ -72,12 +72,12 @@ class PropertyMetaData extends CardinalityMetaData {
 
     @Override
     protected String getType() {
-        return metaDataType.getCorrectType();
+        return getMetaDataType().getCorrectType();
     }
 
     @Override
     boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        List<Statement> statements = rdf.getStatementList(resource, predicate, null, context);
+        List<Statement> statements = rdf.getStatementList(resource, getPredicate(), null, context);
         if (!correctCardinality(statements)){
             return false;
         }
@@ -92,7 +92,14 @@ class PropertyMetaData extends CardinalityMetaData {
     @Override
     void describe(StringBuilder builder, int tabLevel) {
         describeCardinality(builder, tabLevel);
-        builder.append(metaDataType.getCorrectType());
+        builder.append(getMetaDataType().getCorrectType());
+    }
+
+    /**
+     * @return the metaDataType
+     */
+    public MetaDataType getMetaDataType() {
+        return metaDataType;
     }
 
 }

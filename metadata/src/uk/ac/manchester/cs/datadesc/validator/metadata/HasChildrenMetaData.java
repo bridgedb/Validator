@@ -29,9 +29,9 @@ import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-abstract class HasChildrenMetaData extends MetaDataBase {
+public abstract class HasChildrenMetaData extends MetaDataBase {
 
-    final List<MetaDataBase> children;
+    private final List<MetaDataBase> children;
 
     HasChildrenMetaData(List<MetaDataBase> childrenMetaData){
         this.children = childrenMetaData;
@@ -40,7 +40,7 @@ abstract class HasChildrenMetaData extends MetaDataBase {
     @Override
     boolean appendError(StringBuilder builder, RdfInterface rdf, Resource resource, Resource context, int tabLevel, RdfValidator validator) throws VoidValidatorException {
         boolean result = false;
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             if (child.appendError(builder, rdf, resource, context, tabLevel, validator)){
                 result = result = true;
             }
@@ -50,7 +50,7 @@ abstract class HasChildrenMetaData extends MetaDataBase {
 
     @Override
     boolean hasRequiredValues(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             if (!child.hasRequiredValues(rdf, resource, context)){
                 return false;
             }
@@ -60,7 +60,7 @@ abstract class HasChildrenMetaData extends MetaDataBase {
 
     @Override
     boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException {
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             if (!child.isValid(rdf, resource, context)){
                 return false;
             }
@@ -70,7 +70,7 @@ abstract class HasChildrenMetaData extends MetaDataBase {
 
     public String toString(){
         StringBuilder builder = new StringBuilder();
-        for (MetaDataBase child: children){
+        for (MetaDataBase child: getChildren()){
             builder.append(child);
             builder.append("\n");
         }
@@ -78,10 +78,17 @@ abstract class HasChildrenMetaData extends MetaDataBase {
     }
 
     final void describeChildren(StringBuilder builder, int tabLevel) {
-        for (MetaDataBase child: children){
+        for (MetaDataBase child: getChildren()){
             child.describe(builder, tabLevel);
             builder.append("\n");
         }       
+    }
+
+    /**
+     * @return the children
+     */
+    public List<MetaDataBase> getChildren() {
+        return children;
     }
 
 }

@@ -57,8 +57,8 @@ import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import uk.ac.manchester.cs.datadesc.validator.bean.SpecificationBean;
 import uk.ac.manchester.cs.datadesc.validator.metadata.type.AllowedUriType;
-import uk.ac.manchester.cs.datadesc.validator.rdftools.Reporter;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
 
@@ -504,12 +504,7 @@ public class MetaDataSpecification {
         return builder.toString();
     }
    
-   public static void main(String[] args) throws Exception {
-        String fileName = "VoidInfo1_4.owl";
-        InputStream stream = PropertiesLoader.getInputStream(fileName);
-        MetaDataSpecification specification = new MetaDataSpecification(stream, fileName);
-        StringBuilder builder = new StringBuilder();
-        Reporter.println(specification.toString());
-   }
-
+    public Set<Resource> getKnownResources(){
+        return resourcesByType.keySet();
+    }
 }

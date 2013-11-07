@@ -19,6 +19,7 @@
 //
 package uk.ac.manchester.cs.datadesc.validator.metadata;
 
+import java.util.Collection;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -26,12 +27,13 @@ import org.openrdf.model.Value;
 import uk.ac.manchester.cs.datadesc.validator.RdfValidator;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
+import uk.ac.manchester.cs.datadesc.validator.result.Report;
 
 /**
  *
  * @author Christian
  */
-abstract class MetaDataBase {
+public abstract class MetaDataBase {
     public static int NO_CARDINALITY = -1;
     String name;
 
@@ -48,6 +50,10 @@ abstract class MetaDataBase {
 
     abstract boolean isValid(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException;
  
+    abstract void describe(StringBuilder builder, int tabLevel);
+
+    //abstract Report validate(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException;
+            
     final void addValue(StringBuilder builder, Value value, Resource context){
         if (value instanceof URI){
            URI uri = (URI)value;
@@ -76,7 +82,5 @@ abstract class MetaDataBase {
             builder.append("\t");
         }
     }
-
-    abstract void describe(StringBuilder builder, int tabLevel);
     
 }

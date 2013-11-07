@@ -45,12 +45,12 @@ public class ResourceMetaData extends HasChildrenMetaData {
             boolean includeWarning, int tabLevel, RdfValidator validator) throws VoidValidatorException {
         tab(builder, tabLevel);
         builder.append("Validation report for: (");
-        this.addValue(builder, type, context);
+        this.addValue(builder, getType(), context);
         builder.append(") ");
         this.addValue(builder, resource, context);
         builder.append("\n");
         boolean ok = true;
-        for (MetaDataBase child:children){
+        for (MetaDataBase child:getChildren()){
             if (child.appendValidate(builder, rdf, resource, context, includeWarning, tabLevel + 1, validator)){
                 ok = false;
             }
@@ -72,9 +72,16 @@ public class ResourceMetaData extends HasChildrenMetaData {
     @Override
     void describe(StringBuilder builder, int tabLevel) {
         tab(builder, tabLevel);
-        builder.append(type);
+        builder.append(getType());
         builder.append("\n");
         describeChildren(builder, tabLevel + 1);
+    }
+
+    /**
+     * @return the type
+     */
+    public URI getType() {
+        return type;
     }
 
 

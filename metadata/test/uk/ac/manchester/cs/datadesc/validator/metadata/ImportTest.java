@@ -20,6 +20,7 @@
 package uk.ac.manchester.cs.datadesc.validator.metadata;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -31,6 +32,8 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import uk.ac.manchester.cs.datadesc.validator.RdfValidator;
 import uk.ac.manchester.cs.datadesc.validator.ValidatorExampleConstants;
+import uk.ac.manchester.cs.datadesc.validator.bean.JacksonMarshaller;
+import uk.ac.manchester.cs.datadesc.validator.bean.SpecificationBean;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfReader;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.Reporter;
@@ -56,6 +59,14 @@ public class ImportTest {
        specifications = MetaDataSpecification.specificationByName(ValidatorExampleConstants.SIMPLE_NAME);
     }
 
+    @Test
+    public void testJson() throws IOException, VoidValidatorException{
+        SpecificationBean bean = new SpecificationBean(specifications);
+        File generated = new File("test-data/simple.json");
+        JacksonMarshaller.marshal(generated, bean);
+        SpecificationBean result = (SpecificationBean)JacksonMarshaller.unmarshal(generated, SpecificationBean.class);
+    }
+    
     @Test
     public void testTwoPartValidate() throws VoidValidatorException {
         Reporter.println("TwoPartValidate");

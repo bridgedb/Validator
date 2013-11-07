@@ -21,6 +21,7 @@ package uk.ac.manchester.cs.datadesc.validator.metadata;
 
 import java.util.List;
 import java.util.Set;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -33,7 +34,8 @@ import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
  *
  * @author Christian
  */
-class LinkedResource extends CardinalityMetaData {
+@XmlRootElement(name="Linked Resource")
+public class LinkedResource extends CardinalityMetaData {
     
     private final Set<URI> linkedTypes;
     private final MetaDataSpecification metaDataSpecification;
@@ -60,7 +62,7 @@ class LinkedResource extends CardinalityMetaData {
                 for (Statement typeStatement: typeStatements){
                     if (typeStatement.getObject() instanceof URI){
                         URI linkedType = (URI)typeStatement.getObject();
-                        if (linkedTypes.contains(linkedType)){
+                        if (getLinkedTypes().contains(linkedType)){
                             if (!this.isValid(rdf, linkedResource, context, linkedType)){
                                 appendInvalidLinked(builder, statement, context, tabLevel);
                                 validator.addResourceToValidate(linkedResource);
@@ -73,7 +75,7 @@ class LinkedResource extends CardinalityMetaData {
                     }
                 }
                 if (unknownType){
-                    for (URI possibleType: linkedTypes){
+                    for (URI possibleType: getLinkedTypes()){
                         if (unknownType && isValid(rdf, linkedResource, context, possibleType)){
                             unknownType = false;
                         }
@@ -93,7 +95,7 @@ class LinkedResource extends CardinalityMetaData {
 
     @Override
     protected String getType() {
-        return linkedTypes.toString();
+        return getLinkedTypes().toString();
     }
 
     @Override
@@ -104,11 +106,11 @@ class LinkedResource extends CardinalityMetaData {
         }
         for (Statement statement: statements){
             URI linkedType = (URI)statement.getSubject();
-            if (linkedTypes.contains(statement.getSubject())){
+            if (getLinkedTypes().contains(statement.getSubject())){
                 return isValid(rdf, resource, context, linkedType);
             }
         }
-        for (URI linkedType: linkedTypes){
+        for (URI linkedType: getLinkedTypes()){
             return isValid(rdf, resource, context, linkedType);
         }
         return false;
@@ -160,11 +162,18 @@ class LinkedResource extends CardinalityMetaData {
     @Override
     void describe(StringBuilder builder, int tabLevel) {
         describeCardinality(builder, tabLevel);
-        for (URI linkedType:linkedTypes){
+        for (URI linkedType:getLinkedTypes()){
             builder.append("\n");
             tab(builder, tabLevel+1);
             builder.append(linkedType);
         }
+    }
+
+    /**
+     * @return the linkedTypes
+     */
+    public Set<URI> getLinkedTypes() {
+        return linkedTypes;
     }
 
  }

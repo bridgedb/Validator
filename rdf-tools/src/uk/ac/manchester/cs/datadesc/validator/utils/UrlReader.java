@@ -59,13 +59,13 @@ public class UrlReader {
     private String username;
     private String password;
     private final String base;
-    private static String OPENPHACTS_GITHUB = "https://raw.github.com/openphacts/";
-    private static String RAW_GITHUB = "https://raw.github.com";
-    private static String HTML_GITHUB = "https://github.com";
-    private static String BLOB = "blob/";
-    private static String HTML_DROPBOX = "https://www.dropbox.com";
-    private static String RAW_DROPBOX = "https://dl.dropbox.com";
-    private static String method = "GET";
+    private static final String OPENPHACTS_GITHUB = "https://raw.github.com/openphacts/";
+    private static final String RAW_GITHUB = "https://raw.github.com";
+    private static final String HTML_GITHUB = "https://github.com";
+    private static final String BLOB = "blob/";
+    private static final String HTML_DROPBOX = "https://www.dropbox.com";
+    private static final String RAW_DROPBOX = "https://dl.dropbox.com";
+    private static final String method = "GET";
     private static final boolean useEpsvWithIPv4 = false; //keep
   
     private static File tempDirectory = null;
@@ -78,6 +78,13 @@ public class UrlReader {
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(UrlReader.class);
      
     public UrlReader(String address) throws VoidValidatorException{
+        System.out.println("UrlReader init called with \"" + address + "\"");
+        if (address == null){
+            throw new VoidValidatorException("Url address can not be null");
+        }
+        if (address.isEmpty()){
+            throw new VoidValidatorException("Url address can not be empty");
+        }
         try {
             java.net.URI tempUri = new URI(address);
             String path = tempUri.getPath();
@@ -103,6 +110,12 @@ public class UrlReader {
         } catch (URISyntaxException ex) {
            throw new VoidValidatorException("Unable to convert (scrubbed) " + scrubbedAddress + " to a URI");
         }
+        if (uri == null){
+            throw new VoidValidatorException("Weird uri is null with " + address);
+        }
+        if (uri.getScheme() == null){
+            throw new VoidValidatorException("Weird uri scehma is null with " + address);
+        }
         AccountInfo info = AccountsReader.findByUri(scrubbedAddress);
         if (info != null){
             username = info.getLogin();
@@ -122,6 +135,12 @@ public class UrlReader {
     }
 
     public InputStream getInputStream() throws VoidValidatorException{
+       if (uri == null){
+            throw new VoidValidatorException("Weird uri is null ");
+        }
+        if (uri.getScheme() == null){
+            throw new VoidValidatorException("Weird uri schema is null ");
+        }
         String schema = uri.getScheme().toLowerCase();
         InputStream raw;
         if (schema.equals("https") || schema.equals("http")){

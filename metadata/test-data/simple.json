@@ -10,18 +10,40 @@
           "type" : "A URI."
         }
       }, {
+        "Alternatives" : {
+          "alternatives" : [ {
+            "Group" : {
+              "requirements" : [ {
+                "Property" : {
+                  "level" : "MUST",
+                  "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasHouseNumber",
+                  "cardinality" : null,
+                  "type" : " A String"
+                }
+              }, {
+                "Property" : {
+                  "level" : "MUST",
+                  "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasStreet",
+                  "cardinality" : null,
+                  "type" : " A String"
+                }
+              } ]
+            }
+          }, {
+            "Property" : {
+              "level" : "MUST",
+              "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasPostbox",
+              "cardinality" : null,
+              "type" : " A String"
+            }
+          } ]
+        }
+      }, {
         "Property" : {
           "level" : "MUST",
           "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasBirthdate",
           "cardinality" : null,
           "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName",
-          "cardinality" : null,
-          "type" : " A String"
         }
       }, {
         "Alternatives" : {
@@ -42,33 +64,11 @@
           } ]
         }
       }, {
-        "Alternatives" : {
-          "alternatives" : [ {
-            "Property" : {
-              "level" : "MUST",
-              "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasPostbox",
-              "cardinality" : null,
-              "type" : " A String"
-            }
-          }, {
-            "Group" : {
-              "requirements" : [ {
-                "Property" : {
-                  "level" : "MUST",
-                  "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasStreet",
-                  "cardinality" : null,
-                  "type" : " A String"
-                }
-              }, {
-                "Property" : {
-                  "level" : "MUST",
-                  "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasHouseNumber",
-                  "cardinality" : null,
-                  "type" : " A String"
-                }
-              } ]
-            }
-          } ]
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName",
+          "cardinality" : null,
+          "type" : " A String"
         }
       } ],
       "type" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person"
@@ -76,11 +76,11 @@
   }, {
     "Group" : {
       "requirements" : [ {
-        "Property" : {
+        "Linked Resource" : {
           "level" : "MUST",
-          "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName",
+          "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasChild",
           "cardinality" : null,
-          "type" : " A String"
+          "linkedTypes" : [ "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person" ]
         }
       }, {
         "Property" : {
@@ -90,11 +90,11 @@
           "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       }, {
-        "Linked Resource" : {
+        "Property" : {
           "level" : "MUST",
-          "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasChild",
+          "predicate" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#hasName",
           "cardinality" : null,
-          "linkedTypes" : [ "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Person" ]
+          "type" : " A String"
         }
       } ],
       "type" : "http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#Parent"

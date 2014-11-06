@@ -43,6 +43,7 @@ public class VoidConstants {
     public static final URI OBJECTSTARGET = new URIImpl(voidns + "objectsTarget");
     public static final URI SUBSET = new URIImpl(voidns + "subset");
     public static final URI SPARQL_ENDPOINT = new URIImpl(voidns + "sparqlEndpoint");
+    public static final URI URI_REGEX_PATTERN = new URIImpl(voidns + "uriRegexPattern");
     private static final String URI_SPACE = "uriSpace";
     public static final String URI_SPACE_SHORT = PREFIX_NAME + URI_SPACE;
     public static final URI URI_SPACE_URI = new URIImpl(voidns + URI_SPACE);

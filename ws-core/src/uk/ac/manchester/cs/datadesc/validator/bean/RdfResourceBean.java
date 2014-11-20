@@ -28,9 +28,9 @@ import org.openrdf.model.impl.URIImpl;
  *
  * @author Christian
  */
-public class ResourceBean extends ValueBean{
+public class RdfResourceBean extends ValueBean{
 
-    public static Resource asResource(ResourceBean bean) {
+    public static Resource asResource(RdfResourceBean bean) {
         if (bean instanceof URIBean){
             return URIBean.asURI((URIBean)bean);
         }
@@ -60,7 +60,7 @@ public class ResourceBean extends ValueBean{
         return results;
     }
 
-    public static ResourceBean asBean(Resource result) {
+    public static RdfResourceBean asBean(Resource result) {
         if (result == null){
             return null;
         }

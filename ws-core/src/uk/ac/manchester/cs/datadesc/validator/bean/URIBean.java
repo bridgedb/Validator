@@ -28,7 +28,7 @@ import org.openrdf.model.impl.URIImpl;
  * @author Christian
  */
 @XmlRootElement(name="URI")
-public class URIBean extends ResourceBean {
+public class URIBean extends RdfResourceBean {
 
     private String address;
     

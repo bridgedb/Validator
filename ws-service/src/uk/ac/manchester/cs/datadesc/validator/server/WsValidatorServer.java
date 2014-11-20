@@ -51,16 +51,17 @@ import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.turtle.TurtleWriter;
-import uk.ac.manchester.cs.datadesc.validator.bean.ResourceBean;
-import uk.ac.manchester.cs.datadesc.validator.bean.StatementBean;
-import uk.ac.manchester.cs.datadesc.validator.bean.URIBean;
-import uk.ac.manchester.cs.datadesc.validator.bean.ValueBean;
+import uk.ac.manchester.cs.datadesc.validator.bean.RdfResourceBean;
 import uk.ac.manchester.cs.datadesc.validator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
 import uk.ac.manchester.cs.datadesc.validator.ws.WsValidationConstants;
 import uk.ac.manchester.cs.datadesc.validator.RdfValidator;
 import uk.ac.manchester.cs.datadesc.validator.Validator;
+import uk.ac.manchester.cs.datadesc.validator.bean.RdfResourceBean;
+import uk.ac.manchester.cs.datadesc.validator.bean.StatementBean;
+import uk.ac.manchester.cs.datadesc.validator.bean.URIBean;
+import uk.ac.manchester.cs.datadesc.validator.bean.ValueBean;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
 
@@ -533,10 +534,11 @@ public class WsValidatorServer implements ValidatorWSInterface{
 // Implementations
     private List<Statement> getStatementListImplementation(String subjectString, String predicateString, String objectString, 
             List<String> contextStrings) throws VoidValidatorException {
-        Resource subject = ResourceBean.asResource(subjectString);
+        RdfResourceBean test = new RdfResourceBean();
+        Resource subject = RdfResourceBean.asResource(subjectString);
         URI predicate = URIBean.asURI(predicateString);
         Value object = ValueBean.asValue(objectString);
-        Resource[] contexts = ResourceBean.asResourceArray(contextStrings);
+        Resource[] contexts = RdfResourceBean.asResourceArray(contextStrings);
         if (subject == null && predicate == null && object == null && (contexts == null || contexts.length == 0)){
             return new ArrayList<Statement>();
         } else {
@@ -551,7 +553,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (resourceString == null){
             throw new VoidValidatorException ("Missing " + WsValidationConstants.RESOURCE + " parameter!");
         }
-        Resource resource = ResourceBean.asResource(resourceString);
+        Resource resource = RdfResourceBean.asResource(resourceString);
         List<Statement> result = rdfInterface.getStatementList(resource);
         rdfInterface.close();
         return result;

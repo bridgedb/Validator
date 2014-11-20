@@ -32,8 +32,8 @@ import org.openrdf.model.impl.LiteralImpl;
 public class ValueBean {
 
     public static Value asValue(ValueBean bean) {
-        if (bean instanceof ResourceBean){
-            return ResourceBean.asResource((ResourceBean)bean);
+        if (bean instanceof RdfResourceBean){
+            return RdfResourceBean.asResource((RdfResourceBean)bean);
         }
         if (bean instanceof LiteralBean){
             return LiteralBean.asLiteral((LiteralBean)bean);
@@ -45,7 +45,7 @@ public class ValueBean {
         if (valueString == null || valueString.isEmpty()){
             return null;
         }
-        Resource resource = ResourceBean.asResource(valueString);
+        Resource resource = RdfResourceBean.asResource(valueString);
         if (resource != null){
             return resource;
         }
@@ -57,7 +57,7 @@ public class ValueBean {
             return null;
         }
         if (value instanceof Resource){
-            return ResourceBean.asBean((Resource)value);
+            return RdfResourceBean.asBean((Resource)value);
         }
         if (value instanceof Literal){
             return LiteralBean.asBean((Literal)value);

@@ -16,19 +16,19 @@
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      ontologyIRI="http://vocabularies.bridgedb.org/ops#">
-    <Prefix name="terms" IRI="http://purl.org/dc/terms/"/>
+    <Prefix name="" IRI="http://openphacts.cs.man.ac.uk:9090/Void/ontology.owl#"/>
     <Prefix name="DUL" IRI="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#"/>
-    <Prefix name="voag2" IRI="http://voag.linkedmodel.org/voag#"/>
-    <Prefix name="dcmitype" IRI="http://purl.org/dc/dcmitype/"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
     <Prefix name="pav" IRI="http://purl.org/pav/"/>
-    <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/"/>
     <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
     <Prefix name="voag" IRI="http://voag.linkedmodel.org/schema/voag#"/>
     <Prefix name="void" IRI="http://rdfs.org/ns/void#"/>
-    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
-    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
-    <Prefix name="" IRI="http://openphacts.cs.man.ac.uk:9090/Void/ontology.owl#"/>
-    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="terms" IRI="http://purl.org/dc/terms/"/>
+    <Prefix name="voag2" IRI="http://voag.linkedmodel.org/voag#"/>
+    <Prefix name="dcmitype" IRI="http://purl.org/dc/dcmitype/"/>
     <Declaration>
         <Class IRI="http://edamontology.org/data_1460"/>
     </Declaration>
@@ -204,12 +204,6 @@
         <Class IRI="http://semanticscience.org/resource/SIO_010432"/>
     </Declaration>
     <Declaration>
-        <Class IRI="7"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="8"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="Assertion_Method"/>
     </Declaration>
     <Declaration>
@@ -238,6 +232,12 @@
     </Declaration>
     <Declaration>
         <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="7"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="8"/>
     </Declaration>
     <Declaration>
         <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
@@ -337,6 +337,9 @@
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="assertionMethod"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="expresses"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="linksetJustification"/>
@@ -993,7 +996,7 @@
         <Class abbreviatedIRI="void:Dataset"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="void:dataDump"/>
-            <Class abbreviatedIRI="owl:Thing"/>
+            <Class abbreviatedIRI="void:DatasetDescription"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -1351,7 +1354,26 @@
     <SubClassOf>
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Depricated! Use linksetJustification</Literal>
+        </Annotation>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">may</Literal>
+        </Annotation>
+        <Class abbreviatedIRI="void:Linkset"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="expresses"/>
+            <Class abbreviatedIRI="owl:Thing"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
             <Literal datatypeIRI="&rdf;PlainLiteral">Must</Literal>
+        </Annotation>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Older linksets may use Expresses which is now depreicated</Literal>
         </Annotation>
         <Class abbreviatedIRI="void:Linkset"/>
         <ObjectExactCardinality cardinality="1">
@@ -1384,6 +1406,11 @@
         <Annotation>
             <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
             <Literal datatypeIRI="&rdf;PlainLiteral">MUST</Literal>
+        </Annotation>
+        <Annotation>
+            <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+            <Literal datatypeIRI="&rdf;PlainLiteral">Older Linksets may use linksetJustification instead, which
+ is now Deprecated.</Literal>
         </Annotation>
         <Class abbreviatedIRI="void:Linkset"/>
         <ObjectExactCardinality cardinality="1">
@@ -1606,14 +1633,6 @@
         <Class IRI="DataSetType"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="7"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="8"/>
-        <Class IRI="SpeciesTermsUsedIinOPS"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="DataSetType"/>
         <Class abbreviatedIRI="owl:Thing"/>
     </SubClassOf>
@@ -1636,6 +1655,14 @@
     <SubClassOf>
         <Class IRI="MiscellaneousJustifications"/>
         <Class IRI="LinkJustification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="7"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="8"/>
+        <Class IRI="SpeciesTermsUsedIinOPS"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="http://www.obofoundry.org/ro/ro.owl#has_part"/>
@@ -1826,6 +1853,10 @@
     <SubObjectPropertyOf>
         <ObjectProperty IRI="assertionMethod"/>
         <ObjectProperty IRI="BridgeDbObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="expresses"/>
+        <ObjectProperty IRI="DublinCoreObjectProperty"/>
     </SubObjectPropertyOf>
     <SubObjectPropertyOf>
         <ObjectProperty IRI="linksetJustification"/>
@@ -2139,16 +2170,6 @@
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
-        <IRI>7</IRI>
-        <Literal datatypeIRI="&rdf;PlainLiteral">Pan Troglodytes</Literal>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
-        <IRI>8</IRI>
-        <Literal datatypeIRI="&rdf;PlainLiteral">Rattus Norvegicus</Literal>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>DataSetType</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Vocabulary Terms for Dataset Topics</Literal>
     </AnnotationAssertion>
@@ -2193,6 +2214,31 @@
         <Literal datatypeIRI="&rdf;PlainLiteral">Species Terms used in OPS</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>expresses</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">The use of this to express justifcation has been deprecated.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>linksetJustification</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Replaceds expresses which is noiw deprecicated.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>objectsSpecies</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Depricated! Use linksetJustification</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>7</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Pan Troglodytes</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>8</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Rattus Norvegicus</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:label"/>
         <IRI>http://www.obofoundry.org/ro/ro.owl#has_part</IRI>
         <Literal datatypeIRI="&rdf;PlainLiteral">Has part</Literal>
@@ -2201,5 +2247,5 @@
 
 
 
-<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+<!-- Generated by the OWL API (version 3.5.0) http://owlapi.sourceforge.net -->
 

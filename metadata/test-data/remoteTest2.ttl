@@ -6,4 +6,4 @@
 
 :person1 a ops:Parent;
     ops:hasName  "John";
-    ops:hasChild <https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl#person2>.
+    ops:hasChild <https://github.com/openphacts/Validator/blob/master/metadata/test-data/remoteTest.ttl#person2>.

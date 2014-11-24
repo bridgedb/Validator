@@ -104,7 +104,7 @@ public class ExternalLinkValdiationTest {
        validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_kegg.ttl", true);
        validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_pubchem.ttl", true);
        validateURIOps("http://www.bigcat.unimaas.nl/~egonw/hmdb/3.0.5/hmdb_ls_wp.void.ttl", true);
-       //validateURISimple("https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl", true);
+       //validateURISimple("https://github.com/openphacts/Validator/blob/master/metadata/test-data/remoteTest.ttl", true);
        //validateFileSimple("test-data/remoteTest2.ttl", true);
  /*      validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_ensembl.ttl.gz", true);
        validateURIOps("http://openphacts.cs.man.ac.uk/ims/linkset/version1.3.alpha2/uniprot_flybase.ttl.gz", true);

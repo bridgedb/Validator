@@ -56,7 +56,7 @@ public abstract class ValidatorTest {
     public void testTextValidate() throws VoidValidatorException, FileNotFoundException, IOException {
         Reporter.println("TextValidate");
         String text;
-        BufferedReader br = new BufferedReader(new FileReader("../MetaData/test-data/testSimple.ttl"));
+        BufferedReader br = new BufferedReader(new FileReader("../metadata/test-data/testSimple.ttl"));
         try {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -77,7 +77,7 @@ public abstract class ValidatorTest {
     @Test
     public void testURIValidate() throws VoidValidatorException, FileNotFoundException, IOException, URISyntaxException {
         Reporter.println("URIValidate");
-        String uri = "https://github.com/openphacts/Validator/blob/master/MetaData/test-data/remoteTest.ttl";
+        String uri = "https://github.com/openphacts/Validator/blob/master/metadata/test-data/remoteTest.ttl";
         RdfUtils.checkURI(uri);
         String result = validator.validateUri(uri, RDFFormat.TURTLE.getName(), 
                 ValidatorExampleConstants.SIMPLE_NAME, Boolean.TRUE);
@@ -87,7 +87,7 @@ public abstract class ValidatorTest {
     @Test
     public void testInputStreamValidate() throws VoidValidatorException, FileNotFoundException, IOException, URISyntaxException {
         Reporter.println("InputStreamValidate");
-        File file = new File("../MetaData/test-data/remoteTest.ttl");
+        File file = new File("../metadata/test-data/remoteTest.ttl");
         FileInputStream stream = new FileInputStream(file); 
         String result = validator.validateInputStream(stream, RDFFormat.TURTLE.getName(), 
                 ValidatorExampleConstants.SIMPLE_NAME, Boolean.TRUE);

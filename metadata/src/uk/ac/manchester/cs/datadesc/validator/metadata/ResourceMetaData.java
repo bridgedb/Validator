@@ -19,7 +19,9 @@
 //
 package uk.ac.manchester.cs.datadesc.validator.metadata;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.openrdf.model.Resource;
 import org.openrdf.model.URI;
 import uk.ac.manchester.cs.datadesc.validator.RdfValidator;
@@ -84,5 +86,4 @@ public class ResourceMetaData extends HasChildrenMetaData {
         return type;
     }
 
-
-}
+ }

@@ -20,7 +20,10 @@
 package uk.ac.manchester.cs.datadesc.validator.metadata;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import org.openrdf.model.Resource;
+import org.openrdf.model.URI;
 import uk.ac.manchester.cs.datadesc.validator.RdfValidator;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
@@ -111,4 +114,13 @@ public class MetaDataAlternatives extends MetaDataBase {
         return children;
     }
 
+    @Override
+    public Set<URI> getPredicates(){
+        HashSet<URI> predicates = new HashSet<URI>();
+        for (MetaDataBase child:getChildren()){
+            predicates.addAll(child.getPredicates());
+        }
+        return predicates;
+    }
+    
 }

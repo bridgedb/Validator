@@ -20,6 +20,7 @@
 package uk.ac.manchester.cs.datadesc.validator.metadata;
 
 import java.util.Collection;
+import java.util.Set;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -52,6 +53,8 @@ public abstract class MetaDataBase {
  
     abstract void describe(StringBuilder builder, int tabLevel);
 
+    abstract Set<URI> getPredicates();
+    
     //abstract Report validate(RdfInterface rdf, Resource resource, Resource context) throws VoidValidatorException;
             
     final void addValue(StringBuilder builder, Value value, Resource context){

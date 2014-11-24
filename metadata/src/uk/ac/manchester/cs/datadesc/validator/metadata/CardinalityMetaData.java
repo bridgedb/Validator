@@ -20,7 +20,9 @@
 package uk.ac.manchester.cs.datadesc.validator.metadata;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -264,5 +266,11 @@ public abstract class CardinalityMetaData extends MetaDataBase {
         return requirementLevel;
     }
 
+    @Override
+    public Set<URI> getPredicates(){
+        HashSet<URI> predicates = new HashSet<URI>();
+        predicates.add(predicate);
+        return predicates;
+    }
 
 }

@@ -51,10 +51,10 @@ public class ValidationTest {
     
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
-        File file = new File ("test-data/testMin.ttl");
+        File file = new File ("test-data/testMinOld.ttl");
         minReader = RdfFactory.getMemory();
         minContext = minReader.loadFile(file);
-        specifications = MetaDataSpecification.specificationByName("opsVoid");
+        specifications = MetaDataSpecification.specificationByName("opsOld");
      }
     
     @AfterClass

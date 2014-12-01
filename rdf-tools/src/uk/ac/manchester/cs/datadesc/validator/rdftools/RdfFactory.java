@@ -43,7 +43,7 @@ public class RdfFactory {
     private static final boolean FILE_BASED = true;
     private static final boolean MEMORY_BASED = false;;
    
-    static final Logger logger = Logger.getLogger(RdfFactory.class);
+    private static final Logger logger = Logger.getLogger(RdfFactory.class);
     
     public static RdfReader getMemory() throws VoidValidatorException{
         Repository repository = new SailRepository(new MemoryStore());
@@ -55,8 +55,7 @@ public class RdfFactory {
         if (fileReader == null) {
             PropertiesLoader.configureLogger();
             Properties properties = PropertiesLoader.getProperties();
-            String directoryName = null;
-            directoryName = properties.getProperty(RDF_DIRECTORY);
+            String directoryName = properties.getProperty(RDF_DIRECTORY);
             if (directoryName == null){
                 directoryName = DEFAULT_DIRECTORY;
             }
@@ -73,6 +72,8 @@ public class RdfFactory {
             if (directoryName == null){
                 directoryName = DEFAULT_TEST_DIRECTORY;
             }
+            File directory = getDirectory(directoryName);
+            deleteChildren(directory);
             testFileReader = getReader(directoryName);
             testFileReader.clear();
         }
@@ -105,14 +106,22 @@ public class RdfFactory {
         if (directory.isFile()){
             throw new VoidValidatorException("RDF Directory location " + directory.getAbsolutePath() + " holds a file.");
         }
-        directory.mkdirs();
+        boolean result = directory.mkdirs();
+        if (!result){
+            throw new VoidValidatorException("Using " + directory.getAbsolutePath() + " mkdirs failed");
+        }
+        if (!directory.exists()){
+            throw new VoidValidatorException("Nothing found at " + directory.getAbsolutePath() + " after calling mkdirs");
+        }
         if (directory.isDirectory()){
             return;
         }
-        throw new VoidValidatorException("Unable to create RDF Directory " + directory.getAbsolutePath());
+        if (directory.isFile()){
+            throw new VoidValidatorException("Found a file at " + directory.getAbsolutePath());
+        }
     }
 
-    private static void delete(File file) throws VoidValidatorException {
+    private static void deleteChildren(File file) throws VoidValidatorException {
         if (file.isDirectory()){
             File[] children = file.listFiles();
             if (children != null){
@@ -121,7 +130,11 @@ public class RdfFactory {
                 }
             }
         }
-        file.delete();
+    }
+    
+    private static void delete(File file) throws VoidValidatorException {
+        deleteChildren(file);
+        boolean result = file.delete();
         if (file.exists()){
             throw new VoidValidatorException("Unable to delete " + file.getAbsolutePath());        
         }

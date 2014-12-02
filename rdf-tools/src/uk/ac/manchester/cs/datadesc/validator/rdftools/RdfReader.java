@@ -545,8 +545,9 @@ public class RdfReader implements RdfInterface{
     public void add(Statement st, Resource... contexts) throws VoidValidatorException {
         try {
             RepositoryConnection connection = getConnection();
-            connection.setAutoCommit(false);
+            connection.begin();
             connection.add(st, contexts);
+            connection.commit();
         } catch (Exception ex) {
             closeOnError();
             throw new VoidValidatorException ("Error adding statement " + st, ex);

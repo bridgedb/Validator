@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -49,9 +48,7 @@ import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.resultio.TupleQueryResultFormat;
 import org.openrdf.rio.RDFFormat;
-import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.turtle.TurtleWriter;
-import uk.ac.manchester.cs.datadesc.validator.bean.RdfResourceBean;
 import uk.ac.manchester.cs.datadesc.validator.metadata.MetaDataSpecification;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfInterface;
 import uk.ac.manchester.cs.datadesc.validator.rdftools.VoidValidatorException;
@@ -62,7 +59,6 @@ import uk.ac.manchester.cs.datadesc.validator.bean.RdfResourceBean;
 import uk.ac.manchester.cs.datadesc.validator.bean.StatementBean;
 import uk.ac.manchester.cs.datadesc.validator.bean.URIBean;
 import uk.ac.manchester.cs.datadesc.validator.bean.ValueBean;
-import uk.ac.manchester.cs.datadesc.validator.rdftools.RdfFactory;
 import uk.ac.manchester.cs.datadesc.validator.utils.PropertiesLoader;
 
     
@@ -148,7 +144,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (errorState()){
             return errorReport();
         }
-        StringBuilder sb = frame.topAndSide(serviceName + "home",  httpServletRequest);
+        StringBuilder sb = new StringBuilder();
         sb.append("<h1> Welcome to the ");
         sb.append(serviceName);
         sb.append(".</h1>");
@@ -157,11 +153,11 @@ public class WsValidatorServer implements ValidatorWSInterface{
         sb.append("<p>To Try a different ontology please contact Christian.</p>");
         sb.append("<hr/>");
         formValidation(sb, null, null, null, null, true, httpServletRequest);                     
-        frame.footerAndEnd(sb);
+        String page = frame.createHtmlPage(serviceName + "home", sb.toString(), httpServletRequest);
         if (logger.isDebugEnabled()){
             logger.debug("ValidateHome returning");
         }
-        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();
+        return Response.ok(page, MediaType.TEXT_HTML).build();
     }
     
     @GET
@@ -230,7 +226,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
                 }
             }
         }
-        StringBuilder sb = frame.topAndSide(serviceName + "statement list",  httpServletRequest);
+        StringBuilder sb = new StringBuilder();
         formStatementList(sb, subjectString, predicateString, objectString, contextStrings, httpServletRequest); 
         if ((subjectString != null && !subjectString.isEmpty()) || 
                 (predicateString != null && !predicateString.isEmpty()) || 
@@ -242,11 +238,11 @@ public class WsValidatorServer implements ValidatorWSInterface{
 //            appendExampleButton(sb, WsValidationConstants.STATEMENT_LIST, httpServletRequest, 
 //                    WsValidationConstants.SUBJECT, frame.getExampleResource());
         }
-        frame.footerAndEnd(sb);
+        String page = frame.createHtmlPage(serviceName + "statement list", sb.toString(), httpServletRequest);
         if (logger.isDebugEnabled()){
             logger.debug("getStatementList returning");
         }
-        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
+        return Response.ok(page, MediaType.TEXT_HTML).build();
     }
 
     @Override
@@ -278,7 +274,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (errorState()){
             return errorReport();
         }
-        StringBuilder sb = frame.topAndSide(serviceName + "by Resource",  httpServletRequest);
+        StringBuilder sb = new StringBuilder();
         sb.append("<p>Find all stored instances of this Resource in any context.");
         sb.append("This includes all statements where this resource is the Subject or the Object.</p>");
         formByResource(sb, resourceString, httpServletRequest); 
@@ -289,11 +285,11 @@ public class WsValidatorServer implements ValidatorWSInterface{
 //            appendExampleButton(sb, WsValidationConstants.BY_RESOURCE, httpServletRequest, 
 //                    WsValidationConstants.RESOURCE, frame.getExampleResource());
         }
-        frame.footerAndEnd(sb);
+        String page = frame.createHtmlPage(serviceName + "by Resource", sb.toString(), httpServletRequest);
         if (logger.isDebugEnabled()){
             logger.debug("getByResource returning");
         }
-        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
+        return Response.ok(page, MediaType.TEXT_HTML).build();
     }    
     
     @Override
@@ -326,7 +322,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (errorState()){
             return errorReport();
         }
-        StringBuilder sb = frame.topAndSide(serviceName,  httpServletRequest);
+        StringBuilder sb = new StringBuilder();
         formLoadUri(sb, address, formatName, httpServletRequest); 
         if (address!= null && !address.isEmpty()){
             URI context = this.loadURIImplementation(address, formatName);
@@ -341,11 +337,11 @@ public class WsValidatorServer implements ValidatorWSInterface{
 //            appendExampleButton(sb, WsValidationConstants.LOAD_URI, httpServletRequest, 
 //                   WsValidationConstants.URI, frame.getExampleURI());
         }
-        frame.footerAndEnd(sb);
+        String page = frame.createHtmlPage(serviceName, sb.toString(), httpServletRequest);
         if (logger.isDebugEnabled()){
             logger.debug("loadURI returning");
         }
-        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
+        return Response.ok(page, MediaType.TEXT_HTML).build();
     }
 
     @Override
@@ -379,7 +375,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
             return errorReport();
         }
         logger.info("runSparqlQuery called query = " + query + " formatName = " + formatName);
-        StringBuilder sb = frame.topAndSide(serviceName + "SPARQL Service ",  httpServletRequest);
+        StringBuilder sb = new StringBuilder();
         formSparql(sb, query, formatName, httpServletRequest); 
         if (query != null && !query.isEmpty() && formatName != null && !formatName.isEmpty()){
             logger.info("running Sparql Query");
@@ -392,12 +388,12 @@ public class WsValidatorServer implements ValidatorWSInterface{
 //                    WsValidationConstants.FORMAT, ExampleConstants.EXAMPLE_OUTPUT_FORMAT,
 //                    WsValidationConstants.QUERY, frame.getExampleQuery());
          }
-        frame.footerAndEnd(sb);
+        String page = frame.createHtmlPage(serviceName + "SPARQL Service ", sb.toString(), httpServletRequest);
         logger.info("returning");
         if (logger.isDebugEnabled()){
             logger.debug("runSparqlQuery returning");
         }
-        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();  
+        return Response.ok(page, MediaType.TEXT_HTML).build();
     }
  
     @Override
@@ -450,7 +446,7 @@ public class WsValidatorServer implements ValidatorWSInterface{
     @Produces(MediaType.TEXT_HTML)
 	public Response validateFile(String validationResult, @Context HttpServletRequest httpServletRequest) 
             throws VoidValidatorException {  
-        StringBuilder sb = frame.topAndSide(serviceName + "validate turtle file", httpServletRequest);
+        StringBuilder sb = new StringBuilder();
         if (validationResult == null || validationResult.isEmpty()){
            sb.append("<h1>Validate A Turtle File</h1>\n");
            sb.append("<h4>Sorry other file formats currently not available. Ask if required.</h4>\n");
@@ -473,8 +469,8 @@ public class WsValidatorServer implements ValidatorWSInterface{
         sb.append("<input type=\"submit\" value=\"Validate\" />");
         sb.append("</form>");
 
-        frame.footerAndEnd(sb);        
-        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
+        String page = frame.createHtmlPage(serviceName + "validate turtle file", sb.toString(), httpServletRequest);
+        return Response.ok(page, MediaType.TEXT_HTML).build();
 	}  
     
     @GET
@@ -493,23 +489,14 @@ public class WsValidatorServer implements ValidatorWSInterface{
         if (errorState()){
             return errorReport();
         }
-        StringBuilder sb = frame.topAndSide("Validation Service", httpServletRequest);
+        StringBuilder sb = new StringBuilder();
         boolean validated = getAndShowValidationResult(sb, text, uri, rdfFormat, specification, includeWarning);
         formValidation(sb, rdfFormat, text, uri, specification, includeWarning, httpServletRequest); 
-/*        if (!validated){
-            appendButton(sb, "URI example!", WsValidationConstants.VALIDATE, httpServletRequest, 
-                    WsValidationConstants.URI, frame.getExampleURI(),
-                    WsValidationConstants.SPECIFICATION, frame.getExampleSpecificationName());          
-            appendButton(sb, "Text Example (witrh an error)", WsValidationConstants.VALIDATE, httpServletRequest, 
-                    WsValidationConstants.TEXT, frame.getExampleText(),
-                    WsValidationConstants.RDF_FORMAT,  RDFFormat.TURTLE.getName(), 
-                    WsValidationConstants.SPECIFICATION, frame.getExampleSpecificationName());          
-        }
- */       frame.footerAndEnd(sb);
+        String page = frame.createHtmlPage("Validation Service", sb.toString(), httpServletRequest);
         if (logger.isDebugEnabled()){
             logger.debug("validate returning");
         }
-        return Response.ok(sb.toString(), MediaType.TEXT_HTML).build();        
+        return Response.ok(page, MediaType.TEXT_HTML).build();
     }
 
     @POST

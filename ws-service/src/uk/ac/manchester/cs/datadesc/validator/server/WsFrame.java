@@ -87,7 +87,6 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
         return validateHome(httpServletRequest);
     }
 
-    @Override
     public StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest) {
         StringBuilder sb = header(header);
         top(sb, header);      
@@ -248,53 +247,20 @@ public class WsFrame extends WsValidatorServer implements FrameInterface{
         sb.append("</div>");
      }
 
-    @Override
     public void footerAndEnd(StringBuilder sb){
         sb.append("<div id=\"footer\">");
         sb.append("This site is run by <a href=\"https://wiki.openphacts.org/index.php/User:Christian\">Christian Brenninkmeijer</a>.");
         sb.append("\n<div></body></html>");
     }
 
-/*    @Override
-    public String getExampleResource() {
-        return ExampleConstants.EXAMPLE_RESOURCE;
-    }
-
     @Override
-    public String getExampleURI() {
-        return ExampleConstants.EXAMPLE_CONTEXT;
+    //TODO use velocity here
+    public String createHtmlPage(String title, String info, HttpServletRequest httpServletRequest) {
+        StringBuilder sb = topAndSide(title,  httpServletRequest);
+        sb.append(info);
+        footerAndEnd(sb);
+        return sb.toString();
     }
-
-    @Override
-    public String getExampleSpecificationName() {
-        return ValidatorExampleConstants.SIMPLE_NAME;
-    }
-
-    @Override
-    public String getExampleQuery() {
-               return ExampleConstants.EXAMPLE_QUERY;
-    }
-
-    @Override
-    public String getExampleText() {
-        return "@prefix : <http://example.com/part1#> .\n"
-        + "@prefix ops: <http://openphacts.cs.man.ac.uk:9090/Void/testOntology.owl#> .\n"
-        + "@prefix void: <http://rdfs.org/ns/void#> .\n"
-        + "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
-        + "\n"
-        + ":person1 a ops:Parent;\n"
-        + "    ops:hasName \"John\";\n"
-        + "    ops:hasChild :person2.\n"
-        + "\n"
-        + ":person2 a ops:Person;\n"
-        + "    ops:hasName \"Peter\";\n"
-        + "    ops:hasPhoneNumber \"1234567\";\n"
-        + "    ops:hasBirthdate \"2003-01-17T16:02:27Z\"^^xsd:dateTime;\n"
-        + "    ops:hasStreet \"mainStreet\";\n"
-        + "    ops:hasHouseNumber \"23\";\n"
-        + "    ops:hasWebsite <http://bbc.co.uk>.\n";
-    }
-*/
 
 }
 

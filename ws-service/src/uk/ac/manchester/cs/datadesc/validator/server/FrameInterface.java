@@ -28,10 +28,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface FrameInterface{
         
-    StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest);
+//    StringBuilder topAndSide(String header, HttpServletRequest httpServletRequest);
     
-    void footerAndEnd(StringBuilder sb);
+//    void footerAndEnd(StringBuilder sb);
     
+    String createHtmlPage(String title, String info, HttpServletRequest httpServletRequest);
     /**
      * Adds an item to the SideBar for this service
      */

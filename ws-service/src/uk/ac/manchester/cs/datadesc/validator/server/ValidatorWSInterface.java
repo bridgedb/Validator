@@ -19,6 +19,9 @@
 //
 package uk.ac.manchester.cs.datadesc.validator.server;
 
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
+import java.io.InputStream;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
@@ -63,6 +66,17 @@ public interface ValidatorWSInterface extends WSRdfInterface, WSValidatorInterfa
             @QueryParam(WsValidationConstants.SPECIFICATION) String specification,
             @QueryParam(WsValidationConstants.INCLUDE_WARNINGS) Boolean includeWarning,
             @Context HttpServletRequest httpServletRequest) throws VoidValidatorException;
+    
+    public Response validateTurtleHtml(
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail, //ToDo work out while this paramters is always null
+            @Context HttpServletRequest httpServletRequest) throws VoidValidatorException;
+    
+    public String validateTurtle(
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail) throws VoidValidatorException;
+    
+    public Response validateTurtleHtml(@Context HttpServletRequest httpServletRequest) throws VoidValidatorException;
     
 }
 

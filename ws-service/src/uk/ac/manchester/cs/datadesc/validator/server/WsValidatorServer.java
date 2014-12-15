@@ -120,8 +120,8 @@ public class WsValidatorServer implements ValidatorWSInterface{
         sb.append("</div>");
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE_HOME, "Home", httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.VALIDATE,WsValidationConstants.VALIDATE, httpServletRequest);
-        frame.addSideBarItem(sb, WsValidationConstants.VALIDATE + WsValidationConstants.FILE, 
-                WsValidationConstants.VALIDATE + WsValidationConstants.FILE, httpServletRequest);
+        frame.addSideBarItem(sb, WsValidationConstants.VALIDATE + WsValidationConstants.TURTLE, 
+                WsValidationConstants.VALIDATE + WsValidationConstants.TURTLE, httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.RDF_DUMP, WsValidationConstants.RDF_DUMP,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.STATEMENT_LIST, WsValidationConstants.STATEMENT_LIST,  httpServletRequest);
         frame.addSideBarItem(sb, WsValidationConstants.BY_RESOURCE, WsValidationConstants.BY_RESOURCE,  httpServletRequest);
@@ -441,9 +441,6 @@ public class WsValidatorServer implements ValidatorWSInterface{
          return validateFile(null, httpServletRequest);
  	}  
 
-    @GET
-	@Path(WsValidationConstants.VALIDATE + WsValidationConstants.FILE)
-    @Produces(MediaType.TEXT_HTML)
 	public Response validateFile(String validationResult, @Context HttpServletRequest httpServletRequest) 
             throws VoidValidatorException {  
         StringBuilder sb = new StringBuilder();

@@ -78,7 +78,6 @@ public class UrlReader {
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(UrlReader.class);
      
     public UrlReader(String address) throws VoidValidatorException{
-        System.out.println("UrlReader init called with \"" + address + "\"");
         if (address == null){
             throw new VoidValidatorException("Url address can not be null");
         }

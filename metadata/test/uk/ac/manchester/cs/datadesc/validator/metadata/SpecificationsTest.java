@@ -45,7 +45,7 @@ public class SpecificationsTest {
     
     @BeforeClass
     public static void setUpClass() throws VoidValidatorException {
-       String fileName = "voidInfo1_4.owl";
+       String fileName = "VoidInfo1_4.owl";
        MetaDataSpecification.LoadSpecification(fileName, "version1.4", "Test load");
        specifications = MetaDataSpecification.specificationByName("version1.4");
     }

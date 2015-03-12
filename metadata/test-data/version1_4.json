@@ -4,41 +4,6 @@
     "Group" : {
       "requirements" : [ {
         "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/authoredBy",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/authoredOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://rdfs.org/ns/void#uriRegexPattern",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/importedFrom",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/pav/version",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
           "level" : "MUST",
           "predicate" : "http://purl.org/dc/terms/license",
           "cardinality" : null,
@@ -46,242 +11,8 @@
         }
       }, {
         "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/dc/terms/accuralPeriodicity",
-          "cardinality" : null,
-          "type" : "http://vocabularies.bridgedb.org/ops#FrequencyOfChange URI for example: [http://purl.org/cld/freq/weekly, http://purl.org/cld/freq/semiweekly, http://purl.org/cld/freq/continuous, http://purl.org/cld/freq/triennial, http://purl.org/cld/freq/biweekly, http://purl.org/cld/freq/monthly, http://purl.org/cld/freq/threeTimesAWeek, http://purl.org/cld/freq/daily, http://purl.org/cld/freq/annual, http://purl.org/cld/freq/threeTimesAMonth, http://purl.org/cld/freq/semimonthly, http://purl.org/cld/freq/irregular, http://purl.org/cld/freq/bimonthly, http://purl.org/cld/freq/semiannual, http://purl.org/cld/freq/biennial, http://purl.org/cld/freq/threeTimesAYear, http://purl.org/cld/freq/quarterly]"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/publisher",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/spar/cito/citesAsAuthority",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/importedOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/dc/terms/subject",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Linked Resource" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/pav/derivedFrom",
-          "cardinality" : null,
-          "linkedTypes" : [ "http://purl.org/dc/dcmitype/Dataset" ]
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdBy",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://www.w3.org/ns/dcat#theme",
-          "cardinality" : null,
-          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_010299]"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://xmlns.com/foaf/0.1/page",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://rdfs.org/ns/void#exampleResource",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/issued",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/lastRefreshedOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://www.w3.org/ns/dcat#landingPage",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/title",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://xmlns.com/foaf/0.1/homepage",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://rdfs.org/ns/void#uriSpace",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://rdfs.org/ns/void#vocabulary",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://rdfs.org/ns/void#sparqlEndpoint",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/importedBy",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdWith",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
           "level" : "MUST",
           "predicate" : "http://purl.org/dc/terms/description",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://rdfs.org/ns/void#dataDump",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/pav/previousVersion",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      } ],
-      "type" : "http://rdfs.org/ns/void#Dataset"
-    }
-  }, {
-    "Group" : {
-      "requirements" : [ {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/dc/terms/description",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdWith",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/lastUpdateOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/issued",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/dc/terms/title",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://xmlns.com/foaf/0.1/primaryTopic",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/pav/createdBy",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      } ],
-      "type" : "http://rdfs.org/ns/void#DatasetDescription"
-    }
-  }, {
-    "Group" : {
-      "requirements" : [ {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/title",
           "cardinality" : null,
           "type" : " A String"
         }
@@ -290,13 +21,34 @@
           "level" : "SHOULD",
           "predicate" : "http://vocabularies.bridgedb.org/ops#objectsSpecies",
           "cardinality" : 1,
-          "type" : "http://vocabularies.bridgedb.org/ops#SpeciesTermsUsedIinOPS URI for example: [http://purl.obolibrary.org/obo/NCBITaxon_7955, http://purl.obolibrary.org/obo/NCBITaxon_10090, http://purl.obolibrary.org/obo/NCBITaxon_9796, http://purl.obolibrary.org/obo/NCBITaxon_9913, http://purl.obolibrary.org/obo/NCBITaxon_6239, http://purl.obolibrary.org/obo/NCBITaxon_4932, http://purl.obolibrary.org/obo/NCBITaxon_9606, http://purl.obolibrary.org/obo/NCBITaxon_9031, http://purl.obolibrary.org/obo/NCBITaxon_7227, http://vocabularies.bridgedb.org/ops#8, http://vocabularies.bridgedb.org/ops#7, http://purl.obolibrary.org/obo/NCBITaxon_9615]"
+          "type" : "http://vocabularies.bridgedb.org/ops#SpeciesTermsUsedIinOPS URI for example: [http://vocabularies.bridgedb.org/ops#8, http://vocabularies.bridgedb.org/ops#7, http://purl.obolibrary.org/obo/NCBITaxon_4932, http://purl.obolibrary.org/obo/NCBITaxon_9796, http://purl.obolibrary.org/obo/NCBITaxon_7955, http://purl.obolibrary.org/obo/NCBITaxon_6239, http://purl.obolibrary.org/obo/NCBITaxon_7227, http://purl.obolibrary.org/obo/NCBITaxon_10090, http://purl.obolibrary.org/obo/NCBITaxon_9615, http://purl.obolibrary.org/obo/NCBITaxon_9913, http://purl.obolibrary.org/obo/NCBITaxon_9606, http://purl.obolibrary.org/obo/NCBITaxon_9031]"
         }
       }, {
         "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdWith",
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/title",
           "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
+          "predicate" : "http://vocabularies.bridgedb.org/ops#subjectsSpecies",
+          "cardinality" : 1,
+          "type" : "http://vocabularies.bridgedb.org/ops#SpeciesTermsUsedIinOPS URI for example: [http://vocabularies.bridgedb.org/ops#8, http://vocabularies.bridgedb.org/ops#7, http://purl.obolibrary.org/obo/NCBITaxon_4932, http://purl.obolibrary.org/obo/NCBITaxon_9796, http://purl.obolibrary.org/obo/NCBITaxon_7955, http://purl.obolibrary.org/obo/NCBITaxon_6239, http://purl.obolibrary.org/obo/NCBITaxon_7227, http://purl.obolibrary.org/obo/NCBITaxon_10090, http://purl.obolibrary.org/obo/NCBITaxon_9615, http://purl.obolibrary.org/obo/NCBITaxon_9913, http://purl.obolibrary.org/obo/NCBITaxon_9606, http://purl.obolibrary.org/obo/NCBITaxon_9031]"
+        }
+      }, {
+        "Linked Resource" : {
+          "level" : "MUST",
+          "predicate" : "http://rdfs.org/ns/void#objectsTarget",
+          "cardinality" : 1,
+          "linkedTypes" : [ "http://rdfs.org/ns/void#Dataset" ]
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://vocabularies.bridgedb.org/ops#linksetJustification",
+          "cardinality" : 1,
           "type" : "A URI."
         }
       }, {
@@ -315,17 +67,17 @@
         }
       }, {
         "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://vocabularies.bridgedb.org/ops#subjectsSpecies",
-          "cardinality" : 1,
-          "type" : "http://vocabularies.bridgedb.org/ops#SpeciesTermsUsedIinOPS URI for example: [http://purl.obolibrary.org/obo/NCBITaxon_7955, http://purl.obolibrary.org/obo/NCBITaxon_10090, http://purl.obolibrary.org/obo/NCBITaxon_9796, http://purl.obolibrary.org/obo/NCBITaxon_9913, http://purl.obolibrary.org/obo/NCBITaxon_6239, http://purl.obolibrary.org/obo/NCBITaxon_4932, http://purl.obolibrary.org/obo/NCBITaxon_9606, http://purl.obolibrary.org/obo/NCBITaxon_9031, http://purl.obolibrary.org/obo/NCBITaxon_7227, http://vocabularies.bridgedb.org/ops#8, http://vocabularies.bridgedb.org/ops#7, http://purl.obolibrary.org/obo/NCBITaxon_9615]"
+          "level" : "MAY",
+          "predicate" : "http://vocabularies.bridgedb.org/ops#expresses",
+          "cardinality" : null,
+          "type" : "A URI."
         }
       }, {
         "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdBy",
-          "cardinality" : null,
-          "type" : "A URI."
+          "level" : "MUST",
+          "predicate" : "http://vocabularies.bridgedb.org/ops#objectsDatatype",
+          "cardinality" : 1,
+          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010299, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423]"
         }
       }, {
         "Property" : {
@@ -343,17 +95,24 @@
         }
       }, {
         "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/issued",
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/createdBy",
           "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+          "type" : "A URI."
         }
       }, {
-        "Linked Resource" : {
-          "level" : "MUST",
-          "predicate" : "http://rdfs.org/ns/void#objectsTarget",
-          "cardinality" : 1,
-          "linkedTypes" : [ "http://rdfs.org/ns/void#Dataset" ]
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/createdWith",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/authoredOn",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       }, {
         "Property" : {
@@ -365,23 +124,16 @@
       }, {
         "Property" : {
           "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/license",
+          "predicate" : "http://purl.org/dc/terms/issued",
           "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://vocabularies.bridgedb.org/ops#objectsDatatype",
-          "cardinality" : 1,
-          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_010299]"
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       }, {
         "Property" : {
           "level" : "MUST",
           "predicate" : "http://vocabularies.bridgedb.org/ops#subjectsDatatype",
           "cardinality" : 1,
-          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_010299]"
+          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010299, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423]"
         }
       }, {
         "Property" : {
@@ -390,27 +142,6 @@
           "cardinality" : null,
           "type" : "A URI."
         }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://vocabularies.bridgedb.org/ops#linksetJustification",
-          "cardinality" : 1,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/description",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/authoredOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
       } ],
       "type" : "http://rdfs.org/ns/void#Linkset"
     }
@@ -418,17 +149,10 @@
     "Group" : {
       "requirements" : [ {
         "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/dc/terms/issued",
+          "level" : "MUST",
+          "predicate" : "http://www.w3.org/ns/dcat#mediaType",
           "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://www.w3.org/ns/dcat#byteSize",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#integer"
+          "type" : "A URI."
         }
       }, {
         "Property" : {
@@ -439,10 +163,17 @@
         }
       }, {
         "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://www.w3.org/ns/dcat#mediaType",
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/pav/previousVersion",
           "cardinality" : null,
-          "type" : "A URI."
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/dc/terms/issued",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       }, {
         "Property" : {
@@ -454,9 +185,9 @@
       }, {
         "Property" : {
           "level" : "SHOULD",
-          "predicate" : "http://purl.org/pav/previousVersion",
+          "predicate" : "http://www.w3.org/ns/dcat#byteSize",
           "cardinality" : null,
-          "type" : " A String"
+          "type" : "http://www.w3.org/2001/XMLSchema#integer"
         }
       } ],
       "type" : "http://www.w3.org/ns/dcat#Distribution"
@@ -465,59 +196,24 @@
     "Group" : {
       "requirements" : [ {
         "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://www.w3.org/ns/dcat#theme",
-          "cardinality" : null,
-          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_010299]"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://www.w3.org/ns/dcat#landingPage",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
           "level" : "SHOULD",
-          "predicate" : "http://purl.org/dc/terms/subject",
+          "predicate" : "http://purl.org/pav/createdBy",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/createdWith",
           "cardinality" : null,
           "type" : "A URI."
         }
       }, {
         "Property" : {
           "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/license",
+          "predicate" : "http://xmlns.com/foaf/0.1/primaryTopic",
           "cardinality" : null,
           "type" : "A URI."
-        }
-      }, {
-        "Linked Resource" : {
-          "level" : "MUST",
-          "predicate" : "http://www.w3.org/ns/dcat#distribution",
-          "cardinality" : null,
-          "linkedTypes" : [ "http://www.w3.org/ns/dcat#Distribution" ]
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
-        }
-      }, {
-        "Property" : {
-          "level" : "MUST",
-          "predicate" : "http://purl.org/dc/terms/description",
-          "cardinality" : null,
-          "type" : " A String"
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/importedOn",
-          "cardinality" : null,
-          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       }, {
         "Property" : {
@@ -529,49 +225,47 @@
       }, {
         "Property" : {
           "level" : "MAY",
-          "predicate" : "http://purl.org/pav/createdBy",
+          "predicate" : "http://purl.org/pav/lastUpdateOn",
           "cardinality" : null,
-          "type" : "A URI."
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       }, {
         "Property" : {
-          "level" : "MUST",
+          "level" : "MAY",
           "predicate" : "http://purl.org/dc/terms/title",
           "cardinality" : null,
           "type" : " A String"
         }
       }, {
         "Property" : {
-          "level" : "SHOULD",
-          "predicate" : "http://purl.org/dc/terms/accuralPeriodicity",
+          "level" : "MAY",
+          "predicate" : "http://purl.org/dc/terms/description",
           "cardinality" : null,
-          "type" : "http://vocabularies.bridgedb.org/ops#FrequencyOfChange URI for example: [http://purl.org/cld/freq/weekly, http://purl.org/cld/freq/semiweekly, http://purl.org/cld/freq/continuous, http://purl.org/cld/freq/triennial, http://purl.org/cld/freq/biweekly, http://purl.org/cld/freq/monthly, http://purl.org/cld/freq/threeTimesAWeek, http://purl.org/cld/freq/daily, http://purl.org/cld/freq/annual, http://purl.org/cld/freq/threeTimesAMonth, http://purl.org/cld/freq/semimonthly, http://purl.org/cld/freq/irregular, http://purl.org/cld/freq/bimonthly, http://purl.org/cld/freq/semiannual, http://purl.org/cld/freq/biennial, http://purl.org/cld/freq/threeTimesAYear, http://purl.org/cld/freq/quarterly]"
+          "type" : " A String"
         }
       }, {
         "Property" : {
           "level" : "MAY",
-          "predicate" : "http://purl.org/pav/importedFrom",
+          "predicate" : "http://purl.org/pav/createdOn",
           "cardinality" : null,
-          "type" : "A URI."
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/derivedFrom",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
-        "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://xmlns.com/foaf/0.1/homepage",
-          "cardinality" : null,
-          "type" : "A URI."
-        }
-      }, {
+      } ],
+      "type" : "http://rdfs.org/ns/void#DatasetDescription"
+    }
+  }, {
+    "Group" : {
+      "requirements" : [ {
         "Property" : {
           "level" : "MUST",
           "predicate" : "http://purl.org/dc/terms/publisher",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://rdfs.org/ns/void#sparqlEndpoint",
           "cardinality" : null,
           "type" : "A URI."
         }
@@ -585,21 +279,49 @@
       }, {
         "Property" : {
           "level" : "MAY",
+          "predicate" : "http://purl.org/pav/importedBy",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/title",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://www.w3.org/ns/dcat#theme",
+          "cardinality" : null,
+          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010299, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423]"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
           "predicate" : "http://purl.org/pav/authoredOn",
           "cardinality" : null,
           "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       }, {
         "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/pav/authoredBy",
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/pav/previousVersion",
           "cardinality" : null,
-          "type" : "A URI."
+          "type" : " A String"
+        }
+      }, {
+        "Linked Resource" : {
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/pav/derivedFrom",
+          "cardinality" : null,
+          "linkedTypes" : [ "http://purl.org/dc/dcmitype/Dataset" ]
         }
       }, {
         "Property" : {
-          "level" : "MAY",
-          "predicate" : "http://purl.org/spar/cito/citesAsAuthority",
+          "level" : "MUST",
+          "predicate" : "http://www.w3.org/ns/dcat#landingPage",
           "cardinality" : null,
           "type" : "A URI."
         }
@@ -613,14 +335,35 @@
       }, {
         "Property" : {
           "level" : "SHOULD",
-          "predicate" : "http://purl.org/pav/previousVersion",
+          "predicate" : "http://purl.org/dc/terms/subject",
           "cardinality" : null,
-          "type" : " A String"
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/dc/terms/accuralPeriodicity",
+          "cardinality" : null,
+          "type" : "http://vocabularies.bridgedb.org/ops#FrequencyOfChange URI for example: [http://purl.org/cld/freq/monthly, http://purl.org/cld/freq/biennial, http://purl.org/cld/freq/irregular, http://purl.org/cld/freq/weekly, http://purl.org/cld/freq/biweekly, http://purl.org/cld/freq/semiweekly, http://purl.org/cld/freq/semiannual, http://purl.org/cld/freq/bimonthly, http://purl.org/cld/freq/quarterly, http://purl.org/cld/freq/annual, http://purl.org/cld/freq/threeTimesAYear, http://purl.org/cld/freq/triennial, http://purl.org/cld/freq/continuous, http://purl.org/cld/freq/semimonthly, http://purl.org/cld/freq/threeTimesAMonth, http://purl.org/cld/freq/daily, http://purl.org/cld/freq/threeTimesAWeek]"
         }
       }, {
         "Property" : {
           "level" : "MAY",
-          "predicate" : "http://rdfs.org/ns/void#vocabulary",
+          "predicate" : "http://purl.org/pav/createdBy",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/authoredBy",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://xmlns.com/foaf/0.1/homepage",
           "cardinality" : null,
           "type" : "A URI."
         }
@@ -634,7 +377,250 @@
       }, {
         "Property" : {
           "level" : "SHOULD",
+          "predicate" : "http://rdfs.org/ns/void#exampleResource",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/license",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://rdfs.org/ns/void#vocabulary",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/description",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/spar/cito/citesAsAuthority",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Linked Resource" : {
+          "level" : "MUST",
+          "predicate" : "http://rdfs.org/ns/void#dataDump",
+          "cardinality" : null,
+          "linkedTypes" : [ "http://rdfs.org/ns/void#DatasetDescription" ]
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/issued",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/createdOn",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/importedFrom",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://rdfs.org/ns/void#uriSpace",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
           "predicate" : "http://purl.org/pav/version",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://rdfs.org/ns/void#uriRegexPattern",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/importedOn",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+        }
+      } ],
+      "type" : "http://rdfs.org/ns/void#Dataset"
+    }
+  }, {
+    "Group" : {
+      "requirements" : [ {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/createdOn",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+        }
+      }, {
+        "Linked Resource" : {
+          "level" : "MUST",
+          "predicate" : "http://www.w3.org/ns/dcat#distribution",
+          "cardinality" : null,
+          "linkedTypes" : [ "http://www.w3.org/ns/dcat#Distribution" ]
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/derivedFrom",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/lastRefreshedOn",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/dc/terms/accuralPeriodicity",
+          "cardinality" : null,
+          "type" : "http://vocabularies.bridgedb.org/ops#FrequencyOfChange URI for example: [http://purl.org/cld/freq/monthly, http://purl.org/cld/freq/biennial, http://purl.org/cld/freq/irregular, http://purl.org/cld/freq/weekly, http://purl.org/cld/freq/biweekly, http://purl.org/cld/freq/semiweekly, http://purl.org/cld/freq/semiannual, http://purl.org/cld/freq/bimonthly, http://purl.org/cld/freq/quarterly, http://purl.org/cld/freq/annual, http://purl.org/cld/freq/threeTimesAYear, http://purl.org/cld/freq/triennial, http://purl.org/cld/freq/continuous, http://purl.org/cld/freq/semimonthly, http://purl.org/cld/freq/threeTimesAMonth, http://purl.org/cld/freq/daily, http://purl.org/cld/freq/threeTimesAWeek]"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/createdWith",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/spar/cito/citesAsAuthority",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/title",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/pav/version",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://www.w3.org/ns/dcat#landingPage",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/description",
+          "cardinality" : null,
+          "type" : " A String"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/createdBy",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/license",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/authoredOn",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/publisher",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/importedFrom",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://www.w3.org/ns/dcat#theme",
+          "cardinality" : null,
+          "type" : "http://vocabularies.bridgedb.org/ops#DataSetType URI for example: [http://semanticscience.org/resource/SIO_010299, http://semanticscience.org/resource/SIO_010035, http://semanticscience.org/resource/SIO_001107, http://semanticscience.org/resource/SIO_010004, http://semanticscience.org/resource/SIO_010432, http://semanticscience.org/resource/SIO_010099, http://semanticscience.org/resource/SIO_010043, http://semanticscience.org/resource/SIO_010009, http://semanticscience.org/resource/SIO_001166, http://semanticscience.org/resource/SIO_010038, http://semanticscience.org/resource/SIO_010423]"
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://xmlns.com/foaf/0.1/homepage",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/authoredBy",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MUST",
+          "predicate" : "http://purl.org/dc/terms/issued",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/dc/terms/subject",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "SHOULD",
+          "predicate" : "http://purl.org/pav/previousVersion",
           "cardinality" : null,
           "type" : " A String"
         }
@@ -644,6 +630,27 @@
           "predicate" : "http://purl.org/pav/importedBy",
           "cardinality" : null,
           "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://xmlns.com/foaf/0.1/page",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://rdfs.org/ns/void#vocabulary",
+          "cardinality" : null,
+          "type" : "A URI."
+        }
+      }, {
+        "Property" : {
+          "level" : "MAY",
+          "predicate" : "http://purl.org/pav/importedOn",
+          "cardinality" : null,
+          "type" : "http://www.w3.org/2001/XMLSchema#dateTime"
         }
       } ],
       "type" : "http://purl.org/dc/dcmitype/Dataset"

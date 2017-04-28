@@ -16,14 +16,17 @@
      <build>
         <plugins>
             <plugin>
-                <groupId>org.dstovall</groupId>
+                <groupId>com.jolira</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
                 <version>1.4.4</version>
-                <configuration>
-                    <mainClass>uk.ac.manchester.cs.openphacts.ims.loader.RunLoader</mainClass>
-                </configuration>
                <executions>
                     <execution>
+                        <configuration>
+                            <mainClass>uk.ac.manchester.cs.openphacts.ims.loader.RunLoader</mainClass>
+                            <!--<onejarVersion>0.97</onejarVersion>-->
+                            <attachToBuild>true</attachToBuild>
+                            <!--<filename>validator-onejar-1.2.0.jar</filename>-->
+                        </configuration>
                         <goals>
                             <goal>one-jar</goal>
                         </goals>
@@ -56,7 +59,7 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
         </dependency>
-   	<dependency>
+        <dependency>
         	<groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-xc</artifactId>
             <version>1.9.13</version>
@@ -74,24 +77,25 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-         <dependency>
-        	<groupId>org.hamcrest</groupId>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
             <version>${hamcrest.version}</version>
-			<scope>test</scope>
-        </dependency>    
+            <scope>test</scope>
+        </dependency>
         <dependency>
         	<groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
             <version>${hamcrest.version}</version>
 			<scope>test</scope>
-        </dependency>    
+        </dependency>
     </dependencies>
         <pluginRepositories>
-        <pluginRepository> 
-            <id>onejar-maven-plugin.googlecode.com</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-        </pluginRepository>
+            <!-- googlecode is dead -->
+            <!--<pluginRepository>-->
+            <!--  <id>onejar-maven-plugin.googlecode.com</id>-->
+            <!--  <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>-->
+            <!--</pluginRepository>-->
     </pluginRepositories>
 
 </project>

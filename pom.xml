@@ -6,9 +6,9 @@
   <version>1.2.0-ops-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DataDesc Validator Bundle</name>
-  
+
   <properties> <!-- It is highly recommended to keep these the same as BridgeDB -->
-        <bridgedb.version>2.0.1.openphacts</bridgedb.version>
+        <bridgedb.version>2.2.0-ops-SNAPSHOT</bridgedb.version>
         <cxf.version>2.4.3</cxf.version>
         <hamcrest.version>1.3</hamcrest.version>
         <jersey.version>1.10</jersey.version>
@@ -28,7 +28,7 @@
     <module>ws-service</module>
     <module>ws-client</module>
   </modules>
-  
+
    	<build>
 		<pluginManagement>
 			<plugins>
@@ -93,8 +93,8 @@
     </repository>
 
 	</repositories>
-    
-	
+
+
   <dependencies>
       <dependency>
             <groupId>junit</groupId>
@@ -107,15 +107,15 @@
             <artifactId>hamcrest-core</artifactId>
             <version>${hamcrest.version}</version>
 			<scope>test</scope>
-        </dependency>    
+        </dependency>
         <dependency>
         	<groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
             <version>${hamcrest.version}</version>
         <scope>test</scope>
-        </dependency>    
+        </dependency>
     </dependencies>
- 
+
   <scm>
     <connection>scm:git:https://github.com/openphacts/IdentityMappingService.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/openphacts/IdentityMappingService.git</developerConnection>
@@ -130,5 +130,5 @@
     </license>
   </licenses>
 
-  
+
 </project>

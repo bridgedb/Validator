@@ -132,9 +132,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:https://github.com/openphacts/IdentityMappingService.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/openphacts/IdentityMappingService.git</developerConnection>
-    <url>https://github.com/openphacts/IdentityMappingService/</url>
+    <connection>scm:git:https://github.com/BridgeDb/Validator.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/BridgeDb/Validator.git</developerConnection>
+    <url>https://github.com/BridgeDb/Validator/</url>
     <tag>HEAD</tag>
   </scm>
   <licenses>

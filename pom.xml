@@ -114,7 +114,22 @@
             <version>${hamcrest.version}</version>
         <scope>test</scope>
         </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-core</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+  </dependencies>
 
   <scm>
     <connection>scm:git:https://github.com/openphacts/IdentityMappingService.git</connection>

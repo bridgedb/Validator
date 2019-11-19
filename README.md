@@ -1,6 +1,8 @@
-Void Validator
+# Void Validator
 
-This is the Void Validator Stripped out of the BridgeDB project.
+[![Build Status](https://travis-ci.org/bridgedb/Validator.svg?branch=master)](https://travis-ci.org/bridgedb/Validator)
+
+This is the Void Validator Stripped out of the BridgeDb project.
 
 This includes RDF tools to store and query RDF. 
 The tool also allows for reading in extra data if required.
@@ -17,9 +19,10 @@ If you have specific requirements please contact Christian!
 
 Configuration 
 -------------
+
 Properties File Location:   (Warning changed 1 November 2013!)
 ========================
-Both BridgeDB and the Validator look for the configuration files in the following locations. 
+Both BridgeDb and the Validator look for the configuration files in the following locations. 
 Once it finds a configuration file the other locations are ignored. 
 * Directly in the run directory  (Mainly for java *.jar runs)
 * Environment Variable BRIDGEDB_CONFIG: can be used to point to any location

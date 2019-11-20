@@ -17,7 +17,7 @@
   <dependencies>
         <dependency>
             <groupId>com.github.bridgedb</groupId>
-            <artifactId>metadata</artifactId>
+            <artifactId>validator-metadata</artifactId>
 			<version>1.2.0</version>
             <type>jar</type>
         </dependency>

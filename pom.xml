@@ -145,5 +145,12 @@
     </license>
   </licenses>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Validator Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/bridgedb/BridgeDb</url>
+    </repository>
+  </distributionManagement>
 
 </project>

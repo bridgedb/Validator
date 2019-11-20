@@ -132,9 +132,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:https://github.com/BridgeDb/Validator.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/BridgeDb/Validator.git</developerConnection>
-    <url>https://github.com/BridgeDb/Validator/</url>
+    <connection>scm:git:https://github.com/bridgedb/Validator.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/bridgedb/Validator.git</developerConnection>
+    <url>https://github.com/bridgedb/Validator/</url>
     <tag>validator-bundle-1.2.0</tag>
   </scm>
   <licenses>

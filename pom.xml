@@ -149,7 +149,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Validator Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/bridgedb/BridgeDb</url>
+      <url>https://maven.pkg.github.com/bridgedb/Validator</url>
     </repository>
   </distributionManagement>
 

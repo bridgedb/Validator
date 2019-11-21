@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bridgedb</groupId>
     <artifactId>void-validator-bundle</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4-SNAPSHOT</version>
   </parent>
   <groupId>org.bridgedb</groupId>
   <artifactId>void-validator-ws-service</artifactId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>org.bridgedb</groupId>
             <artifactId>void-validator-ws-core</artifactId>
-			<version>1.2.3</version>
+			<version>1.2.4-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -108,14 +108,14 @@
         <dependency>
             <groupId>org.bridgedb</groupId>
             <artifactId>void-validator-rdf-tools</artifactId>
-			<version>1.2.3</version>
+			<version>1.2.4-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.bridgedb</groupId>
             <artifactId>void-validator-metadata</artifactId>
-			<version>1.2.3</version>
+			<version>1.2.4-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

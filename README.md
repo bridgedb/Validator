@@ -1,4 +1,4 @@
-# Void Validator
+# BridgeDb Void Validator
 
 [![Build Status](https://travis-ci.org/bridgedb/Validator.svg?branch=master)](https://travis-ci.org/bridgedb/Validator)
 

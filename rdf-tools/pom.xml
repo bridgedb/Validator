@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.github.bridgedb</groupId>
-    <artifactId>validator-bundle</artifactId>
+    <groupId>org.bridgedb</groupId>
+    <artifactId>void-validator-bundle</artifactId>
     <version>1.2.3-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.bridgedb</groupId>
-  <artifactId>validator-rdf-tools</artifactId>
-  <name>DataDesc Validator RdfTools</name>
+  <groupId>org.bridgedb</groupId>
+  <artifactId>void-validator-rdf-tools</artifactId>
+  <name>DataDesc Validator RDF Tools</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -84,7 +84,7 @@
 			<name>Sonatype Nexus Snapshots</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 			<releases>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>

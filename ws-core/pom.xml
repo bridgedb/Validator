@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.github.bridgedb</groupId>
-    <artifactId>validator-bundle</artifactId>
+    <groupId>org.bridgedb</groupId>
+    <artifactId>void-validator-bundle</artifactId>
     <version>1.2.3-SNAPSHOT</version>
   </parent>
-  <groupId>com.github.bridgedb</groupId>
-  <artifactId>validator-ws-core</artifactId>
+  <groupId>org.bridgedb</groupId>
+  <artifactId>void-validator-ws-core</artifactId>
   <name>DataDesc Validator WebService Core</name>
   <packaging>jar</packaging>
    <!--url>http://maven.apache.org</ur-->
@@ -16,8 +16,8 @@
   </properties>
   <dependencies>
         <dependency>
-            <groupId>com.github.bridgedb</groupId>
-            <artifactId>validator-metadata</artifactId>
+            <groupId>org.bridgedb</groupId>
+            <artifactId>void-validator-metadata</artifactId>
 			<version>1.2.3-SNAPSHOT</version>
             <type>jar</type>
         </dependency>

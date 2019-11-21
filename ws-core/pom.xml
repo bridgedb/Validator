@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.github.bridgedb</groupId>
     <artifactId>validator-bundle</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
   </parent>
   <groupId>com.github.bridgedb</groupId>
   <artifactId>validator-ws-core</artifactId>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.github.bridgedb</groupId>
             <artifactId>validator-metadata</artifactId>
-			<version>1.2.1</version>
+			<version>1.2.2-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>

@@ -74,26 +74,6 @@
             </plugin>
         </plugins>
 	</build>
-    <repositories>
-        <!-- 14 April 2014 Down repository>
-            <id>aduna-repo</id>
-            <name>Aduna repository</name>
-            <url>http://repo.aduna-software.org/maven2/releases/</url>
-        </repository-->
-    <repository>
-        <id>myGrid ops</id>
-        <name>myGrid Open PHACTS repository</name>
-        <url>http://repository.mygrid.org.uk/artifactory/ops</url>
-        <releases>
-          <enabled>true</enabled>
-        </releases>
-        <snapshots>
-          <enabled>true</enabled>
-        </snapshots>
-    </repository>
-
-	</repositories>
-
 
   <dependencies>
       <dependency>
@@ -144,13 +124,5 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Validator Apache Maven Packages</name>
-      <url>https://maven.pkg.github.com/bridgedb/Validator</url>
-    </repository>
-  </distributionManagement>
 
 </project>

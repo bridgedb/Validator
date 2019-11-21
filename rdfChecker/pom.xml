@@ -21,7 +21,7 @@
                 <artifactId>onejar-maven-plugin</artifactId>
                 <version>1.4.4</version>
                 <configuration>
-                    <mainClass>com.github.bridgedb.rdfchecker.RdfChecker</mainClass>
+                    <mainClass>uk.ac.manchester.cs.datadesc.validator.rdfchecker.RdfChecker</mainClass>
                 </configuration>
                <executions>
                     <execution>
